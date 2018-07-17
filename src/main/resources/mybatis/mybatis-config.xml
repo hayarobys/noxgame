@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<!-- MyBatis Mapper의 parameterType에서 사용할 별명. parameterMap이 아님에 주의 -->
+		<!-- 페이징 처리하는데 사용됩니다. -->
+		<typeAlias type="com.suph.security.core.dto.PaginationRequest" alias="PaginationRequest"/>
+		
+		<!-- 차단 된 계정을 검색하는데 사용됩니다. -->
+		<typeAlias type="com.suph.security.core.dto.SearchBlockMemberDTO" alias="SearchBlockMemberDTO"/>
+		
+		<!-- 차단 된 계정 정보를 옮기는데 사용됩니다. -->
+		<typeAlias type="com.suph.security.core.dto.BlockMemberDTO" alias="BlockMemberDTO"/>
+		
+		<!-- 차단 된 계정 정보를 JWT로 옮기는데 사용됩니다. -->
+		<typeAlias type="com.suph.security.core.dto.BlockInfoDTO" alias="BlockInfoDTO"/>
+		
+		<!-- 계정 정보를 옮기는데 사용됩니다. -->
+		<typeAlias type="com.suph.security.core.dto.MemberDTO" alias="MemberDTO"/>
+		
+		<!-- 계정이 보유한 권한을 옮기는데 사용됩니다. -->
+		<typeAlias type="com.suph.security.core.dto.MemberAuthDTO" alias="MemberAuthDTO"/>
+		
+		<!-- 계정 보유 권한을 옮기는데 사용됩니다. -->
+		<typeAlias type="com.suph.security.core.dto.AuthDTO" alias="AuthDTO"/>
+		
+		<!-- 리소스 접근에 필요한 권한을 옮기는데 사용됩니다. -->
+		<typeAlias type="com.suph.security.core.dto.ResourceAuthDTO" alias="ResourceAuthDTO"/>
+		
+		<!-- 리소스 정보를 옮기는데 사용됩니다. -->
+		<typeAlias type="com.suph.security.core.dto.ResourceDTO" alias="ResourceDTO"/>
+	</typeAliases>
+	
+	<typeHandlers>
+		<typeHandler javaType="java.sql.Timestamp" handler="org.apache.ibatis.type.DateTypeHandler" />
+	</typeHandlers>
+</configuration>

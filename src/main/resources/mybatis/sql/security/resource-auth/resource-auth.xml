@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.suph.security.core.dao.ResourceAuthDAO">
+
+	<resultMap type="com.suph.security.core.dto.ResourceAuthDTO" id="ResourceAuthDTO">
+		<result column="HTTP_METHOD" property="httpMethod" />
+		<result column="RESOURCE_PATTERN" property="resourceNm" />
+		<result column="AUTH_NM" property="authNm" />
+	</resultMap>
+	
+	<resultMap type="com.suph.security.core.dto.AuthDTO" id="AuthDTO">
+		<result column="AUTH_NO" property="authNo" />
+		<result column="AUTH_NM" property="authNm" />
+		<result column="AUTH_EXPLANATION" property="authExplanation" />
+	</resultMap>
+
+	<!-- url/method/pointcut 형식인 리소스 패턴 - 권한 매핑 정보를 조회합니다 -->
+	<select id="getRolesAndResources" parameterType="String" resultMap="ResourceAuthDTO">
+		SELECT
+			R.HTTP_METHOD,
+			R.RESOURCE_PATTERN,
+			A.AUTH_NM
+		FROM
+			TB_RESOURCE AS R
+			INNER JOIN TB_RESOURCE_AUTH AS RA ON (RA.RESOURCE_NO = R.RESOURCE_NO)
+			INNER JOIN TB_AUTH AS A ON (RA.AUTH_NO = A.AUTH_NO)
+		WHERE
+			R.RESOURCE_TYPE = LCASE(#{type})
+		ORDER BY
+			R.SORT_ORDER DESC,
+			A.AUTH_NO DESC
+	</select>
+	
+	<!-- 특정 리소스 패턴에 매핑된 권한 정보를 조회합니다 -->
+	<select id="getAuthListByResourceNo" parameterType="HashMap" resultMap="AuthDTO">
+		SELECT
+			A.AUTH_NO,
+			A.AUTH_NM,
+			A.AUTH_EXPLANATION
+		FROM
+			TB_RESOURCE AS R
+			INNER JOIN TB_RESOURCE_AUTH AS RA ON (RA.RESOURCE_NO = R.RESOURCE_NO)
+			INNER JOIN TB_AUTH AS A ON (RA.AUTH_NO = A.AUTH_NO)
+		WHERE
+				R.RESOURCE_TYPE = LCASE(#{type})
+			AND
+				R.RESOURCE_NO = #{resourceNo}
+		ORDER BY
+			A.AUTH_NO
+	</select>
+	
+	<!-- 특정 리소스에 새 권한들을 부여합니다. -->
+	<insert id="insertAuthListByResourceNo" parameterType="ResourceAuthDTO">
+		INSERT INTO
+			TB_RESOURCE_AUTH(
+				RESOURCE_NO, AUTH_NO
+			)
+		VALUES
+		<foreach collection="authNoList" item="authNo" separator=",">
+			(#{resourceNo}, #{authNo})
+		</foreach>
+	</insert>
+	
+	<!-- 특정 리소스에 매칭된 권한들을 제거합니다. -->
+	<delete id="deleteAuthListByResourceNo" parameterType="int">
+		DELETE FROM
+			TB_RESOURCE_AUTH
+		WHERE
+			RESOURCE_NO = #{resourceNo}
+	</delete>
+</mapper>

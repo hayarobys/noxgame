@@ -10,31 +10,54 @@
 		</layout>
 	</appender>
 	
+	<!-- Query Loggers -->
+	<logger name="jdbc.resultsettable" additivity="false">
+		<level value="debug" />
+		<appender-ref ref="console" />
+	</logger>
+	
+	<logger name="jdbc.sqlonly" additivity="false">
+		<level value="debug" />
+		<appender-ref ref="console" />
+	</logger>
+	
 	<!-- Application Loggers -->
-	<logger name="com.hayarobys.noxgame">
-		<level value="info" />
+	<logger name="com.suph.security">
+		<level value="debug" />
 	</logger>
 	
 	<!-- 3rdparty Loggers -->
 	<logger name="org.springframework.core">
-		<level value="info" />
+		<level value="error" />
 	</logger>
 	
 	<logger name="org.springframework.beans">
-		<level value="info" />
+		<level value="error" />
 	</logger>
 	
 	<logger name="org.springframework.context">
-		<level value="info" />
+		<level value="error" />
 	</logger>
 
 	<logger name="org.springframework.web">
-		<level value="info" />
+		<level value="error" />
+	</logger>
+	
+	<logger name="org.springframework.security">
+		<level value="error" />
+	</logger>
+	
+	<logger name="org.springframework.security.web.context">
+		<level value="error" />
+	</logger>
+	
+	<logger name="org.springframework.security.web.authentication">
+		<level value="error" />
 	</logger>
 
 	<!-- Root Logger -->
 	<root>
-		<priority value="warn" />
+		<priority value="error" />
 		<appender-ref ref="console" />
 	</root>
 	

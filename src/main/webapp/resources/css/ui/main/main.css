@@ -1,0 +1,12 @@
+@CHARSET "UTF-8";
+
+#contents{
+	margin: 0 auto;
+	width: 1280px;
+}
+
+#contents #mainContents{
+	width: 900px;
+	border: 2px dashed black;
+	float: left;
+}

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.suph.security.core.dao.AuthDAO">
+	<resultMap type="com.suph.security.core.dto.AuthDTO" id="AuthDTO">
+		<result column="AUTH_NO" property="authNo"/>	<!-- 권한 일련 번호 -->
+		<result column="AUTH_NM" property="authNm"/>	<!-- 권한명 -->
+		<result column="AUTH_EXPLANATION" property="authExplanation"/>	<!-- 권한 설명 -->
+	</resultMap>
+	
+	<!-- 모든 권한 목록을 페이징 처리하여 조회 -->
+	<select id="getAuthList" parameterType="PaginationRequest" resultMap="AuthDTO">
+		SELECT * FROM TB_AUTH
+		LIMIT ${start}, ${pagesize}
+	</select>
+	
+	<!-- 모든 권한 목록의 개수 조회 -->
+	<select id="getAuthListTotalRows" resultType="int">
+		SELECT COUNT(*) FROM TB_AUTH
+	</select>
+	
+	<!-- 권한 등록 -->
+	<insert id="insertAuth" parameterType="AuthDTO">
+		INSERT INTO
+			TB_AUTH(
+				AUTH_NM,
+				AUTH_EXPLANATION
+			)
+			VALUES(
+				#{authNm},
+				#{authExplanation}
+			)
+	</insert>
+	
+	<!-- 특정 권한 수정 -->
+	<update id="updateAuthByAuthNo" parameterType="AuthDTO">
+		UPDATE
+			TB_AUTH
+		<set>
+			<if test="authNm != null and !''.equals(authNm)">
+				AUTH_NM = #{authNm},
+			</if>
+			<if test="authExplanation != null and !''.equals(authExplanation)">
+				AUTH_EXPLANATION = #{authExplanation}
+			</if>
+		</set>
+		WHERE
+			AUTH_NO = #{authNo}
+	</update>
+	
+	<!-- 특정 권한 삭제 -->
+	<delete id="deleteAuthByAuthNo" parameterType="int">
+		DELETE FROM
+			TB_AUTH
+		WHERE
+			AUTH_NO = #{authNo}
+	</delete>
+</mapper>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.suph.security.core.dao.ResourceDAO">
+
+	<resultMap type="com.suph.security.core.dto.ResourceDTO" id="ResourceDTO">
+		<result column="RESOURCE_NO" property="resourceNo" />
+		<result column="SORT_ORDER" property="sortOrder" />
+		<result column="RESOURCE_TYPE" property="resourceType" />
+		<result column="HTTP_METHOD" property="httpMethod" />
+		<result column="RESOURCE_PATTERN" property="resourcePattern" />
+		<result column="RESOURCE_NM" property="resourceNm" />
+	</resultMap>
+	
+	<!-- 리소스의 전체 항목 수를 조회합니다. -->
+	<select id="getResourceListTotalRows" resultType="int">
+		SELECT COUNT(*) FROM TB_RESOURCE
+	</select>
+	
+	<!-- 리소스 목록을 조회합니다 -->
+	<select id="getResourceList" parameterType="PaginationRequest" resultMap="ResourceDTO">
+		SELECT
+			RESOURCE_NO,
+			SORT_ORDER,
+			RESOURCE_TYPE,
+			HTTP_METHOD,
+			RESOURCE_PATTERN,
+			RESOURCE_NM
+		FROM
+			TB_RESOURCE
+		ORDER BY
+			SORT_ORDER DESC,
+			RESOURCE_NO DESC,
+			HTTP_METHOD ASC
+		LIMIT ${start}, ${pagesize}
+	</select>
+	
+	<!-- 리소스를 등록합니다. 리소스 일련 번호(RESOURCE_NO)는 자동 증가 -->
+	<insert id="insertResource" parameterType="ResourceDTO">
+		INSERT INTO
+			TB_RESOURCE(
+				RESOURCE_NM,
+				HTTP_METHOD,
+				RESOURCE_PATTERN,
+				RESOURCE_TYPE,
+				SORT_ORDER
+			)
+		VALUES(
+			#{resourceNm},
+			#{httpMethod},
+			#{resourcePattern},
+			LCASE(#{resourceType}),
+			#{sortOrder}
+		)
+	</insert>
+	
+	<update id="updateResourceByResourceNo" parameterType="ResourceDTO">
+		UPDATE
+			TB_RESOURCE
+		<set>
+			<if test="resourceNm != null and !''.equals(resourceNm)">
+				RESOURCE_NM = #{resourceNm},
+			</if>
+			<if test="httpMethod != null and !''.equals(httpMethod)">
+				HTTP_METHOD = #{httpMethod},
+			</if>
+			<if test="resourcePattern != null and !''.equals(resourcePattern)">
+				RESOURCE_PATTERN = #{resourcePattern},
+			</if>
+			<if test="resourceType != null and !''.equals(resourceType)">
+				RESOURCE_TYPE = LCASE(#{resourceType}),
+			</if>
+			<if test="sortOrder != null and !''.equals(sortOrder)">
+				SORT_ORDER = #{sortOrder}
+			</if>
+		</set>
+		WHERE
+			RESOURCE_NO = #{resourceNo}
+	</update>
+	
+	<!-- 특정 리소스를 제거합니다. -->
+	<delete id="deleteResource" parameterType="int">
+		DELETE FROM
+			TB_RESOURCE
+		WHERE
+			RESOURCE_NO = #{resourceNo}
+	</delete>
+	
+</mapper>
