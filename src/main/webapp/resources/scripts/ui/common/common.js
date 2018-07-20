@@ -1,2 +1,2 @@
 
-var CONTEXT_PATH = "/noxgame";
+var CONTEXT_PATH = "/nox";
