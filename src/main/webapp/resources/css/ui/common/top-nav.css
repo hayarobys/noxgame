@@ -96,7 +96,7 @@ a:hover {text-decoration:underline;}
 }
 
 .top-nav .submenu>li>ul>li>ul {
-	left: 111px;	/* 3뎁쓰 위치 */
+	left: 110px;	/* 3뎁쓰 위치 */
 	top: 0px;	/* 3뎁쓰 위치 */
 	display: none;
 	/* border-left: 1px #ffff00 solid;

@@ -24,6 +24,12 @@
 	float: right;
 }
 
+#contents #mainContents .member-info .login-btn{
+	border: none;
+	background-color: #ffffff00;
+	padding: 0px;
+}
+
 #contents #mainContents .board{
 }
 

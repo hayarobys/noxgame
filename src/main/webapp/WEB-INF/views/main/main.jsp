@@ -10,6 +10,17 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
+<%	
+	// 로그인 정보를 가져오기 위해 스프링 시큐리티에서 제공하는 방법
+	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	Object principal = auth.getPrincipal();
+	String name = "";
+	if(principal != null && principal instanceof MemberInfo){
+		name = ((MemberInfo)principal).getName();
+		// 미인증 상태에선 "anonymousUser" 가 반환된다.
+	}
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,7 +39,52 @@
 		
 		<section id="mainContents">
 			<article class="member-info">
-				정보
+				<article class="mini-login-form">
+					<sec:authorize access="isAnonymous()">
+						<!-- 스프링 시큐리티 4.x 버전부터는 action 경로가 login으로, name들은 더 명확한걸로 변경되었음에 주의. -->
+						<form id="loginfrm" name="loginfrm" method="POST" action="./login_check">
+							<table>
+								<tr>
+									<td style="width:30px;">id</td>
+									<td style="width:80px;">
+										<input style="width:80px;" type="text" id="loginid" name="loginid" value=""/>
+									</td>
+								</tr>
+								<tr>
+									<td>pwd</td>
+									<td>
+										<input style="width:80px;" type="password" id="loginpwd" name="loginpwd" value=""/>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2">
+										<button class="login-btn" id="loginbtn" type="submit"><img class="login-btn" src="<c:url value='/resources/image/main/login-btn70x22.png'/>"></button>
+										<%-- <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> --%>
+										<sec:csrfInput /> <!-- 을 사용하는 방법도 존재 -->
+									</td>
+								</tr>
+							</table>
+							
+							<!-- 로그인 성공시 이동할 경로 지정 -->
+							<!-- loginRedirect 값은 CustomAuthenticationFailureHandler에서 다룸 -->
+							<input type="hidden" name="loginRedirect" value="${loginRedirect}"/>
+						</form>
+					</sec:authorize>
+					<sec:authorize access="isAuthenticated()">
+						<%=name%>님 반갑습니다<br/>
+						<%-- <a href="<%=request.getContextPath()%>/j_spring_security_logout">로그아웃</a> --%>
+						
+						<%-- <c:url var="logoutUrl" value="/j_spring_security_logout"/> --%>
+						<c:url var="logoutUrl" value="/logout"/>
+						<form action="${logoutUrl}" method="post">
+							<input type="submit" value="로그아웃" />
+							<%-- <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> --%>
+							<sec:csrfInput /> <!-- 을 사용하는 방법도 존재 -->
+						</form>
+						
+						
+					</sec:authorize>
+				</article>
 			</article>
 			<article class="board gongji">
 				공지
