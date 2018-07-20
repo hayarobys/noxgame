@@ -21,16 +21,26 @@
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/views/common/top-nav.jsp"></jsp:include>
 	
 	<div id="contents">
-		<jsp:include page="/WEB-INF/views/common/nav.jsp"></jsp:include>
+		<%-- <jsp:include page="/WEB-INF/views/common/side-nav.jsp"></jsp:include> --%>
 		
 		<section id="mainContents">
+			<article class="member-info">
+				정보
+			</article>
 			<article class="board gongji">
 				공지
 			</article>
+			<article class="jayu-notice">
+				질문글은 질문 게시판에 해주시기 바랍니다! 지키지 않을 시 삭제!
+			</article>
 			<article class="board jayu">
 				자유
+			</article>
+			<article class="board screenshot">
+				스크린샷
 			</article>
 			<article>
 				<input type="button" value="현재 닉네임 읽기" onclick="javascript:getNickname()"/>

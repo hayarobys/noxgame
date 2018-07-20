@@ -3,12 +3,25 @@
 #contents{
 	margin: 0 auto;
 	width: 1280px;
+	min-height: 1px;
 }
 
 #contents #mainContents{
-	width: 900px;
+	width: 800px;
 	border: 2px dashed black;
-	float: left;
+	margin: 0 auto;
+	/* float: left; */
+}
+
+#contents #mainContents .member-info{
+	width: 323px;
+	height: 258px;
+	background-image: url("../../../image/main/member-info323x258.png");
+	box-sizing: border-box;
+	padding: 55px 10px 15px 30px;
+	vertical-align: middle;
+	display: inline-block;
+	float: right;
 }
 
 #contents #mainContents .board{
@@ -24,6 +37,15 @@
 	display: inline-block;
 }
 
+#contents #mainContents .jayu-notice{
+	/* font-weight: bold; */
+	width: 446px;
+	margin-top: 20px;
+	margin-bottom: 5px;
+	font-size: 0.8em;
+	text-align: center;
+}
+
 #contents #mainContents .jayu{
 	width: 446px;
 	height: 196px;
@@ -33,3 +55,15 @@
 	vertical-align: middle;
 	display: inline-block;
 }
+
+#contents #mainContents .screenshot{
+	width: 771px;
+	height: 196px;
+	background-image: url("../../../image/main/board-screenshot771x196.png");
+	box-sizing: border-box;
+	padding: 40px 10px 10px 10px;
+	margin-top: 10px;
+	vertical-align: middle;
+	display: inline-block;
+}
+

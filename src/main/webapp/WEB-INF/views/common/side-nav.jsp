@@ -40,10 +40,10 @@
 <head>
 	
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>네비게이션</title>
+	<title>좌측 네비게이션</title>
 	
-	<link rel="stylesheet" href="<c:url value='/resources/css/ui/common/nav.css'/>" />
-	<script src="<c:url value='/resources/scripts/ui/common/nav.js'/>"></script>
+	<link rel="stylesheet" href="<c:url value='/resources/css/ui/common/side-nav.css'/>" />
+	<script src="<c:url value='/resources/scripts/ui/common/side-nav.js'/>"></script>
 </head>
 <body>
 	

@@ -1,0 +1,128 @@
+@CHARSET "UTF-8";
+
+.clear {clear:both;}
+a {text-decoration:none;}
+a:hover {text-decoration:underline;}
+
+/* Header*/
+.top-nav {
+	margin: 0 auto;
+	min-height: 1px;
+	z-index: 11;
+	*zoom: 1;
+	margin-bottom: 5px;
+	width: 1280px;
+	min-height: 1px;
+}
+
+.top-nav:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+/* Submenu */
+.top-nav .submenu {
+	box-sizing: border-box;
+	background-image: url("../../../image/common/top-nav812x32.png");
+	font-family: 돋움;
+	font-size: 11px;
+	letter-spacing: -1px;
+	list-style: none;
+	width: 812px;
+	height: 32px;
+	/* border-top: 2px #ffff00 solid;
+	border-bottom: 2px #ffff00 solid;
+	border-left: 2px #ffff00 solid;
+	border-right: 2px #ffff00 solid; */
+	z-index: 9;
+	margin: 0px auto;
+}
+
+.top-nav .submenu:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+.top-nav .submenu>li {
+	float: left;
+	position: relative;
+	text-align: center;
+	padding: 0 5px;
+}
+
+.top-nav .submenu>li>a {
+	display: block;
+	height: 32px;
+	line-height: 32px;
+	padding: 0 15px;
+	color: #fff;
+	font-size: 11px;
+	margin-right: 2px;
+}
+
+.top-nav .submenu>li>a:hover, .top-nav .submenu>li:hover>a {
+	text-decoration: none;
+	color: #fff;
+}
+
+.top-nav .submenu>li.dropdown>a>span {
+	display: block;
+	background: red;
+	width: 100%;
+}
+
+.top-nav .submenu>li:hover>ul {
+	display: block;
+}
+
+.top-nav .submenu>li ul {
+	list-style: none;
+	position: absolute;
+	width: 110px;	/* 2뎁쓰 가로폭 */
+	padding: 0;
+	z-index: 9;
+	/* border-left: 1px #ffff00 solid;
+	border-right: 1px #ffff00 solid;
+	border-bottom: 1px #ffff00 solid */
+}
+
+.top-nav .submenu>li>ul {
+	left: 2px;
+	top: 32px;
+	display: none;
+	margin-left: 5px;
+}
+
+.top-nav .submenu>li>ul>li>ul {
+	left: 111px;	/* 3뎁쓰 위치 */
+	top: 0px;	/* 3뎁쓰 위치 */
+	display: none;
+	/* border-left: 1px #ffff00 solid;
+	border-top: 1px #ffff00 solid; */
+}
+
+.top-nav .submenu>li>ul  li {
+	background: #000000;	/* 2뎁쓰 배경색 */
+	padding: 0px 10px;
+	position: relative;
+}
+
+.top-nav .submenu>li>ul li>a {
+	display: block;
+	padding: 8px;
+	color: #a3beed;	/* 2,3 뎁쓰 글씨색 */
+	outline: none;
+	text-align: center;
+}
+
+.top-nav .submenu>li>ul li>a:hover, .top-nav .submenu>li>ul>li:hover>a {
+	text-decoration: none;
+	color: #fff;
+	background-color: #808080;
+}
+
+.top-nav .submenu>li>ul>li:hover>ul {
+	display: block;
+}
