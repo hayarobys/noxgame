@@ -26,8 +26,13 @@
 		<jsp:include page="/WEB-INF/views/common/nav.jsp"></jsp:include>
 		
 		<section id="mainContents">
+			<article class="board gongji">
+				공지
+			</article>
+			<article class="board jayu">
+				자유
+			</article>
 			<article>
-				메인 컨텐츠<br />
 				<input type="button" value="현재 닉네임 읽기" onclick="javascript:getNickname()"/>
 				<div id="nickname">
 				

@@ -10,3 +10,26 @@
 	border: 2px dashed black;
 	float: left;
 }
+
+#contents #mainContents .board{
+}
+
+#contents #mainContents .gongji{
+	width: 446px;
+	height: 196px;
+	background-image: url("../../../image/main/board-gongji446x196.png");
+	box-sizing: border-box;
+	padding: 40px 10px 10px 10px;
+	vertical-align: middle;
+	display: inline-block;
+}
+
+#contents #mainContents .jayu{
+	width: 446px;
+	height: 196px;
+	background-image: url("../../../image/main/board-jayu446x196.png");
+	box-sizing: border-box;
+	padding: 40px 10px 10px 10px;
+	vertical-align: middle;
+	display: inline-block;
+}
