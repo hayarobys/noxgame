@@ -98,12 +98,14 @@
 			<article class="board screenshot">
 				스크린샷
 			</article>
+			<!-- 
 			<article>
 				<input type="button" value="현재 닉네임 읽기" onclick="javascript:getNickname()"/>
 				<div id="nickname">
 				
 				</div>
 			</article>
+			-->
 		</section>
 	</div>
 	

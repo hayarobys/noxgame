@@ -10,14 +10,15 @@
 
 	<link rel="stylesheet" href="<c:url value='/resources/css/ui/common/header.css'/>" />
 	<script src="<c:url value='/resources/scripts/ui/common/header.js'/>"></script>
+	
 </head>
 <body>
 
-	<a href="<c:url value='/main' />" >
-		<header class="header middle">
-			<span>상단 배너</span>	
-		</header>
-	</a>
+	<header class="header middle">
+		<a href="<c:url value='/main' />" >
+			<img id="banner" alt="배너" src="" />
+		</a>
+	</header>
 	
 </body>
 </html>

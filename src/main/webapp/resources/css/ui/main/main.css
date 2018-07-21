@@ -8,7 +8,7 @@
 
 #contents #mainContents{
 	width: 800px;
-	border: 2px dashed black;
+	/* border: 2px dashed black; */
 	margin: 0 auto;
 	/* float: left; */
 }
