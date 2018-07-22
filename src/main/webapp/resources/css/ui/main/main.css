@@ -30,6 +30,23 @@
 	padding: 0px;
 }
 
+#contents #mainContents .member-info .login-btn:HOVER .text{
+	background-image: url("../../../image/main/btn-hover70x22.png");
+}
+
+#contents #mainContents .member-info .login-btn:ACTIVE .text{
+	background-image: url("../../../image/main/btn-active70x22.png");
+}
+
+#contents #mainContents .member-info .login-btn .text{
+	width: 70px;
+	height: 22px;
+	line-height: 22px;
+	background-image: url("../../../image/main/btn70x22.png");
+	color: yellow;
+	font-size: 0.9em;
+}
+
 #contents #mainContents .board{
 }
 

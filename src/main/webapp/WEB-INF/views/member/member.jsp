@@ -14,6 +14,7 @@
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/views/common/top-nav.jsp"></jsp:include>
 	
 	<div id="contents">
 		<jsp:include page="/WEB-INF/views/common/side-nav.jsp"></jsp:include>

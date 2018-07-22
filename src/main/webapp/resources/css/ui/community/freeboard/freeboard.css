@@ -1,0 +1,82 @@
+@CHARSET "UTF-8";
+
+#contents{
+	margin: 0 auto;
+	width: 1280px;
+	min-height: 1px;
+}
+
+#contents #mainContents{
+	width: 800px;
+	margin: 0 auto;
+}
+
+.freeboard-title{
+	
+}
+
+.freeboard-contents{
+	
+}
+
+.freeboard-contents .write-btn{
+	float: right;
+	margin-right: 28px;
+	border: none;
+	background-color: #ffffff00;
+	padding: 0px;
+}
+
+.freeboard-contents .write-btn:HOVER .text{
+	background-image: url("../../../../image/community/freeboard/btn-hover70x22.png");
+}
+
+.freeboard-contents .write-btn:ACTIVE .text{
+	background-image: url("../../../../image/community/freeboard/btn-active70x22.png");
+}
+
+.freeboard-contents .write-btn .text{
+	width: 70px;
+	height: 22px;
+	line-height: 22px;
+	background-image: url("../../../../image/community/freeboard/btn70x22.png");
+	color: yellow;
+	font-size: 0.9em;
+}
+
+.freeboard-contents ul{
+	list-style-type: none;
+}
+
+.freeboard-contents ul > li{
+	clear: both;
+}
+
+.freeboard-contents ul > li > dl > dt{
+	float: left;
+	border: 1px solid white;
+}
+
+.freeboard-contents .contents-title .item-list > dt{
+	text-align: center;
+}
+
+.freeboard-contents .item-list > .no{
+	width: 15%;
+	text-align: center;
+}
+.freeboard-contents .item-list > .nick{
+	width: 20%;
+	text-align: center;
+}
+.freeboard-contents .item-list > .title{
+	width: 20%;
+}
+.freeboard-contents .item-list > .last-date{
+	width: 20%;
+	text-align: center;
+}
+.freeboard-contents .item-list > .views{
+	width: 20%;
+	text-align: center;
+}

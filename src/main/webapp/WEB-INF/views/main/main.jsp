@@ -58,7 +58,9 @@
 								</tr>
 								<tr>
 									<td colspan="2">
-										<button class="login-btn" id="loginbtn" type="submit"><img class="login-btn" src="<c:url value='/resources/image/main/login-btn70x22.png'/>"></button>
+										<button class="login-btn" id="loginbtn" type="submit">
+											<div class="text">로그인</div>
+										</button>
 										<%-- <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> --%>
 										<sec:csrfInput /> <!-- 을 사용하는 방법도 존재 -->
 									</td>

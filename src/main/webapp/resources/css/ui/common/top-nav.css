@@ -12,7 +12,6 @@ a:hover {text-decoration:underline;}
 	*zoom: 1;
 	margin-bottom: 5px;
 	width: 1280px;
-	min-height: 1px;
 }
 
 .top-nav:after {
@@ -35,7 +34,7 @@ a:hover {text-decoration:underline;}
 	border-bottom: 2px #ffff00 solid;
 	border-left: 2px #ffff00 solid;
 	border-right: 2px #ffff00 solid; */
-	z-index: 9;
+	z-index: 99;
 	margin: 0px auto;
 }
 
@@ -82,7 +81,7 @@ a:hover {text-decoration:underline;}
 	position: absolute;
 	width: 110px;	/* 2뎁쓰 가로폭 */
 	padding: 0;
-	z-index: 9;
+	z-index: 100;
 	/* border-left: 1px #ffff00 solid;
 	border-right: 1px #ffff00 solid;
 	border-bottom: 1px #ffff00 solid */

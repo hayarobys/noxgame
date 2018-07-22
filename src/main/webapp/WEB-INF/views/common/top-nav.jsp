@@ -57,7 +57,7 @@
 			</li>
 			<li><a href="#">커뮤니티</a>
 				<ul>
-					<li><a href="#">자유게시판</a></li>
+					<li><a href="<c:url value='/community/freeboard' />">자유게시판</a></li>
 					<li><a href="#">스크린샷</a></li>
 					<li><a href="#">카툰 갤러리</a></li>
 				</ul>
