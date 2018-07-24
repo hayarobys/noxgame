@@ -71,6 +71,11 @@
 		<session-management session-fixation-protection="changeSessionId">
 		</session-management>
 		
+		<!-- policy를 DENY로 할 경우 iFrame 사용이 불가하기에, 동일 도메인 내에선 사용할 수 있도록 SAMEORIGIN으로 변경  -->
+		<headers>
+			<frame-options policy="SAMEORIGIN"/>
+		</headers>
+		
 		<!-- CSRF 방어 필터 추가. 단 필터만 선언하지 말고, 요청/응답 페이지 내에서도 해당 토큰을 주었다 받았다 해주어야 함 -->
 		<!-- Ajax, Multipart Form, GET 각각의 토큰 포함 방식이 다름에 주의 -->
 		<!-- 적절한 HTTP동사를 함께 사용할때 효과가 극대화 됨을 명심 -->

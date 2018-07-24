@@ -372,8 +372,8 @@
 			onerror :  jindo.$Fn(onAjaxError, this).bind()
 		});
     	
-		var token = jQuery("meta[name='_csrf']").attr("content");
 		var header = jQuery("meta[name='_csrf_header']").attr("content");
+		var token = jQuery("meta[name='_csrf']").attr("content");
 		
 		oAjax.header("X-Ajax-call","true");	// CustomAccessDeniedHandler에서 Ajax요청을 구분하기 위해 약속한 값
 		oAjax.header(header,token);			// 헤더의 csrf meta태그를 읽어 CSRF 토큰 함께 전송

@@ -19,11 +19,15 @@
 	<resources mapping="/resources/**" location="/resources/" />
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
-	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	<beans:bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
-		
+	
+	<!-- Spring 파일 업로드 기능을 사용할 수 있도록 해주는 Resolver설정 -->
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	</beans:bean>
+	
 	<!-- <mvc:annotation-driven /> 사용시 HttpMessageConverter를 기본적으로 등록 -->
 	<!-- Default HttpMessageConverter로 등록되는 여러 종류의 컨버터 중에는 MappingJackson2HttpMessageConverter가 포함 -->
 	<!-- 다만 MappingJackson2HttpMessageConverter는 classpath에 Jackson 라이브러리가 존재할 경우에만 자동 생성 -->

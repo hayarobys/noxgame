@@ -30,9 +30,8 @@ public class UploadController{
 	 * 단일 파일 업로드
 	 * @param fileVO
 	 */
-	@RequestMapping(value="/upload/photo", method=RequestMethod.POST)
-	public String singleUpload(HttpServletRequest request, FileVO fileVO){
-		logger.debug("단일 파일VO: {}", fileVO);
+	@RequestMapping(value="/upload/photo", method=RequestMethod.POST, headers=("content-type=multipart/*"))
+	public String singleUpload(FileVO fileVO, HttpServletRequest request){
 		
 		String callback = fileVO.getCallback();
         String callback_func = fileVO.getCallback_func();
@@ -49,7 +48,7 @@ public class UploadController{
                 //파일 기본경로
                 String defaultPath = request.getSession().getServletContext().getRealPath("/");
                 //파일 기본경로 _ 상세경로
-                String path = defaultPath + "resource" + File.separator + "photo_upload" + File.separator;              
+                String path = defaultPath + "resources" + File.separator + "upload" + File.separator;              
                 File file = new File(path);
                 
                 logger.debug("저장경로: {}", path);

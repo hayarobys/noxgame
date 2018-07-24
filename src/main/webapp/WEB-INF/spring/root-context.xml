@@ -55,9 +55,9 @@
 	</bean>
 	
 	<!-- 어떤 역할인지 반드시 살펴볼 것 -->
-	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
-	      	<property name="order" value="0"/>
+	<!-- <bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
 	</bean>
+	 -->
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<bean id="messageSource"

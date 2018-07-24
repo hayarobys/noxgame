@@ -32,12 +32,13 @@
 			<!-- content -->
 			<form id="editor_upimage" name="editor_upimage" method="post" enctype="multipart/form-data" onSubmit="return false;">
 				<div id="pop_content2">
-					<input type="file" class="upload" id="uploadInputBox" name="Filedata">
+					<input type="file" class="upload" id="uploadInputBox" name="filedata">
 					<p class="dsc" id="info">
 						<strong>10MB</strong>이하의 이미지 파일만 등록할 수 있습니다.<br>
 						(JPG, GIF, PNG, BMP)
 					</p>
 				</div>
+				<sec:csrfInput/>
 			</form>
 			<!-- //content -->
 		</div>
