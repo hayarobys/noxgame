@@ -5,45 +5,45 @@
 <mapper namespace="com.suph.security.core.dao.BlockMemberDAO">
 
 	<resultMap type="com.suph.security.core.dto.BlockMemberDTO" id="BlockMemberDTO">
-		<result column="BLOCK_NO" property="blockNo"/>
-		<result column="MEM_NO" property="memNo"/>
-		<result column="BLOCK_START_DATE" property="blockStartDate" jdbcType="TIMESTAMP"/>
-		<result column="BLOCK_EXPIRE_DATE" property="blockExpireDate" jdbcType="TIMESTAMP"/>
+		<result column="BLOCK_SQ_PK" property="blockSqPk"/>
+		<result column="MEM_FK" property="memFk"/>
+		<result column="BLOCK_START_DT" property="blockStartDt" jdbcType="TIMESTAMP"/>
+		<result column="BLOCK_EXPIRE_DT" property="blockExpireDt" jdbcType="TIMESTAMP"/>
 		<result column="BLOCK_CAUSE" property="blockCause"/>
 	</resultMap>
 	
 	<resultMap type="com.suph.security.core.dto.BlockInfoDTO" id="BlockInfoDTO">
-		<result column="BLOCK_START_DATE" property="blockStartDate" jdbcType="TIMESTAMP"/>
-		<result column="BLOCK_EXPIRE_DATE" property="blockExpireDate" jdbcType="TIMESTAMP"/>
+		<result column="BLOCK_START_DT" property="blockStartDt" jdbcType="TIMESTAMP"/>
+		<result column="BLOCK_EXPIRE_DT" property="blockExpireDt" jdbcType="TIMESTAMP"/>
 		<result column="BLOCK_CAUSE" property="blockCause"/>
 	</resultMap>
 	
 	<select id="selectBlockMemberByMemNo" parameterType="Integer" resultMap="BlockMemberDTO">
 		SELECT
-			BLOCK_START_DATE,
-			BLOCK_EXPIRE_DATE,
+			BLOCK_START_DT,
+			BLOCK_EXPIRE_DT,
 			BLOCK_CAUSE
 		FROM
-			TB_BLOCK_MEMBER
+			BLOCK_TB
 		WHERE
-			MEM_NO = #{memNo}
+			MEM_FK = #{memFk}
 	</select>
 	
 	<!-- MemberServiceImpl의 loadUserByUsername()에서 차단 정보를 조회하는데 사용됩니다. -->
 	<select id="selectBlockMemberByMemNoAndExpireDateIsAfterTheCurrentDate" parameterType="Integer" resultMap="BlockInfoDTO">
 		<![CDATA[
 		SELECT
-			BLOCK_START_DATE,
-			BLOCK_EXPIRE_DATE,
+			BLOCK_START_DT,
+			BLOCK_EXPIRE_DT,
 			BLOCK_CAUSE
 		FROM
-			TB_BLOCK_MEMBER
+			BLOCK_TB
 		WHERE
-				MEM_NO = #{memNo}
+				MEM_FK = #{memFk}
 			AND
-				BLOCK_START_DATE < CURRENT_TIMESTAMP()
+				BLOCK_START_DT < CURRENT_TIMESTAMP()
 			AND
-				CURRENT_TIMESTAMP() < BLOCK_EXPIRE_DATE
+				CURRENT_TIMESTAMP() < BLOCK_EXPIRE_DT
 		]]>
 	</select>
 	
@@ -51,15 +51,15 @@
 	<select id="selectBlockMemberExpireDateIsAfterTheCurrentDate" parameterType="Integer" resultMap="BlockInfoDTO">
 		<![CDATA[
 		SELECT
-			BLOCK_START_DATE,
-			BLOCK_EXPIRE_DATE,
+			BLOCK_START_DT,
+			BLOCK_EXPIRE_DT,
 			BLOCK_CAUSE
 		FROM
-			TB_BLOCK_MEMBER
+			BLOCK_TB
 		WHERE
-				MEM_NO = #{memNo}
+				MEM_FK = #{memFk}
 			AND
-				CURRENT_TIMESTAMP() < BLOCK_EXPIRE_DATE
+				CURRENT_TIMESTAMP() < BLOCK_EXPIRE_DT
 		]]>
 	</select>
 	
@@ -67,17 +67,17 @@
 	<select id="selectCurrentBlockMemberInfoByMemNo" parameterType="Integer" resultMap="BlockInfoDTO">
 		<![CDATA[
 		SELECT
-			BLOCK_START_DATE,
-			BLOCK_EXPIRE_DATE,
+			BLOCK_START_DT,
+			BLOCK_EXPIRE_DT,
 			BLOCK_CAUSE
 		FROM
-			TB_BLOCK_MEMBER
+			BLOCK_TB
 		WHERE
-				MEM_NO = #{memNo}
+				MEM_FK = #{memFk}
 			AND
-				BLOCK_START_DATE < CURRENT_TIMESTAMP()
+				BLOCK_START_DT < CURRENT_TIMESTAMP()
 			AND
-				CURRENT_TIMESTAMP() < BLOCK_EXPIRE_DATE
+				CURRENT_TIMESTAMP() < BLOCK_EXPIRE_DT
 		]]>
 	</select>
 	
@@ -85,16 +85,16 @@
 	<select id="selectBlockMemberBySearchValue" parameterType="SearchBlockMemberDTO"  resultMap="BlockMemberDTO">
 		
 		SELECT
-			BM.BLOCK_NO,
-			BM.MEM_NO,
-			BM.BLOCK_START_DATE,
-			BM.BLOCK_EXPIRE_DATE,
+			BM.BLOCK_SQ_PK,
+			BM.MEM_FK,
+			BM.BLOCK_START_DT,
+			BM.BLOCK_EXPIRE_DT,
 			BM.BLOCK_CAUSE,
 			
-			CONCAT(M.MEM_ID, ' / ', M.MEM_NICKNM, ' / ', M.MEM_NO) AS memInfo
+			CONCAT(M.MEM_ID, ' / ', M.MEM_NICKNM, ' / ', M.MEM_SQ_PK) AS memInfo
 		FROM
-			TB_BLOCK_MEMBER AS BM
-			INNER JOIN TB_MEMBER AS M ON(BM.MEM_NO = M.MEM_NO)
+			BLOCK_TB AS BM
+			INNER JOIN MEM_TB AS M ON(BM.MEM_FK = M.MEM_SQ_PK)
 		WHERE
 			1=1
 			<choose>
@@ -103,21 +103,21 @@
 					<foreach item="item" collection="searchTime" index="index" open="(" separator="OR" close=")">
 						<if test="item eq 'PAST'">
 						<![CDATA[/* PAST 과거 */
-							(BM.BLOCK_EXPIRE_DATE < CURRENT_TIMESTAMP())
+							(BM.BLOCK_EXPIRE_DT < CURRENT_TIMESTAMP())
 						]]>
 						</if> 
 						<if test="item eq 'PRESENT'">
 						<![CDATA[/* PRESENT 현재 */
 							(
-								BM.BLOCK_START_DATE < CURRENT_TIMESTAMP()
+								BM.BLOCK_START_DT < CURRENT_TIMESTAMP()
 							AND
-								CURRENT_TIMESTAMP() < BM.BLOCK_EXPIRE_DATE
+								CURRENT_TIMESTAMP() < BM.BLOCK_EXPIRE_DT
 							)
 						]]>
 						</if>
 						<if test="item eq 'FUTURE'">
 						<![CDATA[/* FUTURE 미래 */
-							(CURRENT_TIMESTAMP() < BM.BLOCK_START_DATE)
+							(CURRENT_TIMESTAMP() < BM.BLOCK_START_DT)
 						]]>
 						</if>
 					</foreach>
@@ -127,15 +127,15 @@
 				</otherwise>
 			</choose>
 				
-			<if test="@com.suph.security.core.util.EmptyCheck@isNotEmpty(blockStartDate)">
+			<if test="@com.suph.security.core.util.EmptyCheck@isNotEmpty(blockStartDt)">
 			<![CDATA[/* 검색 시작일자 */
-				AND #{blockStartDate} < BM.BLOCK_START_DATE
+				AND #{blockStartDt} < BM.BLOCK_START_DT
 			]]>
 			</if>
 			
-			<if test="@com.suph.security.core.util.EmptyCheck@isNotEmpty(blockExpireDate)">
+			<if test="@com.suph.security.core.util.EmptyCheck@isNotEmpty(blockExpireDt)">
 			<![CDATA[/* 검색 종료일자 */
-				AND BM.BLOCK_START_DATE < #{blockExpireDate}
+				AND BM.BLOCK_START_DT < #{blockExpireDt}
 			]]>
 			</if>
 			
@@ -152,7 +152,7 @@
 					</when>
 					<when test="searchType eq 'NO'">
 						/* 회원 번호 검색 */
-						AND M.MEM_NO LIKE  #{searchKeyword}
+						AND M.MEM_SQ_PK LIKE  #{searchKeyword}
 					</when>
 					<otherwise>
 						
@@ -163,41 +163,41 @@
 	
 	<insert id="insertBlockMember" parameterType="BlockMemberDTO">
 		INSERT INTO
-			TB_BLOCK_MEMBER(
-				MEM_NO,
-				BLOCK_START_DATE,
-				BLOCK_EXPIRE_DATE,
+			BLOCK_TB(
+				MEM_FK,
+				BLOCK_START_DT,
+				BLOCK_EXPIRE_DT,
 				BLOCK_CAUSE
 			)VALUES(
-				#{memNo},
-				#{blockStartDate},
-				#{blockExpireDate},
+				#{memFk},
+				#{blockStartDt},
+				#{blockExpireDt},
 				#{blockCause}
 			)
 	</insert>
 	
 	<update id="updateBlockMember" parameterType="BlockMemberDTO">
 		UPDATE
-			TB_BLOCK_MEMBER
+			BLOCK_TB
 		<set>
-			<if test="blockStartDate != null">
-				BLOCK_START_DATE = #{blockStartDate},
+			<if test="blockStartDt != null">
+				BLOCK_START_DT = #{blockStartDt},
 			</if>
-			<if test="blockExpireDate != null">
-				BLOCK_EXPIRE_DATE = #{blockExpireDate},
+			<if test="blockExpireDt != null">
+				BLOCK_EXPIRE_DT = #{blockExpireDt},
 			</if>
 			<if test="blockCause != null and !''.equals(blockCause)">
 				BLOCK_CAUSE = #{blockCause}
 			</if>
 		</set>
 		WHERE
-			BLOCK_NO = #{blockNo}
+			BLOCK_SQ_PK = #{blockSqPk}
 	</update>
 	
 	<delete id="deleteBlockMember" parameterType="Integer">
 		DELETE FROM
-			TB_BLOCK_MEMBER
+			BLOCK_TB
 		WHERE
-			BLOCK_NO = #{blockNo}
+			BLOCK_SQ_PK = #{blockSqPk}
 	</delete>
 </mapper>

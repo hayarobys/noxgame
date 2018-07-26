@@ -52,11 +52,11 @@ public class AuthServiceImpl implements AuthService{
 		
 		StringBuffer errorInfo = new StringBuffer();
 		boolean isValid = true;
-		if( !StringUtils.hasText(authDTO.getAuthNm()) ){
+		if( !StringUtils.hasText(authDTO.getAuthNmUnq()) ){
 			errorInfo.append("\n권한 명이 없습니다.");
 			isValid = false;
 		}
-		logger.debug("권한명이 있는가? : {}", StringUtils.hasText(authDTO.getAuthNm()));
+		logger.debug("권한명이 있는가? : {}", StringUtils.hasText(authDTO.getAuthNmUnq()));
 		if( !StringUtils.hasText(authDTO.getAuthExplanation()) ){
 			errorInfo.append("\n권한 설명이 없습니다.");
 			isValid = false;
@@ -79,10 +79,10 @@ public class AuthServiceImpl implements AuthService{
 	}
 	
 	@Override
-	public Map<String, Object> patchAuthByAuthNo(Integer authNo, AuthDTO authDTO){
+	public Map<String, Object> patchAuthByAuthNo(Integer authSqPk, AuthDTO authDTO){
 		Map<String, Object> returnMap = new HashMap<String, Object>();
 		
-		authDTO.setAuthNo(authNo);
+		authDTO.setAuthSqPk(authSqPk);
 		try{
 			authDAO.updateAuthByAuthNo(authDTO);
 			returnMap.put("result", "success");

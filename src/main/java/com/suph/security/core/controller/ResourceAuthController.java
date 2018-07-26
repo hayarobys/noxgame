@@ -42,21 +42,21 @@ public class ResourceAuthController{
 	 * @param authNo
 	 * @return
 	 */
-	@RequestMapping(value="/resource/{resourceNo}/auth", method=RequestMethod.GET)
-	public @ResponseBody Map<String, Object> authList(@PathVariable(required=true) Integer resourceNo){
-		return resourceService.getAuthListByResourceNo(resourceNo);
+	@RequestMapping(value="/resource/{resSqPk}/auth", method=RequestMethod.GET)
+	public @ResponseBody Map<String, Object> authList(@PathVariable(required=true) Integer resSqPk){
+		return resourceService.getAuthListByResourceNo(resSqPk);
 	}
 	
 	/**
 	 * 특정 리소스의 접근에 필요한 권한을 재지정 합니다.
 	 * @return
 	 */
-	@RequestMapping(value="/resource/{resourceNo}/auth", method=RequestMethod.PATCH)
+	@RequestMapping(value="/resource/{resSqPk}/auth", method=RequestMethod.PATCH)
 	public @ResponseBody Map<String, Object> changeResourceAuth(
-			@PathVariable(required=true) Integer resourceNo,
+			@PathVariable(required=true) Integer resSqPk,
 			@RequestBody ResourceAuthDTO resourceAuthDTO
 	){
-		resourceAuthDTO.setResourceNo(resourceNo);
+		resourceAuthDTO.setResSqPk(resSqPk);
 		return resourceAuthService.changeResourceAuth(resourceAuthDTO);
 	}
 	

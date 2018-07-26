@@ -9,66 +9,66 @@ import java.util.List;
 // TB_RESOURCE 테이블
 public class ResourceDTO{
 	/** 리소스 일련 번호 */
-	private Integer resourceNo;
+	private Integer resSqPk;
 	/** 리소스 순서 */
 	private Integer sortOrder;
 	/** 리소스 타입 */
-	private String resourceType;
+	private String resType;
 	/** HTTP METHOD */
-	private String httpMethod;
+	private String httpMethodPk;
 	/** 리소스 패턴 */
-	private String resourcePattern;
+	private String resPattern;
 	/** 리소스 이름 */
-	private String resourceNm;
+	private String resNmUnq;
 	
 	private List<ResourceDTO> list;
-	
-	public Integer getResourceNo(){
-		return resourceNo;
+
+	public Integer getResSqPk(){
+		return resSqPk;
 	}
-	
-	public void setResourceNo(Integer resourceNo){
-		this.resourceNo = resourceNo;
+
+	public void setResSqPk(Integer resSqPk){
+		this.resSqPk = resSqPk;
 	}
-	
+
 	public Integer getSortOrder(){
 		return sortOrder;
 	}
-	
+
 	public void setSortOrder(Integer sortOrder){
 		this.sortOrder = sortOrder;
 	}
-	
-	public String getResourceType(){
-		return resourceType;
-	}
-	
-	public void setResourceType(String resourceType){
-		this.resourceType = resourceType.trim();
-	}
-	
-	public String getHttpMethod(){
-		return httpMethod;
+
+	public String getResType(){
+		return resType;
 	}
 
-	public void setHttpMethod(String httpMethod){
-		this.httpMethod = httpMethod.trim();
+	public void setResType(String resType){
+		this.resType = resType;
 	}
 
-	public String getResourcePattern(){
-		return resourcePattern;
+	public String getHttpMethodPk(){
+		return httpMethodPk;
 	}
-	
-	public void setResourcePattern(String resourcePattern){
-		this.resourcePattern = resourcePattern.trim();
+
+	public void setHttpMethodPk(String httpMethodPk){
+		this.httpMethodPk = httpMethodPk;
 	}
-	
-	public String getResourceNm(){
-		return resourceNm;
+
+	public String getResPattern(){
+		return resPattern;
 	}
-	
-	public void setResourceNm(String resourceNm){
-		this.resourceNm = resourceNm.trim();
+
+	public void setResPattern(String resPattern){
+		this.resPattern = resPattern;
+	}
+
+	public String getResNmUnq(){
+		return resNmUnq;
+	}
+
+	public void setResNmUnq(String resNmUnq){
+		this.resNmUnq = resNmUnq;
 	}
 
 	public List<ResourceDTO> getList(){
@@ -81,8 +81,7 @@ public class ResourceDTO{
 
 	@Override
 	public String toString(){
-		return "ResourceDTO [resourceNo=" + resourceNo + ", sortOrder=" + sortOrder + ", resourceType=" + resourceType
-				+ ", httpMethod=" + httpMethod + ", resourcePattern=" + resourcePattern + ", resourceNm=" + resourceNm
-				+ ", list=" + list + "]";
+		return "ResourceDTO [resSqPk=" + resSqPk + ", sortOrder=" + sortOrder + ", resType=" + resType + ", httpMethodPk="
+				+ httpMethodPk + ", resPattern=" + resPattern + ", resNmUnq=" + resNmUnq + ", list=" + list + "]";
 	}
 }

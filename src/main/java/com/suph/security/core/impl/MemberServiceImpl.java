@@ -68,7 +68,7 @@ public class MemberServiceImpl implements MemberService{
 		Set<GrantedAuthority> dbAuthsSet = new HashSet<GrantedAuthority>();
 		
 		// 이 계정의 권한 목록 반환
-		dbAuthsSet.addAll( memberAuthService.loadUserAuthorities(user.getMemNo()) );
+		dbAuthsSet.addAll( memberAuthService.loadUserAuthorities(user.getMemSqPk()) );
 		
 		// 계정은 있지만 어떠한 권한도 조회되지 않았다면 예외 발생.
 		if(dbAuthsSet.size() == 0){
@@ -89,10 +89,10 @@ public class MemberServiceImpl implements MemberService{
 		List<GrantedAuthority> dbAuths = new ArrayList<GrantedAuthority>(dbAuthsSet);
 		
 		// 이 계정의 현재 차단 정보를 조회하여 계정 객체에 저장.
-		List<BlockInfoDTO> blockInfo = blockMemberDAO.selectCurrentBlockMemberInfoByMemNo(user.getMemNo());
+		List<BlockInfoDTO> blockInfo = blockMemberDAO.selectCurrentBlockMemberInfoByMemNo(user.getMemSqPk());
 		
 		MemberInfo result = new MemberInfo(
-				user.getMemNo(),
+				user.getMemSqPk(),
 				user.getMemId(),
 				user.getMemPassword(),
 				user.getMemNicknm(),
@@ -175,7 +175,7 @@ public class MemberServiceImpl implements MemberService{
 		);
 		
 		// 마지막 로그인 날짜(여기선 생성일 개념으로 사용)에 현재 시간 입력
-		memberDTO.setLastLoginDate(new java.util.Date());
+		memberDTO.setMemLastLoginDt(new java.util.Date());
 		logger.debug("memberDTO {}", memberDTO);
 		try{
 			memberDAO.insertMember(memberDTO);
@@ -190,9 +190,9 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public Map<String, Object> patchMember(int memNo, MemberDTO memberDTO){
+	public Map<String, Object> patchMember(int memSqPk, MemberDTO memberDTO){
 		Map<String, Object> returnMap = new HashMap<String, Object>();
-		memberDTO.setMemNo(memNo);
+		memberDTO.setMemSqPk(memSqPk);
 		
 		try{
 			memberDAO.updateMember(memberDTO);
@@ -206,11 +206,11 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public Map<String, Object> deleteMember(int memNo){
+	public Map<String, Object> deleteMember(int memSqPk){
 		Map<String, Object> returnMap = new HashMap<String, Object>();
 		
 		try{
-			memberDAO.deleteMember(memNo);
+			memberDAO.deleteMember(memSqPk);
 			returnMap.put("result", "success");
 		}catch(DataIntegrityViolationException dive){
 			returnMap.put("result", "fail");

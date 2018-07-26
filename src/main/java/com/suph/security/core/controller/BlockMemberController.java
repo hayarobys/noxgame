@@ -40,12 +40,12 @@ public class BlockMemberController{
 	
 	/**
 	 * 현시간 기준, 특정 계정의 차단 종료일이 남아 있을 경우, 그 차단 정보를 조회합니다.
-	 * @param memNo
+	 * @param memSqPk
 	 * @return
 	 */
-	@RequestMapping(value="/block-member/{memNo}", method=RequestMethod.GET)
-	public @ResponseBody Map<String, Object> getBlockMemberByMemNoAndExpireDateIsAfterTheCurrentDate(@PathVariable(required=true) Integer memNo){
-		return blockMemberService.getBlockMemberByMemNoAndExpireDateIsAfterTheCurrentDate(memNo);
+	@RequestMapping(value="/block-member/{memSqPk}", method=RequestMethod.GET)
+	public @ResponseBody Map<String, Object> getBlockMemberByMemNoAndExpireDateIsAfterTheCurrentDate(@PathVariable(required=true) Integer memSqPk){
+		return blockMemberService.getBlockMemberByMemNoAndExpireDateIsAfterTheCurrentDate(memSqPk);
 	}
 	
 	/**
@@ -80,14 +80,14 @@ public class BlockMemberController{
 		if(StringUtils.hasText(blockStartDate)){
 			try{
 				startDate = format.parse(blockStartDate);				
-				searchBlockMemberDTO.setBlockStartDate(startDate);
+				searchBlockMemberDTO.setBlockStartDt(startDate);
 			}catch(ParseException e){ e.printStackTrace(); }
 		}
 		
 		if(StringUtils.hasText(blockExpireDate)){
 			try{
 				expireDate = format.parse(blockExpireDate);
-				searchBlockMemberDTO.setBlockExpireDate(expireDate);
+				searchBlockMemberDTO.setBlockExpireDt(expireDate);
 			}catch(ParseException e){ e.printStackTrace(); }
 		}
 						
@@ -96,8 +96,7 @@ public class BlockMemberController{
 	
 	/**
 	 * 차단 계정 추가
-	 * @param memNo
-	 * @param blockMemberDTO
+	 * @param blockData
 	 * @return
 	 */
 	@RequestMapping(value="/block-member", method=RequestMethod.POST)
@@ -108,14 +107,14 @@ public class BlockMemberController{
 		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
 		//SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'");
 		
-		String memNo = blockData.get("memNo");
+		String memSqPk = blockData.get("memSqPk");
 		String blockCause = blockData.get("blockCause");
 		String blockStartDate = blockData.get("setStartDate");
 		String blockExpireDate = blockData.get("setExpireDate");
 		
-		if(StringUtils.hasText(memNo)){
+		if(StringUtils.hasText(memSqPk)){
 			try{
-				blockMemberDTO.setMemNo( Integer.parseInt(memNo) );
+				blockMemberDTO.setMemFk( Integer.parseInt(memSqPk) );
 			}catch(NumberFormatException nfe){ nfe.printStackTrace(); }
 		}
 		
@@ -126,14 +125,14 @@ public class BlockMemberController{
 		if(StringUtils.hasText(blockStartDate)){
 			try{
 				Date startDate = format.parse(blockStartDate);				
-				blockMemberDTO.setBlockStartDate(startDate);
+				blockMemberDTO.setBlockStartDt(startDate);
 			}catch(ParseException e){ e.printStackTrace(); }
 		}
 		
 		if(StringUtils.hasText(blockExpireDate)){
 			try{
 				Date expireDate = format.parse(blockExpireDate);
-				blockMemberDTO.setBlockExpireDate(expireDate);
+				blockMemberDTO.setBlockExpireDt(expireDate);
 			}catch(ParseException e){ e.printStackTrace(); }
 		}
 		
@@ -142,7 +141,7 @@ public class BlockMemberController{
 	
 	/**
 	 * 차단 계정 정보 수정
-	 * @param memNo
+	 * @param blockNo
 	 * @param blockMemberDTO
 	 * @return
 	 */
@@ -153,7 +152,7 @@ public class BlockMemberController{
 	
 	/**
 	 * 차단 계정 정보 삭제
-	 * @param memNo
+	 * @param blockNo
 	 * @return
 	 */
 	@RequestMapping(value="/block-member/{blockNo}", method=RequestMethod.DELETE)

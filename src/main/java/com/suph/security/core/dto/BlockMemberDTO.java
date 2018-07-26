@@ -7,18 +7,18 @@ public class BlockMemberDTO{
 	/**
 	 * 실제 존재하는 컬럼이 아닌, SQL문으로 concat함수를 이용해 생성한 가상 컬럼 입니다.
 	 * ex) tester/테스터/11 아이디/닉네임/계정일련번호
-	 * dataField는 blockNo로, displayField는 memInfo로 출력하는데 쓰입니다.
+	 * dataField는 blockSqPk로, displayField는 memInfo로 출력하는데 쓰입니다.
 	 */
 	private String memInfo;
 	
 	/** 차단 일련 번호 */
-	private Integer blockNo;
+	private Integer blockSqPk;
 	/** 계정 일련 번호 */
-	private Integer memNo;
+	private Integer memFk;
 	/** 차단 시작 일자 */
-	private java.util.Date blockStartDate;
+	private java.util.Date blockStartDt;
 	/** 차단 만료 일자 */
-	private java.util.Date blockExpireDate;
+	private java.util.Date blockExpireDt;
 	/** 차단 사유 */
 	private String blockCause;
 	
@@ -30,36 +30,36 @@ public class BlockMemberDTO{
 		this.memInfo = memInfo;
 	}
 	
-	public Integer getBlockNo(){
-		return blockNo;
-	}
-
-	public void setBlockNo(Integer blockNo){
-		this.blockNo = blockNo;
+	public Integer getBlockSqPk(){
+		return blockSqPk;
 	}
 	
-	public Integer getMemNo(){
-		return memNo;
+	public void setBlockSqPk(Integer blockSqPk){
+		this.blockSqPk = blockSqPk;
 	}
 	
-	public void setMemNo(Integer memNo){
-		this.memNo = memNo;
+	public Integer getMemFk(){
+		return memFk;
 	}
 	
-	public java.util.Date getBlockStartDate(){
-		return blockStartDate;
+	public void setMemFk(Integer memFk){
+		this.memFk = memFk;
 	}
 	
-	public void setBlockStartDate(java.util.Date blockStartDate){
-		this.blockStartDate = blockStartDate;
+	public java.util.Date getBlockStartDt(){
+		return blockStartDt;
 	}
 	
-	public java.util.Date getBlockExpireDate(){
-		return blockExpireDate;
+	public void setBlockStartDt(java.util.Date blockStartDt){
+		this.blockStartDt = blockStartDt;
 	}
 	
-	public void setBlockExpireDate(java.util.Date blockExpireDate){
-		this.blockExpireDate = blockExpireDate;
+	public java.util.Date getBlockExpireDt(){
+		return blockExpireDt;
+	}
+	
+	public void setBlockExpireDt(java.util.Date blockExpireDt){
+		this.blockExpireDt = blockExpireDt;
 	}
 	
 	public String getBlockCause(){
@@ -69,11 +69,12 @@ public class BlockMemberDTO{
 	public void setBlockCause(String blockCause){
 		this.blockCause = blockCause;
 	}
-
+	
 	@Override
 	public String toString(){
-		return "BlockMemberDTO [memInfo=" + memInfo + ", blockNo=" + blockNo + ", memNo=" + memNo + ", blockStartDate="
-				+ blockStartDate + ", blockExpireDate=" + blockExpireDate + ", blockCause=" + blockCause + "]";
+		return "BlockMemberDTO [memInfo=" + memInfo + ", blockSqPk=" + blockSqPk + ", memFk=" + memFk
+				+ ", blockStartDt=" + blockStartDt + ", blockExpireDt=" + blockExpireDt + ", blockCause=" + blockCause
+				+ "]";
 	}
 }
 

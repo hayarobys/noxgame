@@ -5,43 +5,43 @@
 <mapper namespace="com.suph.security.core.dao.MemberDAO">
 
 	<resultMap type="com.suph.security.core.dto.MemberDTO" id="MemberDTO">
-		<result column="MEM_NO" property="memNo"/>
+		<result column="MEM_SQ_PK" property="memSqPk"/>
 		<result column="MEM_ID" property="memId"/>
 		<result column="MEM_PASSWORD" property="memPassword"/>
 		<result column="MEM_NICKNM" property="memNicknm"/>
 		<result column="MEM_STATE" property="memState"/>
-		<result column="LAST_LOGIN_DATE" property="lastLoginDate" jdbcType="TIMESTAMP"/>
+		<result column="MEM_LAST_LOGIN_DT" property="memLastLoginDt" jdbcType="TIMESTAMP"/>
 		<!-- mybatis-config.xml에 typeHandler를 등록하였기에 TIMESTAMP <-> java.util.Date의 변환이 가능 -->
 	</resultMap>
 	
 	<insert id="insertMember" parameterType="MemberDTO">
 		INSERT INTO
-			TB_MEMBER(
+			MEM_TB(
 				MEM_ID,
 				MEM_PASSWORD,
 				MEM_NICKNM,
 				MEM_STATE,
-				LAST_LOGIN_DATE
+				MEM_LAST_LOGIN_DT
 			)
 			VALUES(
 				#{memId},
 				#{memPassword},
 				#{memNicknm},
 				IFNULL(#{memState}, 'ACTIVE'),
-				IFNULL(#{lastLoginDate}, current_timestamp())
+				IFNULL(#{MemLastLoginDt}, current_timestamp())
 			)
 	</insert>
 	
 	<select id="getMemberInfoById" parameterType="String" resultMap="MemberDTO">
 		SELECT
-			MEM_NO,
+			MEM_SQ_PK,
 			MEM_ID,
 			MEM_PASSWORD,
 			MEM_NICKNM,
 			MEM_STATE,
-			LAST_LOGIN_DATE
+			MEM_LAST_LOGIN_DT
 		FROM
-			TB_MEMBER
+			MEM_TB
 		WHERE
 				MEM_ID = #{memId}
 			AND
@@ -53,7 +53,7 @@
 		SELECT
 			COUNT(*)
 		FROM
-			TB_MEMBER
+			MEM_TB
 		WHERE
 			MEM_STATE = 'ACTIVE'
 			<if test='memId != null and memId != ""'>
@@ -66,13 +66,13 @@
 	
 	<select id="selectActiveMember" parameterType="MemberDTO" resultMap="MemberDTO">
 		SELECT
-			MEM_NO,
+			MEM_SQ_PK,
 			MEM_ID,
 			MEM_NICKNM,
 			MEM_STATE,
-			LAST_LOGIN_DATE
+			MEM_LAST_LOGIN_DT
 		FROM
-			TB_MEMBER
+			MEM_TB
 		WHERE
 			MEM_STATE = 'ACTIVE'
 			<if test='memId != null and memId != ""'>
@@ -82,7 +82,7 @@
 				AND MEM_NICKNM LIKE CONCAT('%', #{memNicknm}, '%')
 			</if>
 		ORDER BY
-			MEM_NO ASC
+			MEM_SQ_PK ASC
 		LIMIT ${start}, ${pagesize}
 	</select>
 	
@@ -90,14 +90,14 @@
 		SELECT
 			MEM_ID
 		FROM
-			TB_MEMBER
+			MEM_TB
 		WHERE
 			MEM_ID = #{value}
 	</select>
 	
 	<update id="updateMember" parameterType="MemberDTO">
 		UPDATE
-			TB_MEMBER
+			MEM_TB
 		<set>
 			<if test="memId != null and !''.equals(memId)">
 				MEM_ID = #{memId},
@@ -111,18 +111,18 @@
 			<if test="memState != null and !''.equals(memState)">
 				MEM_STATE = #{memState},
 			</if>
-			<if test="lastLoginDate != null and !''.equals(lastLoginDate)">
-				LAST_LOGIN_DATE = #{lastLoginDate}
+			<if test="MemLastLoginDt != null and !''.equals(MemLastLoginDt)">
+				MEM_LAST_LOGIN_DT = #{MemLastLoginDt}
 			</if>
 		</set>
 		WHERE
-			MEM_NO = #{memNo}
+			MEM_SQ_PK = #{memSqPk}
 	</update>
 	
 	<delete id="deleteMember" parameterType="Integer">
 		DELETE FROM
-			TB_MEMBER
+			MEM_TB
 		WHERE
-			MEM_NO = #{memNo}
+			MEM_SQ_PK = #{memSqPk}
 	</delete>
 </mapper>

@@ -80,9 +80,9 @@ public class BlockMemberServiceImpl implements BlockMemberService{
 	}
 
 	@Override
-	public Map<String, Object> patchBlockMember(Integer blockNo, BlockMemberDTO blockMemberDTO){
+	public Map<String, Object> patchBlockMember(Integer blockSqPk, BlockMemberDTO blockMemberDTO){
 		Map<String, Object> returnMap = new HashMap<String, Object>();		
-		blockMemberDTO.setBlockNo(blockNo);
+		blockMemberDTO.setBlockSqPk(blockSqPk);
 		LOGGER.debug("이  값으로 수행: {}", blockMemberDTO);
 		try{
 			blockMemberDAO.updateBlockMember(blockMemberDTO);

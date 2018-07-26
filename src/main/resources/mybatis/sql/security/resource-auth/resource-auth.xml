@@ -4,69 +4,69 @@
 <mapper namespace="com.suph.security.core.dao.ResourceAuthDAO">
 
 	<resultMap type="com.suph.security.core.dto.ResourceAuthDTO" id="ResourceAuthDTO">
-		<result column="HTTP_METHOD" property="httpMethod" />
-		<result column="RESOURCE_PATTERN" property="resourceNm" />
-		<result column="AUTH_NM" property="authNm" />
+		<result column="HTTP_METHOD_PK" property="httpMethodPk" />
+		<result column="RES_PATTERN" property="resPattern" />
+		<result column="AUTH_NM_UNQ" property="authNmUnq" />
 	</resultMap>
 	
 	<resultMap type="com.suph.security.core.dto.AuthDTO" id="AuthDTO">
-		<result column="AUTH_NO" property="authNo" />
-		<result column="AUTH_NM" property="authNm" />
+		<result column="AUTH_SQ_PK" property="authSqPk" />
+		<result column="AUTH_NM_UNQ" property="authNmUnq" />
 		<result column="AUTH_EXPLANATION" property="authExplanation" />
 	</resultMap>
 
 	<!-- url/method/pointcut 형식인 리소스 패턴 - 권한 매핑 정보를 조회합니다 -->
 	<select id="getRolesAndResources" parameterType="String" resultMap="ResourceAuthDTO">
 		SELECT
-			R.HTTP_METHOD,
-			R.RESOURCE_PATTERN,
-			A.AUTH_NM
+			R.HTTP_METHOD_PK,
+			R.RES_PATTERN,
+			A.AUTH_NM_UNQ
 		FROM
-			TB_RESOURCE AS R
-			INNER JOIN TB_RESOURCE_AUTH AS RA ON (RA.RESOURCE_NO = R.RESOURCE_NO)
-			INNER JOIN TB_AUTH AS A ON (RA.AUTH_NO = A.AUTH_NO)
+			RES_TB AS R
+			INNER JOIN RES_AUTH_TB AS RA ON (RA.RES_FK_PK = R.RES_SQ_PK)
+			INNER JOIN AUTH_TB AS A ON (RA.AUTH_FK_PK = A.AUTH_SQ_PK)
 		WHERE
-			R.RESOURCE_TYPE = LCASE(#{type})
+			R.RES_TYPE = LCASE(#{type})
 		ORDER BY
 			R.SORT_ORDER DESC,
-			A.AUTH_NO DESC
+			A.AUTH_SQ_PK DESC
 	</select>
 	
 	<!-- 특정 리소스 패턴에 매핑된 권한 정보를 조회합니다 -->
 	<select id="getAuthListByResourceNo" parameterType="HashMap" resultMap="AuthDTO">
 		SELECT
-			A.AUTH_NO,
-			A.AUTH_NM,
+			A.AUTH_SQ_PK,
+			A.AUTH_NM_UNQ,
 			A.AUTH_EXPLANATION
 		FROM
-			TB_RESOURCE AS R
-			INNER JOIN TB_RESOURCE_AUTH AS RA ON (RA.RESOURCE_NO = R.RESOURCE_NO)
-			INNER JOIN TB_AUTH AS A ON (RA.AUTH_NO = A.AUTH_NO)
+			RES_TB AS R
+			INNER JOIN RES_AUTH_TB AS RA ON (RA.RES_FK_PK = R.RES_SQ_PK)
+			INNER JOIN AUTH_TB AS A ON (RA.AUTH_FK_PK = A.AUTH_SQ_PK)
 		WHERE
-				R.RESOURCE_TYPE = LCASE(#{type})
+				R.RES_TYPE = LCASE(#{type})
 			AND
-				R.RESOURCE_NO = #{resourceNo}
+				R.RES_SQ_PK = #{resSqPk}
 		ORDER BY
-			A.AUTH_NO
+			A.AUTH_SQ_PK
 	</select>
 	
 	<!-- 특정 리소스에 새 권한들을 부여합니다. -->
 	<insert id="insertAuthListByResourceNo" parameterType="ResourceAuthDTO">
 		INSERT INTO
-			TB_RESOURCE_AUTH(
-				RESOURCE_NO, AUTH_NO
+			RES_AUTH_TB(
+				RES_FK_PK, AUTH_FK_PK
 			)
 		VALUES
-		<foreach collection="authNoList" item="authNo" separator=",">
-			(#{resourceNo}, #{authNo})
+		<foreach collection="authSqPkList" item="authSqPk" separator=",">
+			(#{resFkPk}, #{authSqPk})
 		</foreach>
 	</insert>
 	
 	<!-- 특정 리소스에 매칭된 권한들을 제거합니다. -->
 	<delete id="deleteAuthListByResourceNo" parameterType="int">
 		DELETE FROM
-			TB_RESOURCE_AUTH
+			RES_AUTH_TB
 		WHERE
-			RESOURCE_NO = #{resourceNo}
+			RES_FK_PK = #{resFkPk}
 	</delete>
 </mapper>

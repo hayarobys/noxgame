@@ -7,28 +7,28 @@ import java.util.List;
  */
 public class MemberAuthDTO{
 	/** MEM_NO: 계정 일련 번호 */
-	private Integer memNo;
+	private Integer memFkPk;
 	/** 보유 권한 목록 */
-	private List<Integer> authNoList;
+	private List<Integer> authFkPkList;
 	
-	public Integer getMemNo(){
-		return memNo;
+	public Integer getMemFkPk(){
+		return memFkPk;
 	}
 	
-	public void setMemNo(Integer memNo){
-		this.memNo = memNo;
+	public void setMemFkPk(Integer memFkPk){
+		this.memFkPk = memFkPk;
 	}
-
-	public List<Integer> getAuthNoList(){
-		return authNoList;
+	
+	public List<Integer> getAuthFkPkList(){
+		return authFkPkList;
 	}
-
-	public void setAuthNoList(List<Integer> authNoList){
-		this.authNoList = authNoList;
+	
+	public void setAuthFkPkList(List<Integer> authFkPkList){
+		this.authFkPkList = authFkPkList;
 	}
-
+	
 	@Override
 	public String toString(){
-		return "MemberAuthDTO [memNo=" + memNo + ", authNoList=" + authNoList + "]";
+		return "MemberAuthDTO [memFkPk=" + memFkPk + ", authFkPkList=" + authFkPkList + "]";
 	}
 }

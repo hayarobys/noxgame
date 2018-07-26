@@ -35,31 +35,31 @@ public class MemberAuthServiceImpl implements MemberAuthService{
 	 * @param userNo 조회할 계정 일련 번호
 	 * @return 해당 계정의 권한 목록
 	 */
-	public List<GrantedAuthority> loadUserAuthorities(Integer memNo){
+	public List<GrantedAuthority> loadUserAuthorities(Integer memSqPk){
 		List<AuthDTO> list = null;
 		try{
-			list = memberAuthDAO.selectAuthOfMemberByMemNo(memNo);
+			list = memberAuthDAO.selectAuthOfMemberByMemNo(memSqPk);
 		}catch(DataAccessException dae){
-			logger.error("유저번호 {}의 권한 목록 조회를 실패했습니다.", memNo);
+			logger.error("유저번호 {}의 권한 목록 조회를 실패했습니다.", memSqPk);
 			dae.printStackTrace();
 			return null;
 		}
 		
 		List<GrantedAuthority> resultList = new ArrayList<GrantedAuthority>();
 		for(AuthDTO vo : list){
-			resultList.add( new SimpleGrantedAuthority(vo.getAuthNm()) );
+			resultList.add( new SimpleGrantedAuthority(vo.getAuthNmUnq()) );
 		}
 		
 		return resultList;
 	}
 
 	@Override
-	public Map<String, Object> getAuthOfMemberByMemNo(Integer memNo){
+	public Map<String, Object> getAuthOfMemberByMemNo(Integer memSqPk){
 		Map<String, Object> returnMap = new HashMap<String, Object>();
 		List<AuthDTO> authList = null;
 		
 		try{
-			authList = memberAuthDAO.selectAuthOfMemberByMemNo(memNo);
+			authList = memberAuthDAO.selectAuthOfMemberByMemNo(memSqPk);
 			returnMap.put("list", authList);
 			returnMap.put("result", "success");
 		}catch(DataAccessException dae){
@@ -71,15 +71,15 @@ public class MemberAuthServiceImpl implements MemberAuthService{
 
 	@Override
 	@Transactional
-	public Map<String, Object> patchAuthOfMemberByMemNo(Integer memNo, MemberAuthDTO memberAuthDTO){
+	public Map<String, Object> patchAuthOfMemberByMemNo(Integer memFkPk, MemberAuthDTO memberAuthDTO){
 		Map<String, Object> returnMap = new HashMap<String, Object>();
-		memberAuthDTO.setMemNo(memNo);
+		memberAuthDTO.setMemFkPk(memFkPk);
 		
 		try{
-			memberAuthDAO.deleteAuthOfMemberByMemNo(memNo);
+			memberAuthDAO.deleteAuthOfMemberByMemNo(memFkPk);
 			
-			if(		memberAuthDTO.getAuthNoList() != null
-				&&	memberAuthDTO.getAuthNoList().size() > 0
+			if(		memberAuthDTO.getAuthFkPkList() != null
+				&&	memberAuthDTO.getAuthFkPkList().size() > 0
 			){
 				memberAuthDAO.insertAuthOfMemberByMemNo(memberAuthDTO);
 			}

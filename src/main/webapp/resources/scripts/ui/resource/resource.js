@@ -91,11 +91,11 @@ function initResourceGrid(){
 	var source = {
 		datatype: "json",
 		datafields: [
-			{name: 'resourceNo', type: 'int'},
-			{name: 'httpMethod', type: 'string'},
-			{name: 'resourceNm', type: 'string'},
-			{name: 'resourcePattern', type: 'string'},
-			{name: 'resourceType', type: 'string'},
+			{name: 'resSqPk', type: 'int'},
+			{name: 'httpMethodPk', type: 'string'},
+			{name: 'resNmUnq', type: 'string'},
+			{name: 'resPattern', type: 'string'},
+			{name: 'resType', type: 'string'},
 			{name: 'sortOrder', type: 'int'}
 		],
 		url: CONTEXT_PATH + '/resource',
@@ -131,17 +131,17 @@ function initResourceGrid(){
 		columns: [
 			{
 				text: '일련 번호',
-				dataField: 'resourceNo',
+				dataField: 'resSqPk',
 				cellsalign: 'center',
 				align: 'center',
 				editable: false,
 				width: '10%'
 			},
-			{text: '이름', dataField: 'resourceNm', cellsalign: 'center', align: 'center', editable: true, cellvaluechanging: cellValueChanging, width: '33%'},
+			{text: '이름', dataField: 'resNmUnq', cellsalign: 'center', align: 'center', editable: true, cellvaluechanging: cellValueChanging, width: '33%'},
 			{
 				text: 'HTTP 메소드',	// 보여질 이름
-				dataField: 'httpMethod',	// 소스로부터 사용할 데이터의 키명
-				displayField: 'httpMethod',	// 해당 컬럼의 내부 명칭?
+				dataField: 'httpMethodPk',	// 소스로부터 사용할 데이터의 키명
+				displayField: 'httpMethodPk',	// 해당 컬럼의 내부 명칭?
 				columntype: 'dropdownlist',
 				cellsalign: 'center',
 				align: 'center',
@@ -156,13 +156,13 @@ function initResourceGrid(){
 						width: width,
 						height: height,
 						source: httpMethodAdapter,
-						displayMember: "httpMethod",	// 사용자에게 보여줄 값
-						valueMember: "httpMethod"	// 서버 전송에 사용할 값
+						displayMember: "httpMethodPk",	// 사용자에게 보여줄 값
+						valueMember: "httpMethodPk"	// 서버 전송에 사용할 값
 					});
 				}
 			},
-			{text: '패턴', dataField: 'resourcePattern', cellsalign: 'left', align: 'center', editable: true, cellvaluechanging: cellValueChanging, width: '27%'},
-			{text: '타입', dataField: 'resourceType', cellsalign: 'center', align: 'center', editable: true, cellvaluechanging: cellValueChanging, width: '10%'},
+			{text: '패턴', dataField: 'resPattern', cellsalign: 'left', align: 'center', editable: true, cellvaluechanging: cellValueChanging, width: '27%'},
+			{text: '타입', dataField: 'resType', cellsalign: 'center', align: 'center', editable: true, cellvaluechanging: cellValueChanging, width: '10%'},
 			{text: '순서', dataField: 'sortOrder', cellsalign: 'center', align: 'center', editable: true, cellvaluechanging: cellValueChanging, width: '10%'}
 		]
 	});
@@ -335,7 +335,7 @@ function objectifyForm(formArray){
  */
 function deleteSelectedResources(){
 	// 현재 선택한 리소스와 권한의 일련 번호 구하기
-	var selectedResourceNoArray = String(getSelectedNoArray(resourceGridId, 'resourceNo'));
+	var selectedResourceNoArray = String(getSelectedNoArray(resourceGridId, 'resSqPk'));
 	
 	// 선택한 행이 없으면 이벤트 취소
 	if(selectedResourceNoArray.length <= 0){

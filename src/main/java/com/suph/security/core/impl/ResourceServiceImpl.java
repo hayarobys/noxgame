@@ -53,12 +53,12 @@ public class ResourceServiceImpl implements ResourceService{
 	}
 
 	@Override
-	public Map<String, Object> getAuthListByResourceNo(int resourceNo){
+	public Map<String, Object> getAuthListByResourceNo(int resSqPk){
 		Map<String, Object> result = new HashMap<String, Object>();
 		Map<String, Object> search = new HashMap<String, Object>();
 		
 		search.put("type", "url");
-		search.put("resourceNo", resourceNo);
+		search.put("resSqPk", resSqPk);
 		
 		List<AuthDTO> list = securedObjectDAO.getAuthListByResourceNo(search);
 		
@@ -133,7 +133,7 @@ public class ResourceServiceImpl implements ResourceService{
 	@Override
 	public Map<String, Object> patchResourceByResourceNo(int resourceNo, ResourceDTO resourceDTO){
 		Map<String, Object> returnMap = new HashMap<String, Object>();
-		resourceDTO.setResourceNo(resourceNo);
+		resourceDTO.setResSqPk(resourceNo);
 		
 		String result = "";
 		try{

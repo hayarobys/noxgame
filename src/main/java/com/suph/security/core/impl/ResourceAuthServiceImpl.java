@@ -130,8 +130,8 @@ public class ResourceAuthServiceImpl implements ResourceAuthService{
 		// 각 ROW마다 스프링 시큐리티가 읽을 수 있는 형태로 변환작업 수행
 		for(ResourceAuthDTO vo : resultList){
 			// 리소스 패턴 얻기 (현재 작업중인 패턴에 저장)
-			presentResourceStr = vo.getResourceNm();
-			presentHttpMethod = vo.getHttpMethod();
+			presentResourceStr = vo.getResPattern();
+			presentHttpMethod = vo.getHttpMethodPk();
 			
 			// url 리소스라면 ANT타입 객체로 변환한다.
 			presentResourceObj = (isResourcesUrl ? new AntPathRequestMatcher(presentResourceStr, presentHttpMethod) : presentResourceStr);
@@ -157,7 +157,7 @@ public class ResourceAuthServiceImpl implements ResourceAuthService{
 			
 			// 현재 url패턴에 접근 가능한 권한 목록에 DB에서 조회한 정보 반영
 			configList.add(
-					new SecurityConfig( vo.getAuthNm() )
+					new SecurityConfig( vo.getAuthNmUnq() )
 			);
 			
 			// 최종적으로 반환할 Map에 재할당. 같은 key(리소스 패턴이 같은게 있다면)가 있다면 이것으로 교체.
@@ -178,9 +178,9 @@ public class ResourceAuthServiceImpl implements ResourceAuthService{
 		Map<String, Object> returnMap = new HashMap<String, Object>();
 		
 		try{
-			resourceAuthDAO.deleteAuthListByResourceNo(resourceAuthDTO.getResourceNo());
-			if(		resourceAuthDTO.getAuthNoList() != null
-				&&	resourceAuthDTO.getAuthNoList().size() > 0
+			resourceAuthDAO.deleteAuthListByResourceNo(resourceAuthDTO.getResFkPk());
+			if(		resourceAuthDTO.getAuthSqPkList() != null
+				&&	resourceAuthDTO.getAuthSqPkList().size() > 0
 			){
 				resourceAuthDAO.insertAuthListByResourceNo(resourceAuthDTO);
 			}

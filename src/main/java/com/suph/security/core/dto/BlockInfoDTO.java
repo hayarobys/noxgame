@@ -6,40 +6,40 @@ package com.suph.security.core.dto;
 public class BlockInfoDTO{
 	
 	/** 차단 시작 일자 */
-	private java.util.Date blockStartDate;
+	private java.util.Date blockStartDt;
 	/** 차단 만료 일자 */
-	private java.util.Date blockExpireDate;
+	private java.util.Date blockExpireDt;
 	/** 차단 사유 */
 	private String blockCause;
-		
-	public java.util.Date getBlockStartDate(){
-		return blockStartDate;
-	}
 	
-	public void setBlockStartDate(java.util.Date blockStartDate){
-		this.blockStartDate = blockStartDate;
+	public java.util.Date getBlockStartDt(){
+		return blockStartDt;
 	}
-	
-	public java.util.Date getBlockExpireDate(){
-		return blockExpireDate;
+
+	public void setBlockStartDt(java.util.Date blockStartDt){
+		this.blockStartDt = blockStartDt;
 	}
-	
-	public void setBlockExpireDate(java.util.Date blockExpireDate){
-		this.blockExpireDate = blockExpireDate;
+
+	public java.util.Date getBlockExpireDt(){
+		return blockExpireDt;
 	}
-	
+
+	public void setBlockExpireDt(java.util.Date blockExpireDt){
+		this.blockExpireDt = blockExpireDt;
+	}
+
 	public String getBlockCause(){
 		return blockCause;
 	}
-	
+
 	public void setBlockCause(String blockCause){
 		this.blockCause = blockCause;
 	}
 
 	@Override
 	public String toString(){
-		return "BlockInfoDTO [blockStartDate=" + blockStartDate + ", blockExpireDate=" + blockExpireDate
-				+ ", blockCause=" + blockCause + "]";
+		return "BlockInfoDTO [blockStartDt=" + blockStartDt + ", blockExpireDt=" + blockExpireDt + ", blockCause="
+				+ blockCause + "]";
 	}
 }
 

@@ -22,12 +22,12 @@ function initResourceGrid(){
 	var source = {
 		datatype: "json",
 		datafields: [
-			{name: 'resourceNo', type: 'int'},
-			{name: 'httpMethod', type: 'string'},
+			{name: 'resSqPk', type: 'int'},
+			{name: 'httpMethodPk', type: 'string'},
 			{name: 'sortOrder', type: 'int'},
-			{name: 'resourceType', type: 'string'},
-			{name: 'resourcePattern', type: 'string'},
-			{name: 'resourceNm', type: 'string'}
+			{name: 'resType', type: 'string'},
+			{name: 'resPattern', type: 'string'},
+			{name: 'resNmUnq', type: 'string'}
 		],
 		url: CONTEXT_PATH + '/resource',
 		root: 'rows',
@@ -67,17 +67,17 @@ function initResourceGrid(){
 			}
 		},
 		columns: [
-			{text: '일련 번호', dataField: 'resourceNo', cellsalign: 'center', align: 'center', editable: false, width: '16%'},
-			{text: 'HTTP 메소드', dataField: 'httpMethod', cellsalign: 'center', align: 'center', editable: false, width: '20%'},
-			{text: '패턴', dataField: 'resourcePattern', cellsalign: 'left', align: 'center', editable: false, width: '39%'},
-			{text: '이름', dataField: 'resourceNm', cellsalign: 'left', align: 'center', editable: false, width: '25%'}
+			{text: '일련 번호', dataField: 'resSqPk', cellsalign: 'center', align: 'center', editable: false, width: '16%'},
+			{text: 'HTTP 메소드', dataField: 'httpMethodPk', cellsalign: 'center', align: 'center', editable: false, width: '20%'},
+			{text: '패턴', dataField: 'resPattern', cellsalign: 'left', align: 'center', editable: false, width: '39%'},
+			{text: '이름', dataField: 'resNmUnq', cellsalign: 'left', align: 'center', editable: false, width: '25%'}
 		]
 	});
 	
 	$(resourceGridId).on("rowclick", function(event){
 		var row = event.args.rowindex;
 		var rowData = $(resourceGridId).jqxGrid("getrowdata", row);
-		reloadAuthGridByNo(rowData.resourceNo);
+		reloadAuthGridByNo(rowData.resSqPk);
 	});
 }
 
@@ -97,8 +97,8 @@ function initAuthGrid(){
 		editable: false,
 		selectionmode: 'multiplerows',
 		columns: [
-			{text: '일련 번호', dataField: 'authNo', cellsalign: 'center', align: 'center', editable: false, width: '15%'},
-			{text: '권한 명', dataField: 'authNm', cellsalign: 'left', align: 'center', editable: false, width: '30%'},
+			{text: '일련 번호', dataField: 'authSqPk', cellsalign: 'center', align: 'center', editable: false, width: '15%'},
+			{text: '권한 명', dataField: 'authNmUnq', cellsalign: 'left', align: 'center', editable: false, width: '30%'},
 			{text: '권한 설명', dataField: 'authExplanation', cellsalign: 'left', align: 'center', editable: false, width: '55%'}
 		]
 	});
@@ -185,8 +185,8 @@ function changeAuthGrid(listData){
 		localdata: everyAuthList,
 		datatype: "array",
 		datafields: [
-			{name: 'authNo', type: 'int'},
-			{name: 'authNm', type: 'string'},
+			{name: 'authSqPk', type: 'int'},
+			{name: 'authNmUnq', type: 'string'},
 			{name: 'authExplanation', type: 'string'}
 		]
 	};
@@ -215,10 +215,10 @@ function selectRowByValueList(jqxGridSelector, searchValueList){
 	var searchValueCount = searchValueList.length;
 	
 	for(var i = 0; i < rowsCount; i++){
-		var value = $(jqxGridSelector).jqxGrid('getcellvalue', i, 'authNo');
+		var value = $(jqxGridSelector).jqxGrid('getcellvalue', i, 'authSqPk');
 		
 		for(var k = 0; k < searchValueCount; k++){
-			if(value == searchValueList[k].authNo){
+			if(value == searchValueList[k].authSqPk){
 				$(jqxGridSelector).jqxGrid('selectrow', i);
 			}
 		}
@@ -231,13 +231,13 @@ function selectRowByValueList(jqxGridSelector, searchValueList){
  */
 function save(){
 	// 현재 선택한 리소스와 권한의 일련 번호 구하기
-	var selectedResourceNoArray = getSelectedNoArray(resourceGridId, 'resourceNo');
-	var selectedAuthNoArray = getSelectedNoArray(authGridId, 'authNo');
+	var selectedResourceNoArray = getSelectedNoArray(resourceGridId, 'resSqPk');
+	var selectedAuthNoArray = getSelectedNoArray(authGridId, 'authSqPk');
 	
 	// 전송할 json 데이터 생성
 	var data = {};
 	//data.resourceNo = Number(selectedResourceNoArray[0]);	// String to Number
-	data.authNoList = selectedAuthNoArray;
+	data.authSqPkList = selectedAuthNoArray;
 	data = JSON.stringify(data);
 	
 	// 출력

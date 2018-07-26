@@ -10,9 +10,9 @@ public class SearchBlockMemberDTO{
 	/** 검색어  */
 	private String searchKeyword;
 	/** 시작일 필터 */
-	private Date blockStartDate;
+	private Date blockStartDt;
 	/** 만료일 필터 */
-	private Date blockExpireDate;
+	private Date blockExpireDt;
 	/** 검색 시간대(과거/현재/미래) */
 	private List<String> searchTime;
 	
@@ -32,20 +32,20 @@ public class SearchBlockMemberDTO{
 		this.searchKeyword = searchKeyword;
 	}
 	
-	public Date getBlockStartDate(){
-		return blockStartDate;
+	public Date getBlockStartDt(){
+		return blockStartDt;
 	}
 	
-	public void setBlockStartDate(Date blockStartDate){
-		this.blockStartDate = blockStartDate;
+	public void setBlockStartDt(Date blockStartDt){
+		this.blockStartDt = blockStartDt;
 	}
 	
-	public Date getBlockExpireDate(){
-		return blockExpireDate;
+	public Date getBlockExpireDt(){
+		return blockExpireDt;
 	}
 	
-	public void setBlockExpireDate(Date blockExpireDate){
-		this.blockExpireDate = blockExpireDate;
+	public void setBlockExpireDt(Date blockExpireDt){
+		this.blockExpireDt = blockExpireDt;
 	}
 	
 	public List<String> getSearchTime(){
@@ -55,11 +55,10 @@ public class SearchBlockMemberDTO{
 	public void setSearchTime(List<String> searchTime){
 		this.searchTime = searchTime;
 	}
-
+	
 	@Override
 	public String toString(){
-		return "SearchBlockMemberDTO [searchType=" + searchType + ", searchKeyword=" + searchKeyword
-				+ ", blockStartDate=" + blockStartDate + ", blockExpireDate=" + blockExpireDate + ", searchTime="
-				+ searchTime + "]";
+		return "SearchBlockMemberDTO [searchType=" + searchType + ", searchKeyword=" + searchKeyword + ", blockStartDt="
+				+ blockStartDt + ", blockExpireDt=" + blockExpireDt + ", searchTime=" + searchTime + "]";
 	}
 }
