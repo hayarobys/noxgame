@@ -25,7 +25,7 @@ function initMemberGrid(){
 	var source = {
 		datatype: "json",
 		datafields: [
-			{name: 'memNo', type: 'int'},
+			{name: 'memSqPk', type: 'int'},
 			{name: 'memId', type: 'string'},
 			{name: 'memNicknm', type: 'string'}
 			
@@ -67,7 +67,7 @@ function initMemberGrid(){
 			}
 		},
 		columns: [
-			{text: '일련 번호', dataField: 'memNo', cellsalign: 'center', align: 'center', width: '20%'},
+			{text: '일련 번호', dataField: 'memSqPk', cellsalign: 'center', align: 'center', width: '20%'},
 			{text: '아이디', dataField: 'memId', cellsalign: 'center', align: 'center', width: '40%'},
 			{text: '이름', dataField: 'memNicknm', cellsalign: 'center', align: 'center', width: '40%'}
 		]
@@ -76,7 +76,7 @@ function initMemberGrid(){
 	$(memberGridId).on("rowclick", function(event){
 		var row = event.args.rowindex;
 		var rowData = $(memberGridId).jqxGrid("getrowdata", row);
-		reloadAuthGridByNo(rowData.memNo);
+		reloadAuthGridByNo(rowData.memSqPk);
 	});
 }
 
@@ -96,8 +96,8 @@ function initAuthGrid(){
 		editable: false,
 		selectionmode: 'multiplerows',
 		columns: [
-			{text: '일련 번호', dataField: 'authNo', cellsalign: 'center', align: 'center', editable: false, width: '15%'},
-			{text: '권한 명', dataField: 'authNm', cellsalign: 'left', align: 'center', editable: false, width: '30%'},
+			{text: '일련 번호', dataField: 'authSqPk', cellsalign: 'center', align: 'center', editable: false, width: '15%'},
+			{text: '권한 명', dataField: 'authNmUnq', cellsalign: 'left', align: 'center', editable: false, width: '30%'},
 			{text: '권한 설명', dataField: 'authExplanation', cellsalign: 'left', align: 'center', editable: false, width: '55%'}
 		]
 	});
@@ -182,8 +182,8 @@ function changeAuthGrid(listData){
 		localdata: everyAuthList,
 		datatype: "array",
 		datafields: [
-			{name: 'authNo', type: 'int'},
-			{name: 'authNm', type: 'string'},
+			{name: 'authSqPk', type: 'int'},
+			{name: 'authNmUnq', type: 'string'},
 			{name: 'authExplanation', type: 'string'}
 		]
 	};
@@ -212,10 +212,10 @@ function selectRowByValueList(jqxGridSelector, searchValueList){
 	var searchValueCount = searchValueList.length;
 	
 	for(var i = 0; i < rowsCount; i++){
-		var value = $(jqxGridSelector).jqxGrid('getcellvalue', i, 'authNo');
+		var value = $(jqxGridSelector).jqxGrid('getcellvalue', i, 'authSqPk');
 		
 		for(var k = 0; k < searchValueCount; k++){
-			if(value == searchValueList[k].authNo){
+			if(value == searchValueList[k].authSqPk){
 				$(jqxGridSelector).jqxGrid('selectrow', i);
 			}
 		}
@@ -228,13 +228,13 @@ function selectRowByValueList(jqxGridSelector, searchValueList){
  */
 function save(){
 	// 현재 선택한 리소스와 권한의 일련 번호 구하기
-	var selectedMemberNoArray = getSelectedNoArray(memberGridId, 'memNo');
-	var selectedAuthNoArray = getSelectedNoArray(authGridId, 'authNo');
+	var selectedMemberNoArray = getSelectedNoArray(memberGridId, 'memSqPk');
+	var selectedAuthNoArray = getSelectedNoArray(authGridId, 'authSqPk');
 	
 	// 전송할 json 데이터 생성
 	var data = {};
 	//data.memberNo = Number(selectedMemberNoArray[0]);	// String to Number
-	data.authNoList = selectedAuthNoArray;
+	data.authFkPkList = selectedAuthNoArray;
 	data = JSON.stringify(data);
 	
 	// 출력

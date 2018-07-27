@@ -107,10 +107,10 @@ public class BlockMemberController{
 		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
 		//SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'");
 		
-		String memSqPk = blockData.get("memSqPk");
+		String memSqPk = blockData.get("memFk");
 		String blockCause = blockData.get("blockCause");
-		String blockStartDate = blockData.get("setStartDate");
-		String blockExpireDate = blockData.get("setExpireDate");
+		String blockStartDate = blockData.get("setStartDt");
+		String blockExpireDate = blockData.get("setExpireDt");
 		
 		if(StringUtils.hasText(memSqPk)){
 			try{

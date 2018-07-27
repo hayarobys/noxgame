@@ -33,7 +33,7 @@
 				MEM_Fk_PK, AUTH_Fk_PK
 			)
 		VALUES
-		<foreach collection="authSqPkList" item="authFkPk" separator=",">
+		<foreach collection="authFkPkList" item="authFkPk" separator=",">
 			(#{memFkPk}, #{authFkPk})
 		</foreach>
 	</insert>

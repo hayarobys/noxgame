@@ -25,8 +25,8 @@ function initAuthGrid(){
 	var source = {
 		datatype: "json",
 		datafields: [
-			{name: 'authNo', type: 'int'},
-			{name: 'authNm', type: 'string'},
+			{name: 'authSqPk', type: 'int'},
+			{name: 'authNmUnq', type: 'string'},
 			{name: 'authExplanation', type: 'string'}
 		],
 		url: CONTEXT_PATH + '/auth',
@@ -61,15 +61,8 @@ function initAuthGrid(){
 		editable: true,
 		editmode: 'dblclick',
 		columns: [
-			{
-				text: '일련 번호',
-				dataField: 'authNo',
-				cellsalign: 'center',
-				align: 'center',
-				editable: false,
-				width: '10%'
-			},
-			{text: '권한 명', dataField: 'authNm', cellsalign: 'center', align: 'center', editable: true, cellvaluechanging: cellValueChanging, width: '45%'},
+			{text: '일련 번호', dataField: 'authSqPk', cellsalign: 'center', align: 'center', editable: false, width: '10%'},
+			{text: '권한 명', dataField: 'authNmUnq', cellsalign: 'center', align: 'center', editable: true, cellvaluechanging: cellValueChanging, width: '45%'},
 			{text: '권한 설명', dataField: 'authExplanation', cellsalign: 'left', align: 'center', editable: true, cellvaluechanging: cellValueChanging, width: '45%'}
 		]
 	});
@@ -88,7 +81,7 @@ function initAuthGrid(){
 		/** 편집한 행 번호 */
 		var rowIndex = event.args.rowindex;
 		/** 편집한 권한 일련 번호 */
-		var authNo = event.args.row.authNo;
+		var authSqPk = event.args.row.authSqPk;
 		/** 편집한 컬럼명 */
 		var dataField = event.args.datafield;
 		
@@ -119,7 +112,7 @@ function initAuthGrid(){
 		var jsonData = JSON.stringify(data);
 		
 		// 출력
-		console.log("전송할 json 데이터", authNo, jsonData);
+		console.log("전송할 json 데이터", authSqPk, jsonData);
 		
 		// 수정 요청 전송
 		var token = $("meta[name='_csrf']").attr("content");
@@ -127,7 +120,7 @@ function initAuthGrid(){
 		
 		$.ajax({
 			type: "PATCH",
-			url: CONTEXT_PATH + "/auth/" + Number(authNo),
+			url: CONTEXT_PATH + "/auth/" + Number(authSqPk),
 			data: jsonData,
 			contentType: 'application/json',
 			dataType: "json",	// 서버에서 응답한 데이터를 클라이언트에서 읽는 방식
@@ -243,7 +236,7 @@ function objectifyForm(formArray){
  */
 function deleteSelectedAuth(){
 	// 현재 선택한 권한의 일련 번호 구하기
-	var selectedAuthNoArray = String(getSelectedNoArray(authGridId, 'authNo'));
+	var selectedAuthNoArray = String(getSelectedNoArray(authGridId, 'authSqPk'));
 	
 	// 선택한 행이 없으면 이벤트 취소
 	if(selectedAuthNoArray.length <= 0){

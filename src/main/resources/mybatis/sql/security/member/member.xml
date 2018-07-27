@@ -20,6 +20,7 @@
 				MEM_ID,
 				MEM_PASSWORD,
 				MEM_NICKNM,
+				MEM_REG_DT,
 				MEM_STATE,
 				MEM_LAST_LOGIN_DT
 			)
@@ -27,8 +28,9 @@
 				#{memId},
 				#{memPassword},
 				#{memNicknm},
+				current_timestamp()
 				IFNULL(#{memState}, 'ACTIVE'),
-				IFNULL(#{MemLastLoginDt}, current_timestamp())
+				IFNULL(#{memLastLoginDt}, current_timestamp())
 			)
 	</insert>
 	
@@ -111,8 +113,8 @@
 			<if test="memState != null and !''.equals(memState)">
 				MEM_STATE = #{memState},
 			</if>
-			<if test="MemLastLoginDt != null and !''.equals(MemLastLoginDt)">
-				MEM_LAST_LOGIN_DT = #{MemLastLoginDt}
+			<if test="memLastLoginDt != null and !''.equals(memLastLoginDt)">
+				MEM_LAST_LOGIN_DT = #{memLastLoginDt}
 			</if>
 		</set>
 		WHERE

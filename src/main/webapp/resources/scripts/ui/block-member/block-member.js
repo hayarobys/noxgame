@@ -5,7 +5,7 @@ var blockMemberFormId = "#blockMemberForm";
 /** 차단 계정 닉네임(아이디/일련번호) 입력 폼의 id */
 var memInfoInputFormId = "#memInfo";
 /** 차단 계정 일련 번호 입력 폼의 id */
-var memNoInputFormId = "#memNo";
+var memNoInputFormId = "#memFk";
 /** 차단 계정 검색 버튼의 id */
 var popupSearchMemNoButtonId = "#popupSearchMemNoButton"
 	
@@ -75,8 +75,8 @@ function initBlockMemberGrid(){
 		columns: [
 			{
 				text: '일련 번호',
-				dataField: 'blockNo',
-				displayField: 'blockNo',
+				dataField: 'blockSqPk',
+				displayField: 'blockSqPk',
 				cellsalign: 'center',
 				align: 'center',
 				editable: false,
@@ -84,7 +84,7 @@ function initBlockMemberGrid(){
 			},
 			{
 				text: '아이디/닉네임/계정 번호',
-				dataField: 'memNo',
+				dataField: 'memInfo',
 				displayField: 'memInfo',
 				cellsalign: 'center',
 				align: 'center',
@@ -93,7 +93,7 @@ function initBlockMemberGrid(){
 			},
 			{
 				text: '차단 시작 일자',
-				dataField: 'blockStartDate',
+				dataField: 'blockStartDt',
 				columntype: 'datetimeinput',
 				cellsformat: 'yyyy/MM/dd HH:mm:ss',
 				cellsalign: 'center',
@@ -122,7 +122,7 @@ function initBlockMemberGrid(){
 			},
 			{
 				text: '차단 종료 일자',
-				dataField: 'blockExpireDate',
+				dataField: 'blockExpireDt',
 				columntype: 'custom',
 				cellsformat: 'yyyy/MM/dd HH:mm:ss',
 				cellsalign: 'center',
@@ -175,7 +175,7 @@ function initBlockMemberGrid(){
 		/** 편집한 행 번호 */
 		var rowIndex = event.args.rowindex;
 		/** 편집한 권한 일련 번호 */
-		var blockNo = event.args.row.blockNo;
+		var blockSqPk = event.args.row.blockSqPk;
 		/** 편집한 컬럼명 */
 		var dataField = event.args.datafield;
 		
@@ -225,7 +225,7 @@ function initBlockMemberGrid(){
 		var jsonData = JSON.stringify(data);
 		
 		// 출력
-		console.log("전송할 json 데이터", blockNo, jsonData);
+		console.log("전송할 json 데이터", blockSqPk, jsonData);
 				
 		// 수정 요청 전송
 		var token = $("meta[name='_csrf']").attr("content");
@@ -233,7 +233,7 @@ function initBlockMemberGrid(){
 		
 		$.ajax({
 			type: "PATCH",
-			url: CONTEXT_PATH + "/block-member/" + Number(blockNo),
+			url: CONTEXT_PATH + "/block-member/" + Number(blockSqPk),
 			data: jsonData,
 			contentType: 'application/json',
 			dataType: "json",	// 서버에서 응답한 데이터를 클라이언트에서 읽는 방식
@@ -281,10 +281,10 @@ function changeBlockMemberGrid(listData){
 		datatype: "array",
 		datafields: [
 			{name: 'memInfo', type: 'string'},
-			{name: 'blockNo', type: 'int'},
-			{name: 'memNo', type: 'int'},
-			{name: 'blockStartDate', type: 'date'},
-			{name: 'blockExpireDate', type: 'date'},
+			{name: 'blockSqPk', type: 'int'},
+			{name: 'memFk', type: 'int'},
+			{name: 'blockStartDt', type: 'date'},
+			{name: 'blockExpireDt', type: 'date'},
 			{name: 'blockCause', type: 'string'}
 		]
 	};
@@ -326,9 +326,9 @@ function getSelectedNoArray(jqxGridId, returnColumnStr){
 function insertBlockMember(){	
 	// 전송할 json 데이터 생성
 	var formData = {};
-	formData.memNo = $(memNoInputFormId).val();
-	formData.setStartDate = $("#jqxdatetimeinputStart").val();
-	formData.setExpireDate = $("#jqxdatetimeinputExpire").val();
+	formData.memFk = $(memNoInputFormId).val();
+	formData.setStartDt = $("#jqxdatetimeinputStart").val();
+	formData.setExpireDt = $("#jqxdatetimeinputExpire").val();
 	formData.blockCause = $("#blockCause").val();
 	
 	var jsonForm = JSON.stringify(formData);
@@ -384,7 +384,7 @@ function objectifyForm(formArray){
  */
 function deleteSelectedBlockMember(){
 	// 현재 선택한 권한의 일련 번호 구하기
-	var selectedBlockMemberNoArray = String(getSelectedNoArray(blockMemberGridId, 'blockNo'));
+	var selectedBlockMemberNoArray = String(getSelectedNoArray(blockMemberGridId, 'blockSqPk'));
 	
 	// 선택한 행이 없으면 이벤트 취소
 	if(selectedBlockMemberNoArray.length <= 0){

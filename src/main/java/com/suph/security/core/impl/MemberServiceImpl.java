@@ -214,7 +214,7 @@ public class MemberServiceImpl implements MemberService{
 			returnMap.put("result", "success");
 		}catch(DataIntegrityViolationException dive){
 			returnMap.put("result", "fail");
-			returnMap.put("message", "제약 조건에 걸려 삭제할 수 없습니다. 연결된 권한이 없는지 확인해주세요.");
+			returnMap.put("message", "제약 조건에 걸려 삭제할 수 없습니다. 권한, 차단, 게시글 등 이 계정을 참조중인 항목이 있는지 확인해주세요.");
 			dive.printStackTrace();
 		}catch(DataAccessException dae){
 			returnMap.put("result", "fail");

@@ -75,10 +75,10 @@ function getDataAdapter(){
 		},
 		datatype: "json",
 		datafields: [
-			{name: 'memNo', type: 'int'},
+			{name: 'memSqPk', type: 'int'},
 			{name: 'memId', type: 'string'},
 			{name: 'memNicknm', type: 'string'},
-			{name: 'lastLoginDate', type: 'date'}
+			{name: 'memLastLoginDt', type: 'date'}
 		],
 		url: CONTEXT_PATH + '/member',
 		root: 'rows',
@@ -117,7 +117,7 @@ function initMemberGrid(){
 		pagerButtonsCount: 8,
 		editable: false,
 		columns: [
-			{text: '일련 번호', dataField: 'memNo', cellsalign: 'center', align: 'center', width: '24%'},
+			{text: '일련 번호', dataField: 'memSqPk', cellsalign: 'center', align: 'center', width: '24%'},
 			{text: '아이디', dataField: 'memId', cellsalign: 'center', align: 'center', width: '38%'},
 			{text: '닉네임', dataField: 'memNicknm', cellsalign: 'center', align: 'center', width: '38%'}
 		],
@@ -163,7 +163,7 @@ function getSelectedNoArray(jqxGridId, returnColumnStr){
  * @returns
  */
 function selectMember(){
-	var chooseValue = getSelectedNoArray(memberGridId, 'memNo');
+	var chooseValue = getSelectedNoArray(memberGridId, 'memSqPk');
 	console.log('chooseValue: ', chooseValue);
 	proxied.info = chooseValue;
 	popupClose();

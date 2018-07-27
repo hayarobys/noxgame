@@ -57,8 +57,8 @@
 				RES_FK_PK, AUTH_FK_PK
 			)
 		VALUES
-		<foreach collection="authSqPkList" item="authSqPk" separator=",">
-			(#{resFkPk}, #{authSqPk})
+		<foreach collection="authSqPkList" item="authNo" separator=",">
+			(#{resFkPk}, #{authNo})
 		</foreach>
 	</insert>
 	

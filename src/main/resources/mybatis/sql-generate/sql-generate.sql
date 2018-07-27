@@ -173,7 +173,7 @@ ALTER TABLE AUTHGRP_AUTH_TB ADD CONSTRAINT FK_AUTHGRP_AUTH_TB_AUTH_FK_PK_AUTH_TB
 -- BLOCK_TB Table Create SQL
 CREATE TABLE BLOCK_TB
 (
-    `BLOCK_SQ_PK`      INT             NOT NULL    COMMENT '차단 일련 번호', 
+    `BLOCK_SQ_PK`      INT             NOT NULL    AUTO_INCREMENT COMMENT '차단 일련 번호', 
     `MEM_FK`           INT             NOT NULL    COMMENT '계정 일련 번호', 
     `BLOCK_REG_DT`     TIMESTAMP       NOT NULL    COMMENT '차단 등록일', 
     `BLOCK_START_DT`   TIMESTAMP       NOT NULL    COMMENT '차단 시작 일자', 
@@ -290,28 +290,4 @@ ALTER TABLE TEMP_SAVE_TB ADD CONSTRAINT FK_TEMP_SAVE_TB_FILE_GRP_FK_FILE_GROUP_T
 
  
  
-LOCK TABLES `auth_tb` WRITE;
-INSERT INTO `auth_tb` VALUES (1,'ROLE_MANAGER','매니저에게 부여되는 권한 입니다. 대다수 회원정보를 관리할 수 있습니다.'),(2,'ROLE_USER','회원에게 부여되는 권한 입니다. 일반적인 조회,삭제,수정 권한을 지니고 있습니다.'),(3,'ROLE_ADMIN','관리자에게 주어지는 최고권한 입니다. 관리자 이외 누구에게도 부여하지 마십시오.'),(4,'ROLE_ANONYMOUS','미로그인한 사람을 지칭하는 용어 입니다.'),(7,'ROLE_GHOST','유령회원에게 부여되는 권한 입니다. 본인 글의 조회와 정회원 전환 신청이 가능합니다.');
-UNLOCK TABLES;
-
-LOCK TABLES `mem_tb` WRITE;
-INSERT INTO `mem_tb` VALUES (1,'2017-01-01 09:00:00','2017-03-12 08:40:00','ACTIVE','관리자','admin','$2a$10$NZvPdl81VgihX9ZKchaYZunWsd1wmm2Ap4IWtjXR.8sHvFReE9awy'),(2,'2017-01-01 09:00:00','2018-03-12 09:16:49','ACTIVE','일반인','user','$2a$10$nDi7TrWFH0mRXzk6Ncfd3uZke0JUmgPLxOMxudsSClhu0iKJpIddS'),(3,'2017-01-01 09:00:00','2017-03-12 09:17:00','ACTIVE','매니저','manager','$2a$10$LP3.bRbdubi788K18uwi..cd.pCGYNeIUuBavTDuuiUXOSuxWqMIe'),(11,'2017-01-01 09:00:00','2018-03-14 06:23:51','ACTIVE','테스터','tester','$2a$10$qRw0wtqj372RRGDggxMtW.WS/XGEnpbqvaHrZYoNTG8NKIzFbNdmO'),(14,'2017-01-01 09:00:00','2018-05-04 04:18:15','ACTIVE','테스터2','tester2','$2a$10$UwQYF9VDwvysO4tMQ45CCeeyNFRdWPGpwmhwvjf6Hz1CQ7yDoblYi');
-UNLOCK TABLES;
-
-LOCK TABLES `block_tb` WRITE;
-INSERT INTO `block_tb` VALUES (1,11,'2018-07-20 09:00:00','2018-04-26 05:33:32','2018-03-30 06:54:54','과거'),(2,11,'2018-07-20 09:00:00','2018-07-25 06:54:54','2019-03-30 06:54:54','미래1'),(3,11,'2018-07-20 09:00:00','2019-04-23 06:54:54','2019-04-30 06:54:54','미래2'),(4,14,'2018-07-20 09:00:00','2018-05-03 07:06:43','2018-05-31 06:56:49','현재'),(5,14,'2018-07-20 09:00:00','2018-05-24 07:05:43','2018-05-27 06:57:06','미래2'),(6,14,'2018-07-20 09:00:00','2018-05-24 07:11:43','2018-05-30 06:57:06','미래3'),(7,11,'2018-07-20 09:00:00','2018-05-14 06:51:33','2018-06-01 06:51:33','현재');
-UNLOCK TABLES;
-
-LOCK TABLES `mem_auth_tb` WRITE;
-INSERT INTO `mem_auth_tb` VALUES (3,1),(2,2),(11,2),(14,2),(1,3);
-UNLOCK TABLES;
-
-LOCK TABLES `res_tb` WRITE;
-INSERT INTO `res_tb` VALUES ('1', 'GET', '40000', 'url', '관리자 페이지', '/admin/**'),('2', 'GET', '30000', 'url', '메인 페이지', '/main'),('3', 'GET', '10000', 'url', '모든 페이지', '/**'),('4', 'GET', '50000', 'url', '리소스 관리 페이지 이동', '/resource/edit'),('5', 'GET', '50110', 'url', '모든 리소스 목록 중 해당 페이지 만큼 반환', '/resource/page/*'),('6', 'GET', '50100', 'url', '모든 리소스 목록 반환', '/resource'),('7', 'POST', '50200', 'url', '리소스 추가', '/resource'),('8', 'PATCH', '50300', 'url', '특정 리소스 수정', '/resource/*'),('9', 'DELETE', '50400', 'url', '하나 또는 여러개의 리소스 삭제', '/resource/*'),('10', 'GET', '60000', 'url', 'HTTP 메소드 관리 페이지 이동', '/http-method/edit'),('11', 'GET', '60100', 'url', '모든 HTTP 메소드 목록 반환', '/http-method'),('12', 'GET', '70000', 'url', '리소스-권한 관리 페이지 이동', '/resource-auth/edit'),('13', 'GET', '70100', 'url', '특정 리소스 접근에 필요한 권한 목록 반환', '/resource/*/auth'),('14', 'GET', '60200', 'url', '특정 일련 번호의 HTTP 메소드 반환', '/http-method/*'),('15', 'PATCH', '70200', 'url', '특정 리소스 접근에 필요한 권한 목록 업데이트', '/resource/*/auth'),('16', 'GET', '80000', 'url', '권한 관리 페이지 이동', '/auth/edit'),('17', 'GET', '80100', 'url', '모든 권한 목록 반환', '/auth'),('18', 'DELETE', '80200', 'url', '특정 권한 삭제', '/auth/*'),('19', 'GET', '90000', 'url', '계정별 권한 관리 페이지 이동', '/member-auth/edit'),('20', 'GET', '90100', 'url', '특정 계정이 보유한 권한 목록 반환', '/member/*/auth'),('21', 'GET', '90110', 'url', '특정 계정이 보유한 권한 목록 증 해당 페이지 만큼 반환', '/member/*/auth/page/*'),('22', 'PATCH', '90200', 'url', '특정 계정이 보유한 권한 목록 업데이트', '/member/*/auth'),('23', 'GET', '20000', 'url', '로그인 페이지', '/login/edit'),('24', 'POST', '20001', 'url', 'post 로그인 페이지', '/login/edit'),('25', 'PATCH', '20003', 'url', 'patch 로그인 페이지', '/login/edit'),('26', 'DELETE', '20004', 'url', 'delete 로그인 페이지', '/login/edit'),('27', 'PATCH', '80300', 'url', '특정 권한 수정', '/auth/*'),('28', 'POST', '80400', 'url', '권한 추가', '/auth'),('29', 'GET', '100000', 'url', '계정 관리 페이지 이동', '/member/edit'),('30', 'GET', '100100', 'url', '모든 계정 목록 반환(password제외)', '/member'),('31', 'GET', '100110', 'url', '모든 계정 목록 중 해당 페이지 만큼 반환(password제외)', '/member/page/*'),('32', 'PATCH', '100200', 'url', '특정 계정 수정', '/member/*'),('33', 'GET', '100300', 'url', '회원가입 페이지 이동', '/member/registraion'),('34', 'POST', '100400', 'url', '계정 중복 검사', '/check/member/id'),('35', 'POST', '100500', 'url', '회원 등록', '/member'),('36', 'DELETE', '100600', 'url', '특정 계정 삭제 / 회원 탈퇴', '/member/*'),('37', 'GET', '110000', 'url', '차단 계정 관리 페이지로 이동', '/block-member/edit'),('38', 'GET', '110100', 'url', '모든 차단 계정 목록 조회', '/block-member'),('39', 'POST', '110200', 'url', '차단 계정 추가', '/block-member'),('40', 'PATCH', '110300', 'url', '차단 계정 정보 수정', '/block-member/*'),('41', 'DELETE', '110400', 'url', '차단 계정 정보 삭제', '/block-member/*');
-UNLOCK TABLES;
-/*
-LOCK TABLES `res_auth_tb` WRITE;
-INSERT INTO `res_auth_tb` VALUES (2,1),(4,1),(5,1),(51,1),(52,1),(53,1),(54,1),(55,1),(4,2),(5,2),(2,3),(4,3),(5,3),(11,3),(12,3),(13,3),(17,3),(19,3),(20,3),(21,3),(22,3),(23,3),(24,3),(25,3),(26,3),(27,3),(28,3),(29,3),(30,3),(31,3),(32,3),(33,3),(40,3),(41,3),(43,3),(44,1),(44,3),(45,3),(46,3),(48,3),(49,3),(50,3),(51,3),(52,3),(53,3),(54,3),(55,3),(4,4),(5,4),(35,4),(36,4),(38,4),(39,4),(47,4),(5,7);
-UNLOCK TABLES;
-*/
 

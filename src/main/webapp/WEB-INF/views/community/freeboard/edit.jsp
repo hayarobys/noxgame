@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
@@ -30,10 +31,10 @@
 					<textarea name="ir1" id="ir1" rows="10" cols="100">에디터에 기본으로 삽입할 글(수정 모드)이 없다면 이 value 값을 지정하지 않으시면 됩니다.</textarea>
 					
 					<p>
-						<input type="button" onclick="pasteHTML();" value="본문에 내용 넣기" />
-						<input type="button" onclick="showHTML();" value="본문 내용 가져오기" />
-						<input type="button" onclick="submitContents(this);" value="서버로 내용 전송" />
-						<input type="button" onclick="setDefaultFont();" value="기본 폰트 지정하기 (궁서_24)" />
+						<!-- <input type="button" onclick="pasteHTML();" value="본문에 내용 넣기" />
+						<input type="button" onclick="showHTML();" value="본문 내용 가져오기" /> -->
+						<input type="submit" onclick="submitContents(this);" value="서버로 내용 전송" />
+						<!-- <input type="button" onclick="setDefaultFont();" value="기본 폰트 지정하기 (궁서_24)" /> -->
 					</p>
 				</form>
 			</article>

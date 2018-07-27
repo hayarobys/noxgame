@@ -14,8 +14,10 @@
 	<script charset="utf-8" src="<c:url value='/resources/scripts/ui/block-member/block-member.js'/>"></script>
 </head>
 <body>
+	
 	<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
 	<jsp:include page="/WEB-INF/views/common/top-nav.jsp"></jsp:include>
+	
 	<div id="contents">
 		<jsp:include page="/WEB-INF/views/common/side-nav.jsp"></jsp:include>
 		
@@ -73,14 +75,14 @@
 							<td>
 								<label for="popupSearchMemNoButton">
 									<input type="text" id="memInfo" name="memInfo" readonly="readonly" />
-									<input type="hidden" id="memNo" name="memNo" />
+									<input type="hidden" id="memFk" name="memFk" />
 								</label>
 								<button id="popupSearchMemNoButton" type="button" onclick="javascript:popupSearchMemNo();" >계정 검색</button>
 							</td>
 						</tr>
 						<tr>
 							<th>
-								<label for="blockStartDate">시작 일</label>
+								<label for="blockStartDt">시작 일</label>
 							</th>
 							<td id="jqxdatetimeinputStart">
 								<%-- jqxdatetimeinput script --%>
@@ -88,7 +90,7 @@
 						</tr>
 						<tr>
 							<th>
-								<label for="blockExpireDate">만료 일</label>
+								<label for="blockExpireDt">만료 일</label>
 							</th>
 							<td id="jqxdatetimeinputExpire">
 								<%-- jqxdatetimeinput script --%>

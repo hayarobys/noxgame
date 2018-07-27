@@ -180,7 +180,7 @@ function initResourceGrid(){
 		/** 편집한 행 번호 */
 		var rowIndex = event.args.rowindex;
 		/** 편집한 리소스 일련 번호 */
-		var resourceNo = event.args.row.resourceNo;
+		var resSqPk = event.args.row.resSqPk;
 		/** 편집한 컬럼명 */
 		var dataField = event.args.datafield;
 		
@@ -211,7 +211,7 @@ function initResourceGrid(){
 		var jsonData = JSON.stringify(data);
 		
 		// 출력
-		console.log("전송할 json 데이터", resourceNo, jsonData);
+		console.log("전송할 json 데이터", resSqPk, jsonData);
 		
 		// 수정 요청 전송
 		var token = $("meta[name='_csrf']").attr("content");
@@ -219,7 +219,7 @@ function initResourceGrid(){
 		
 		$.ajax({
 			type: "PATCH",
-			url: CONTEXT_PATH + "/resource/" + Number(resourceNo),
+			url: CONTEXT_PATH + "/resource/" + Number(resSqPk),
 			data: jsonData,
 			contentType: 'application/json',
 			dataType: "json",	// 서버에서 응답한 데이터를 클라이언트에서 읽는 방식

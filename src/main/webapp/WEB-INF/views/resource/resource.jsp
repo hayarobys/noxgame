@@ -13,8 +13,10 @@
 	<script src="<c:url value='/resources/scripts/ui/resource/resource.js'/>"></script>
 </head>
 <body>
+	
 	<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
 	<jsp:include page="/WEB-INF/views/common/top-nav.jsp"></jsp:include>
+	
 	<div id="contents">
 		<jsp:include page="/WEB-INF/views/common/side-nav.jsp"></jsp:include>
 		
@@ -40,7 +42,7 @@
 								<label for="resourceNm">이름</label>
 							</th>
 							<td>
-								<input id="resourceNm" name="resourceNm" type="text" placeholder="OO 게시판" />
+								<input id="resourceNm" name="resNmUnq" type="text" placeholder="OO 게시판" />
 							</td>
 						</tr>
 						<tr>
@@ -48,7 +50,7 @@
 								<label for="httpMethod">HTTP METHOD</label>
 							</th>
 							<td>
-								<select id="httpMethod" name="httpMethod">
+								<select id="httpMethod" name="httpMethodPk">
 									<option value="" label="선택" />
 								</select>
 							</td>
@@ -58,7 +60,7 @@
 								<label for="resourcePattern">패턴</label>
 							</th>
 							<td>
-								<input id="resourcePattern" name="resourcePattern" type="text" placeholder="/info/item/**" />
+								<input id="resourcePattern" name="resPattern" type="text" placeholder="/info/item/**" />
 							</td>
 						</tr>
 						<tr>
@@ -66,7 +68,7 @@
 								<label for="resourceType">타입</label>
 							</th>
 							<td>
-								<input id="resourceType" name="resourceType" type="text" placeholder="url, method, class..." value="url" />
+								<input id="resourceType" name="resType" type="text" placeholder="url, method, class..." value="url" />
 							</td>
 						</tr>
 						<tr>
@@ -85,6 +87,7 @@
 	</div>
 	
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
+	
 </body>
 </html>
 

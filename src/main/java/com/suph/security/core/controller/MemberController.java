@@ -49,14 +49,6 @@ public class MemberController{
 	}
 	
 	/**
-	 * 모든 계정 목록 중 해당 페이지 만큼 반환
-	 */
-	@RequestMapping(value="/member/page/{pageNo}", method=RequestMethod.GET)
-	public Map<String, Object> getMemberByPage(){
-		return null;
-	}
-	
-	/**
 	 * 특정 계정을 수정합니다
 	 * @param memNo 수정할 계정의 일련 번호
 	 * @param memberDTO 수정할 정보

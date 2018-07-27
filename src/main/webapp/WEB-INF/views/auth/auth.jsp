@@ -40,7 +40,7 @@
 								<label for="authNm">권한 명</label>
 							</th>
 							<td>
-								<input id="authNm" name="authNm" type="text" placeholder="ROLE_권한명" />
+								<input id="authNm" name="authNmUnq" type="text" placeholder="ROLE_권한명" />
 							</td>
 						</tr>
 						<tr>

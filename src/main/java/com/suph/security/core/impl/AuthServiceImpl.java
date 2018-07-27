@@ -82,13 +82,20 @@ public class AuthServiceImpl implements AuthService{
 	public Map<String, Object> patchAuthByAuthNo(Integer authSqPk, AuthDTO authDTO){
 		Map<String, Object> returnMap = new HashMap<String, Object>();
 		
-		authDTO.setAuthSqPk(authSqPk);
-		try{
-			authDAO.updateAuthByAuthNo(authDTO);
-			returnMap.put("result", "success");
-		}catch(DataAccessException dae){
+		// 하나라도 공백 또는 null이 들어왔다면 fail 처리 합니다.
+		if(		StringUtils.hasText(authDTO.getAuthNmUnq())
+			&&	StringUtils.hasText(authDTO.getAuthExplanation())
+		){
+			authDTO.setAuthSqPk(authSqPk);
+			try{
+				authDAO.updateAuthByAuthNo(authDTO);
+				returnMap.put("result", "success");
+			}catch(DataAccessException dae){
+				returnMap.put("result", "fail");
+				dae.printStackTrace();
+			}
+		}else{
 			returnMap.put("result", "fail");
-			dae.printStackTrace();
 		}
 		
 		return returnMap;

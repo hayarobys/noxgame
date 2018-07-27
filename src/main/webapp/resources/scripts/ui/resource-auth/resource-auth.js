@@ -62,7 +62,7 @@ function initResourceGrid(){
 			if(key == 13){	// key 13 = enter
 				var row = $(resourceGridId).jqxGrid('getselectedrowindex');
 				var rowData = $(resourceGridId).jqxGrid("getrowdata", row);
-				reloadAuthGridByNo(rowData.resourceNo);
+				reloadAuthGridByNo(rowData.resSqPk);
 				return true;
 			}
 		},
@@ -76,7 +76,7 @@ function initResourceGrid(){
 	
 	$(resourceGridId).on("rowclick", function(event){
 		var row = event.args.rowindex;
-		var rowData = $(resourceGridId).jqxGrid("getrowdata", row);
+		var rowData = $(resourceGridId).jqxGrid("getrowdata", row);console.log("데: ", rowData);
 		reloadAuthGridByNo(rowData.resSqPk);
 	});
 }

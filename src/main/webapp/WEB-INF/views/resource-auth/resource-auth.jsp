@@ -13,8 +13,10 @@
 	<script src="<c:url value='/resources/scripts/ui/resource-auth/resource-auth.js'/>"></script>
 </head>
 <body>
+	
 	<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
 	<jsp:include page="/WEB-INF/views/common/top-nav.jsp"></jsp:include>
+	
 	<div id="contents">
 		<jsp:include page="/WEB-INF/views/common/side-nav.jsp"></jsp:include>
 		
@@ -51,6 +53,7 @@
 	</div>
 	
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
+	
 </body>
 </html>
 

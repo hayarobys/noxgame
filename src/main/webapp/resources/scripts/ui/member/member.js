@@ -47,10 +47,10 @@ function initMemberGrid(){
 	var source = {
 		datatype: "json",
 		datafields: [
-			{name: 'memNo', type: 'int'},
+			{name: 'memSqPk', type: 'int'},
 			{name: 'memId', type: 'string'},
 			{name: 'memNicknm', type: 'string'},
-			{name: 'lastLoginDate', type: 'date'}
+			{name: 'memLastLoginDt', type: 'date'}
 		],
 		url: CONTEXT_PATH + '/member',
 		root: 'rows',
@@ -83,19 +83,12 @@ function initMemberGrid(){
 		editable: true,
 		editmode: 'dblclick',
 		columns: [
-			{
-				text: '일련 번호',
-				dataField: 'memNo',
-				cellsalign: 'center',
-				align: 'center',
-				editable: false,
-				width: '10%'
-			},
+			{text: '일련 번호', dataField: 'memSqPk', cellsalign: 'center', align: 'center', editable: false, width: '10%'},
 			{text: '아이디', dataField: 'memId', cellsalign: 'center', align: 'center', editable: true, cellvaluechanging: cellValueChanging, width: '30%'},
 			{text: '이름', dataField: 'memNicknm', cellsalign: 'center', align: 'center', editable: true, cellvaluechanging: cellValueChanging, width: '20%'},
 			{
 				text: '마지막 로그인 일자',
-				dataField: 'lastLoginDate',
+				dataField: 'memLastLoginDt',
 				columntype: 'datetimeinput',
 				cellsformat: 'yyyy/MM/dd HH:mm:ss',
 				cellsalign: 'center',
@@ -109,10 +102,8 @@ function initMemberGrid(){
 	
 	// Cell Begin Edit
 	$(memberGridId).on('cellbeginedit', function(event){
-		
 		$(memberGridId).jqxGrid("clearselection"); // MEMBER 그리드의 선택 효과 제거
 		$(memberGridId).jqxGrid('selectrow', event.args.rowindex);	// 편집에 들어간 행에 선택 효과 부여
-		
 	});
 	
 	// Cell End Edit
@@ -121,7 +112,7 @@ function initMemberGrid(){
 		/** 편집한 행 번호 */
 		var rowIndex = event.args.rowindex;
 		/** 편집한 권한 일련 번호 */
-		var memNo = event.args.row.memNo;
+		var memSqPk = event.args.row.memSqPk;
 		/** 편집한 컬럼명 */
 		var dataField = event.args.datafield;
 		
@@ -171,7 +162,7 @@ function initMemberGrid(){
 		var jsonData = JSON.stringify(data);
 		
 		// 출력
-		console.log("전송할 json 데이터", memNo, jsonData);
+		console.log("전송할 json 데이터", memSqPk, jsonData);
 				
 		// 수정 요청 전송
 		var token = $("meta[name='_csrf']").attr("content");
@@ -179,7 +170,7 @@ function initMemberGrid(){
 		
 		$.ajax({
 			type: "PATCH",
-			url: CONTEXT_PATH + "/member/" + Number(memNo),
+			url: CONTEXT_PATH + "/member/" + Number(memSqPk),
 			data: jsonData,
 			contentType: 'application/json',
 			dataType: "json",	// 서버에서 응답한 데이터를 클라이언트에서 읽는 방식
@@ -273,6 +264,8 @@ function insertMember(){
 				console.log("data", data);
 				reloadMemberGrid();
 				$(memberFormId)[0].reset();
+				isPassedMemIdDuplicateCheck = false;
+				$(memIdDuplicateCheckButtonId).removeAttr("disabled").text(memIdDuplicateCheckMessage.before);
 			}else{
 				console.log("MEMBER 등록에 실패했습니다.");
 				console.log("message", data.message);
@@ -302,7 +295,7 @@ function objectifyForm(formArray){
  */
 function deleteSelectedMember(){
 	// 현재 선택한 권한의 일련 번호 구하기
-	var selectedMemberNoArray = String(getSelectedNoArray(memberGridId, 'memNo'));
+	var selectedMemberNoArray = String(getSelectedNoArray(memberGridId, 'memSqPk'));
 	
 	// 선택한 행이 없으면 이벤트 취소
 	if(selectedMemberNoArray.length <= 0){
@@ -392,7 +385,7 @@ function memIdDuplicateCheck(){
 			default:
 				isPassedMemIdDuplicateCheck = false;
 				$(memIdDuplicateCheckButtonId).removeAttr("disabled").text(memIdDuplicateCheckMessage.fail);
-				console.log("message",data.message);
+				console.log("message", data.message);
 			}
 		},
 		error: function(xhr){
