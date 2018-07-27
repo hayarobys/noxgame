@@ -61,7 +61,7 @@ INSERT INTO res_tb (HTTP_METHOD_PK,SORT_ORDER,RES_TYPE,RES_NM_UNQ,RES_PATTERN) V
 ,('DELETE',110400,'url','차단 계정 정보 삭제','/block-member/*')
 ;
 
-INSERT INTO nox3.mem_auth_tb (MEM_FK_PK,AUTH_FK_PK) VALUES 
+INSERT INTO mem_auth_tb (MEM_FK_PK,AUTH_FK_PK) VALUES 
 (3,1)
 ,(2,2)
 ,(4,2)
@@ -69,7 +69,7 @@ INSERT INTO nox3.mem_auth_tb (MEM_FK_PK,AUTH_FK_PK) VALUES
 ,(5,5)
 ;
 
-INSERT INTO nox3.res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES 
+INSERT INTO res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES 
 (1,1)
 ,(2,1)
 ,(3,1)
@@ -81,7 +81,7 @@ INSERT INTO nox3.res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES
 ,(37,1)
 ,(38,1)
 ;
-INSERT INTO nox3.res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES 
+INSERT INTO res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES 
 (2,2)
 ,(3,2)
 ,(31,2)
@@ -93,7 +93,7 @@ INSERT INTO nox3.res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES
 ,(6,3)
 ,(7,3)
 ;
-INSERT INTO nox3.res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES 
+INSERT INTO res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES 
 (8,3)
 ,(9,3)
 ,(10,3)
@@ -105,7 +105,7 @@ INSERT INTO nox3.res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES
 ,(16,3)
 ,(17,3)
 ;
-INSERT INTO nox3.res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES 
+INSERT INTO res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES 
 (18,3)
 ,(19,3)
 ,(20,3)
@@ -117,7 +117,7 @@ INSERT INTO nox3.res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES
 ,(31,3)
 ,(32,3)
 ;
-INSERT INTO nox3.res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES 
+INSERT INTO res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES 
 (33,3)
 ,(34,3)
 ,(35,3)
@@ -129,7 +129,7 @@ INSERT INTO nox3.res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES
 ,(21,4)
 ,(22,4)
 ;
-INSERT INTO nox3.res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES 
+INSERT INTO res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES 
 (23,4)
 ,(24,4)
 ,(30,4)
