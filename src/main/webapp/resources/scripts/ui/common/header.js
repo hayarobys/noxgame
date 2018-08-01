@@ -1,7 +1,7 @@
-$(function() {
+jQuery(function() {
 	
 	var bannerURL = CONTEXT_PATH + "/resources/image/common/banner/banner" + getRandomBannerNumber(0, 1) + ".gif";
-	$(".header img#banner").attr("src", bannerURL);
+	jQuery(".header img#banner").attr("src", bannerURL);
 });
 
 /**

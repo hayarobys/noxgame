@@ -351,10 +351,8 @@
 	}
     
     function callAjaxForHTML5 (tempFile, sUploadURL){
-    	//console.log("tempFile: ", tempFile);
-    	//console.log("sUploadURL: ", sUploadURL);
     	var oAjax = jindo.$Ajax(sUploadURL, {
-			type: 'xhr',
+			//type: 'xhr',
 			method : "post",
 			onload : function(res){ // 요청이 완료되면 실행될 콜백 함수
 				var sResString = res._response.responseText;
@@ -378,9 +376,12 @@
 		oAjax.header("X-Ajax-call","true");	// CustomAccessDeniedHandler에서 Ajax요청을 구분하기 위해 약속한 값
 		oAjax.header(header,token);			// 헤더의 csrf meta태그를 읽어 CSRF 토큰 함께 전송
 		/*oAjax.header("Content-Type","multipart/form-data");*/
+		/*oAjax.header("contentType","multipart/form-data");*/
+		
 		oAjax.header("file-name",encodeURIComponent(tempFile.name));
 		oAjax.header("file-size",tempFile.size);
 		oAjax.header("file-Type",tempFile.type);
+		console.log(tempFile);
 		oAjax.request(tempFile);
     }
     
@@ -487,7 +488,7 @@
  	function callFileUploader (){
  		oFileUploader = new jindo.FileUploader(jindo.$("uploadInputBox"),{
  			sUrl  : CONTEXT_PATH + '/upload/photo',	// 단일 파일 업로드 URL입니다.
- 	        //sCallback : CONTEXT_PATH + '/resources/callback',	//업로드 이후에 iframe이 redirect될 콜백페이지의 주소
+ 	        sCallback : CONTEXT_PATH + '/resources/scripts/smarteditor2-2.9.0/photo_uploader/callback.html',	//업로드 이후에 iframe이 redirect될 콜백페이지의 주소
  	    	sFiletype : "*.jpg;*.png;*.bmp;*.gif",						//허용할 파일의 형식. ex) "*", "*.*", "*.jpg", 구분자(;)	
  	    	sMsgNotAllowedExt : 'JPG, GIF, PNG, BMP 확장자만 가능합니다',	//허용할 파일의 형식이 아닌경우에 띄워주는 경고창의 문구
  	    	bAutoUpload : false,									 	//파일이 선택됨과 동시에 자동으로 업로드를 수행할지 여부 (upload 메소드 수행)

@@ -31,7 +31,7 @@ public class UploadController{
 	 * @param fileVO
 	 */
 	@RequestMapping(value="/upload/photo", method=RequestMethod.POST, headers=("content-type=multipart/*"))
-	public String singleUpload(FileVO fileVO, HttpServletRequest request){
+	public String singleUpload(ImageFileVO fileVO, HttpServletRequest request){
 		
 		String callback = fileVO.getCallback();
         String callback_func = fileVO.getCallback_func();
@@ -72,7 +72,7 @@ public class UploadController{
 	}
 	
 	/**
-	 * 다중 파일 업로드
+	 * HTML5 지원 브라우저에서 application/x-www-form-urlencoded; charset=utf-8 타입으로 전송되는 이미지를 받습니다.
 	 * @param request
 	 * @param response
 	 */
@@ -81,47 +81,43 @@ public class UploadController{
 			HttpServletRequest request,
 			HttpServletResponse response
 	){
-		try{
-			String sFileInfo = ""; // 파일 정보
-			String filename = request.getHeader("file-name"); // 원본 파일 명
-			String filename_ext = filename.substring(filename.lastIndexOf(".")+1); // 파일 확장자
-			filename_ext = filename_ext.toLowerCase(); // 확장자를 소문자로 변경
-			String dftFilePath = request.getSession().getServletContext().getRealPath("/"); // 파일 기본경로
-			String filePath = dftFilePath + "resources" + File.separator + "upload" + File.separator; // 파일 상세경로
-			File file = new File(filePath);
+		
+		String sFileInfo	= ""; // 파일 정보
+		String filename		= request.getHeader("file-name"); // 원본 파일 명
+		String filename_ext	= filename.substring(filename.lastIndexOf(".")+1).toLowerCase(); // 확장자를 소문자로 변경
+		String dftFilePath	= request.getSession().getServletContext().getRealPath("/"); // 파일 기본경로
+		String filePath		= dftFilePath + "resources" + File.separator + "upload" + File.separator; // 파일 상세경로
+		File file			= new File(filePath);
+		
+		// 폴더 생성
+		if( !file.exists() ){ file.mkdirs(); }
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+		String today		= formatter.format(new java.util.Date());
+		String saveFileNm	= today + UUID.randomUUID().toString();
+		
+		try{	
+			// 서버에 파일쓰기
+			InputStream is	= request.getInputStream();
+			OutputStream os	= new FileOutputStream(filePath + saveFileNm + "." + filename_ext);
 			
-			logger.debug("다중 파일 저장경로: {}", filePath);
-			
-			if(!file.exists()){
-				file.mkdirs();
-			}
-			
-			String realFileNm = "";
-			SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
-			String today = formatter.format(new java.util.Date());
-			realFileNm = today + UUID.randomUUID().toString() + filename.substring(filename.lastIndexOf("."));
-			String rlFileNm = filePath + realFileNm;
-			
-			/// 서버에 파일쓰기 ///
-			InputStream is = request.getInputStream();
-			OutputStream os = new FileOutputStream(rlFileNm);
 			int numRead;
 			byte b[] = new byte[Integer.parseInt(request.getHeader("file-size"))];
-			while((numRead = is.read(b,0,b.length)) != -1){
+			while((numRead = is.read(b, 0, b.length)) != -1){
 				os.write(b, 0, numRead);
 			}
-			if(is != null){
-				is.close();
-			}
+			
+			if( is != null ){ is.close(); }
 			os.flush();
 			os.close();
-			/// 서버에 파일쓰기 ///
 			
-			//정보 출력
-			sFileInfo += "&bNewLine=true";
-			// img 태그의 title 속성을 원본파일명으로 적용시켜주기 위함
-			sFileInfo += "&sFileName=" + filename;
-			sFileInfo += "&sFileURL=" + request.getContextPath() + "/resources/upload/" + realFileNm;
+			logger.debug("ImageUpload - Name: {}, Path: {}", saveFileNm + filename_ext, filePath);
+			
+			// 반환값 정리
+			sFileInfo += "&bNewLine=true"; // 이미지 사이에 간격주기
+			sFileInfo += "&sFileName=" + filename; // img 태그의 title 속성에 쓰일 원본 파일명
+			sFileInfo += "&sFileURL=" + request.getContextPath() + "/resources/upload/"  + saveFileNm + "." + filename_ext;
+			
 			PrintWriter print = response.getWriter();
 			print.print(sFileInfo);
 			print.flush();

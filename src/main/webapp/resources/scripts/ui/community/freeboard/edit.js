@@ -2,6 +2,7 @@ var oEditors = [];
 var sLang = "ko_KR";	// 언어
 
 $(function() {
+	jQuery.noConflict();
 	// Naver SmartEditor2
 	nhn.husky.EZCreator.createInIFrame({
 	    oAppRef: oEditors,

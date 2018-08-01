@@ -44,6 +44,7 @@ public final class CustomCsrfFilter extends OncePerRequestFilter{
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException{
+		LOGGER.debug("ContentType: {}", request.getContentType());
 		// 요청에 대한 응답 객체를 바꿔치기 합니다.
 		request.setAttribute(HttpServletResponse.class.getName(), response);
 		
@@ -76,7 +77,6 @@ public final class CustomCsrfFilter extends OncePerRequestFilter{
 		if(actualToken == null){
 			// 헤더에 csrf토큰이 없다면, 다른 이름으로 찾아봅니다.
 			LOGGER.debug("헤더에서 CSRF 토큰을 찾지못했기에 다음의 파라미터 명으로 재검색 합니다: {}", csrfToken.getParameterName());
-			LOGGER.debug("ContentType: {}", request.getContentType());
 			
 			// 멀티파트 폼 데이타 타입일 경우 request.getParameter()는 null값을 배출하므로, MultipartHttpServletRequest로 변환하여 수행합니다.
 			String contentType = request.getContentType();
