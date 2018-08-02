@@ -7,7 +7,7 @@
 	<resultMap type="com.suph.security.core.dto.AuthDTO" id="AuthDTO">
 		<result column="AUTH_SQ_PK" property="authSqPk"/>	<!-- 권한 일련 번호 -->
 		<result column="AUTH_NM_UNQ" property="authNmUnq"/>	<!-- 권한명 -->
-		<result column="AUTH_EXPLANATION" property="authExplanation"/>	<!-- 권한 설명 -->
+		<result column="AUTH_EXPLN" property="authExplanation"/>	<!-- 권한 설명 -->
 	</resultMap>
 	
 	<!-- 특정 계정이 보유한 권한 목록 조회 -->
@@ -15,11 +15,11 @@
 		SELECT
 			A.AUTH_SQ_PK,
 			A.AUTH_NM_UNQ,
-			A.AUTH_EXPLANATION
+			A.AUTH_EXPLN
 		FROM
 			AUTH_TB AS A
-			INNER JOIN MEM_AUTH_TB AS MO ON (A.AUTH_SQ_PK = MO.AUTH_Fk_PK)
-			INNER JOIN MEM_TB AS MT ON (MO.MEM_Fk_PK = MT.MEM_SQ_PK)
+			INNER JOIN MEM_AUTH_TB AS MO ON (A.AUTH_SQ_PK = MO.AUTH_FK_PK)
+			INNER JOIN MEM_TB AS MT ON (MO.MEM_FK_PK = MT.MEM_SQ_PK)
 		WHERE
 				MT.MEM_STATE = 'ACTIVE'
 			AND
@@ -30,7 +30,7 @@
 	<insert id="insertAuthOfMemberByMemNo" parameterType="MemberAuthDTO">
 		INSERT INTO
 			MEM_AUTH_TB(
-				MEM_Fk_PK, AUTH_Fk_PK
+				MEM_FK_PK, AUTH_FK_PK
 			)
 		VALUES
 		<foreach collection="authFkPkList" item="authFkPk" separator=",">
@@ -43,6 +43,6 @@
 		DELETE FROM
 			MEM_AUTH_TB
 		WHERE
-			MEM_Fk_PK = #{memFkPk}
+			MEM_FK_PK = #{memFkPk}
 	</delete>
 </mapper>

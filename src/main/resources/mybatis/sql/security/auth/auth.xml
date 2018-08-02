@@ -6,7 +6,7 @@
 	<resultMap type="com.suph.security.core.dto.AuthDTO" id="AuthDTO">
 		<result column="AUTH_SQ_PK" property="authSqPk"/>	<!-- 권한 일련 번호 -->
 		<result column="AUTH_NM_UNQ" property="authNmUnq"/>	<!-- 권한명 -->
-		<result column="AUTH_EXPLANATION" property="authExplanation"/>	<!-- 권한 설명 -->
+		<result column="AUTH_EXPLN" property="authExplanation"/>	<!-- 권한 설명 -->
 	</resultMap>
 	
 	<!-- 모든 권한 목록을 페이징 처리하여 조회 -->
@@ -25,7 +25,7 @@
 		INSERT INTO
 			AUTH_TB(
 				AUTH_NM_UNQ,
-				AUTH_EXPLANATION
+				AUTH_EXPLN
 			)
 			VALUES(
 				#{authNmUnq},
@@ -42,7 +42,7 @@
 				,AUTH_NM_UNQ = #{authNmUnq}
 			</if>
 			<if test="authExplanation != null and !''.equals(authExplanation)">
-				,AUTH_EXPLANATION = #{authExplanation}
+				,AUTH_EXPLN = #{authExplanation}
 			</if>
 		</set>
 		WHERE

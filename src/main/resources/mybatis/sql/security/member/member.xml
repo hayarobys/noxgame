@@ -7,7 +7,7 @@
 	<resultMap type="com.suph.security.core.dto.MemberDTO" id="MemberDTO">
 		<result column="MEM_SQ_PK" property="memSqPk"/>
 		<result column="MEM_ID" property="memId"/>
-		<result column="MEM_PASSWORD" property="memPassword"/>
+		<result column="MEM_PSWD" property="memPassword"/>
 		<result column="MEM_NICKNM" property="memNicknm"/>
 		<result column="MEM_STATE" property="memState"/>
 		<result column="MEM_LAST_LOGIN_DT" property="memLastLoginDt" jdbcType="TIMESTAMP"/>
@@ -18,9 +18,9 @@
 		INSERT INTO
 			MEM_TB(
 				MEM_ID,
-				MEM_PASSWORD,
+				MEM_PSWD,
 				MEM_NICKNM,
-				MEM_REG_DT,
+				MEM_JOIN_DT,
 				MEM_STATE,
 				MEM_LAST_LOGIN_DT
 			)
@@ -38,7 +38,7 @@
 		SELECT
 			MEM_SQ_PK,
 			MEM_ID,
-			MEM_PASSWORD,
+			MEM_PSWD,
 			MEM_NICKNM,
 			MEM_STATE,
 			MEM_LAST_LOGIN_DT
@@ -105,7 +105,7 @@
 				MEM_ID = #{memId},
 			</if>
 			<if test="memPassword != null and !''.equals(memPassword)">
-				MEM_PASSWORD = #{memPassword},
+				MEM_PSWD = #{memPassword},
 			</if>
 			<if test="memNicknm != null and !''.equals(memNicknm)">
 				MEM_NICKNM = #{memNicknm},

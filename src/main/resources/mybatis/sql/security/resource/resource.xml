@@ -5,7 +5,7 @@
 
 	<resultMap type="com.suph.security.core.dto.ResourceDTO" id="ResourceDTO">
 		<result column="RES_SQ_PK" property="resSqPk" />
-		<result column="SORT_ORDER" property="sortOrder" />
+		<result column="RES_ORD" property="sortOrder" />
 		<result column="RES_TYPE" property="resType" />
 		<result column="HTTP_METHOD_PK" property="httpMethodPk" />
 		<result column="RES_PATTERN" property="resPattern" />
@@ -21,7 +21,7 @@
 	<select id="getResourceList" parameterType="PaginationRequest" resultMap="ResourceDTO">
 		SELECT
 			RES_SQ_PK,
-			SORT_ORDER,
+			RES_ORD,
 			RES_TYPE,
 			HTTP_METHOD_PK,
 			RES_PATTERN,
@@ -29,7 +29,7 @@
 		FROM
 			RES_TB
 		ORDER BY
-			SORT_ORDER DESC,
+			RES_ORD DESC,
 			RES_SQ_PK DESC,
 			HTTP_METHOD_PK ASC
 		LIMIT ${start}, ${pagesize}
@@ -43,7 +43,7 @@
 				HTTP_METHOD_PK,
 				RES_PATTERN,
 				RES_TYPE,
-				SORT_ORDER
+				RES_ORD
 			)
 		VALUES(
 			#{resNmUnq},
@@ -71,7 +71,7 @@
 				RES_TYPE = LCASE(#{resType}),
 			</if>
 			<if test="sortOrder != null and !''.equals(sortOrder)">
-				SORT_ORDER = #{sortOrder}
+				RES_ORD = #{sortOrder}
 			</if>
 		</set>
 		WHERE

@@ -12,7 +12,7 @@
 	<resultMap type="com.suph.security.core.dto.AuthDTO" id="AuthDTO">
 		<result column="AUTH_SQ_PK" property="authSqPk" />
 		<result column="AUTH_NM_UNQ" property="authNmUnq" />
-		<result column="AUTH_EXPLANATION" property="authExplanation" />
+		<result column="AUTH_EXPLN" property="authExplanation" />
 	</resultMap>
 
 	<!-- url/method/pointcut 형식인 리소스 패턴 - 권한 매핑 정보를 조회합니다 -->
@@ -37,7 +37,7 @@
 		SELECT
 			A.AUTH_SQ_PK,
 			A.AUTH_NM_UNQ,
-			A.AUTH_EXPLANATION
+			A.AUTH_EXPLN
 		FROM
 			RES_TB AS R
 			INNER JOIN RES_AUTH_TB AS RA ON (RA.RES_FK_PK = R.RES_SQ_PK)

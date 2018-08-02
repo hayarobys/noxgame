@@ -1,4 +1,4 @@
-INSERT INTO auth_tb (AUTH_NM_UNQ,AUTH_EXPLANATION) VALUES 
+INSERT INTO auth_tb (AUTH_NM_UNQ,AUTH_EXPLN) VALUES 
 ('ROLE_MANAGER','매니저에게 부여되는 권한 입니다. 대다수 회원정보를 관리할 수 있습니다.')
 ,('ROLE_USER','회원에게 부여되는 권한 입니다. 일반적인 조회,삭제,수정 권한을 지니고 있습니다.')
 ,('ROLE_ADMIN','관리자에게 주어지는 최고권한 입니다. 관리자 이외 누구에게도 부여하지 마십시오.')
@@ -6,7 +6,7 @@ INSERT INTO auth_tb (AUTH_NM_UNQ,AUTH_EXPLANATION) VALUES
 ,('ROLE_GHOST','유령회원에게 부여되는 권한 입니다. 본인 글의 조회와 정회원 전환 신청이 가능합니다.')
 ;
 
-INSERT INTO mem_tb (MEM_REG_DT,MEM_LAST_LOGIN_DT,MEM_STATE,MEM_NICKNM,MEM_ID,MEM_PASSWORD) VALUES 
+INSERT INTO mem_tb (MEM_JOIN_DT,MEM_LAST_LOGIN_DT,MEM_STATE,MEM_NICKNM,MEM_ID,MEM_PSWD) VALUES 
 ('2018-07-27 15:33:14.000','2017-03-12 08:40:00.000','ACTIVE','관리자','admin','$2a$10$NZvPdl81VgihX9ZKchaYZunWsd1wmm2Ap4IWtjXR.8sHvFReE9awy')
 ,('2017-01-01 09:00:00.000','2018-03-12 09:16:49.000','ACTIVE','일반인','user','$2a$10$nDi7TrWFH0mRXzk6Ncfd3uZke0JUmgPLxOMxudsSClhu0iKJpIddS')
 ,('2017-01-01 09:00:00.000','2017-03-12 09:17:00.000','ACTIVE','매니저','manager','$2a$10$LP3.bRbdubi788K18uwi..cd.pCGYNeIUuBavTDuuiUXOSuxWqMIe')
@@ -14,7 +14,7 @@ INSERT INTO mem_tb (MEM_REG_DT,MEM_LAST_LOGIN_DT,MEM_STATE,MEM_NICKNM,MEM_ID,MEM
 ,('2018-07-27 15:33:22.000','2018-05-03 04:18:15.000','ACTIVE','테스터23','tester2','$2a$10$UwQYF9VDwvysO4tMQ45CCeeyNFRdWPGpwmhwvjf6Hz1CQ7yDoblYi')
 ;
 
-INSERT INTO res_tb (HTTP_METHOD_PK,SORT_ORDER,RES_TYPE,RES_NM_UNQ,RES_PATTERN) VALUES 
+INSERT INTO res_tb (HTTP_METHOD_PK,RES_ORD,RES_TYPE,RES_NM_UNQ,RES_PATTERN) VALUES 
 ('GET',40000,'url','관리자 페이지','/admin/**')
 ,('GET',30000,'url','메인 페이지','/main')
 ,('GET',10000,'url','모든 페이지','/**')
@@ -26,7 +26,7 @@ INSERT INTO res_tb (HTTP_METHOD_PK,SORT_ORDER,RES_TYPE,RES_NM_UNQ,RES_PATTERN) V
 ,('GET',60000,'url','HTTP 메소드 관리 페이지 이동','/http-method/edit')
 ,('GET',60100,'url','모든 HTTP 메소드 목록 반환','/http-method')
 ;
-INSERT INTO res_tb (HTTP_METHOD_PK,SORT_ORDER,RES_TYPE,RES_NM_UNQ,RES_PATTERN) VALUES 
+INSERT INTO res_tb (HTTP_METHOD_PK,RES_ORD,RES_TYPE,RES_NM_UNQ,RES_PATTERN) VALUES 
 ('GET',70000,'url','리소스-권한 관리 페이지 이동','/resource-auth/edit')
 ,('GET',70100,'url','특정 리소스 접근에 필요한 권한 목록 반환','/resource/*/auth')
 ,('GET',60200,'url','특정 일련 번호의 HTTP 메소드 반환','/http-method/*')
@@ -38,7 +38,7 @@ INSERT INTO res_tb (HTTP_METHOD_PK,SORT_ORDER,RES_TYPE,RES_NM_UNQ,RES_PATTERN) V
 ,('GET',90100,'url','특정 계정이 보유한 권한 목록 반환','/member/*/auth')
 ,('PATCH',90200,'url','특정 계정이 보유한 권한 목록 업데이트','/member/*/auth')
 ;
-INSERT INTO res_tb (HTTP_METHOD_PK,SORT_ORDER,RES_TYPE,RES_NM_UNQ,RES_PATTERN) VALUES 
+INSERT INTO res_tb (HTTP_METHOD_PK,RES_ORD,RES_TYPE,RES_NM_UNQ,RES_PATTERN) VALUES 
 ('GET',20000,'url','로그인 페이지','/login/edit')
 ,('POST',20001,'url','post 로그인 페이지','/login/edit')
 ,('PATCH',20003,'url','patch 로그인 페이지','/login/edit')
@@ -50,7 +50,7 @@ INSERT INTO res_tb (HTTP_METHOD_PK,SORT_ORDER,RES_TYPE,RES_NM_UNQ,RES_PATTERN) V
 ,('PATCH',100200,'url','특정 계정 수정','/member/*')
 ,('GET',100300,'url','회원가입 페이지 이동','/member/registraion')
 ;
-INSERT INTO res_tb (HTTP_METHOD_PK,SORT_ORDER,RES_TYPE,RES_NM_UNQ,RES_PATTERN) VALUES 
+INSERT INTO res_tb (HTTP_METHOD_PK,RES_ORD,RES_TYPE,RES_NM_UNQ,RES_PATTERN) VALUES 
 ('POST',100400,'url','계정 중복 검사','/check/member/id')
 ,('POST',100500,'url','회원 등록','/member')
 ,('DELETE',100600,'url','특정 계정 삭제 / 회원 탈퇴','/member/*')
