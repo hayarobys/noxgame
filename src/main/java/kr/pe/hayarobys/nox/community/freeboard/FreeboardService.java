@@ -1,5 +1,7 @@
 package kr.pe.hayarobys.nox.community.freeboard;
 
-public interface FreeboardService{
+import org.springframework.web.servlet.ModelAndView;
 
+public interface FreeboardService{
+	public abstract ModelAndView getTempSaveSqPk(ModelAndView mav);
 }

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.pe.hayarobys.nox.community.freeboard.FreeboardDAO">
+
+	<resultMap type="kr.pe.hayarobys.nox.community.freeboard.FreeboardVO" id="freeboardVO">
+	</resultMap>
+	
+	<!-- 파일 묵음 레코드 생성 -->
+	<insert id="" parameterType="">
+		INSERT INTO FILE_GRP_TB(
+			DD, TT
+		)VALUES(
+			#{}, #{}
+		)
+		<selectKey resultType="int" keyProperty="fileId" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<!-- 게시글 임시 저장 레코드 생성 -->
+	<insert>
+		INSERT INTO TEMP_SAVE_SQ_PK()
+	</insert>
+</mapper>

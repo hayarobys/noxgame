@@ -42,6 +42,10 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 	
+	<listener>
+		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+	</listener>
+	
 	<session-config>
 		<cookie-config>
 			<http-only>true</http-only>	<!-- 쿠키호출 자바스크립트에 미응답 합니다. -->
