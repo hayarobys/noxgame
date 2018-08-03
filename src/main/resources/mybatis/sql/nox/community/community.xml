@@ -4,23 +4,27 @@
 
 <mapper namespace="kr.pe.hayarobys.nox.community.freeboard.FreeboardDAO">
 
-	<resultMap type="kr.pe.hayarobys.nox.community.freeboard.FreeboardVO" id="freeboardVO">
-	</resultMap>
-	
-	<!-- 파일 묵음 레코드 생성 -->
-	<insert id="" parameterType="">
+	<!-- 파일 묶음을 추가하고 새로 생성된 시퀀스를 가져옵니다. -->
+	<insert id="insertFileGrp" parameterType="FileGrpVO">
 		INSERT INTO FILE_GRP_TB(
-			DD, TT
+			MEM_FK, AUTH_GRP_FK, FILE_GRP_REG_DT
 		)VALUES(
-			#{}, #{}
+			#{memNo}, #{authGrpNo}, CURRENT_TIMESTAMP()
 		)
-		<selectKey resultType="int" keyProperty="fileId" order="AFTER">
+		<selectKey resultType="java.lang.Integer" keyProperty="fileGrpNo" order="AFTER">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
 	</insert>
 	
-	<!-- 게시글 임시 저장 레코드 생성 -->
-	<insert>
-		INSERT INTO TEMP_SAVE_SQ_PK()
+	<!-- 게시글 임시 저장 레코드 추가하고 새로 생성된 시퀀스를 가져옵니다. -->
+	<insert id="insertTempSave" parameterType="TempSaveVO">
+		INSERT INTO TEMP_SAVE_SQ_PK(
+			MEM_FK, RES_FK, FILE_GRP_FK, TEMP_SAVE_CATEGORY
+		)VALUES(
+			#{memNo}, #{resNo}, #{fileGrpNo}, #{tempSaveCategory.value}
+		)
+		<selectKey resultType="java.lang.Integer" keyProperty="tempSaveNo" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
 	</insert>
 </mapper>

@@ -2,6 +2,8 @@ package com.suph.security.core.dto;
 
 import java.util.List;
 
+import com.suph.security.core.enums.HttpMethod;
+
 
 /**
  * 리소스 정보를 담는데 사용됩니다.
@@ -15,7 +17,7 @@ public class ResourceDTO{
 	/** 리소스 타입 */
 	private String resType;
 	/** HTTP METHOD */
-	private String httpMethodPk;
+	private HttpMethod httpMethodPk;
 	/** 리소스 패턴 */
 	private String resPattern;
 	/** 리소스 이름 */
@@ -47,11 +49,11 @@ public class ResourceDTO{
 		this.resType = resType;
 	}
 
-	public String getHttpMethodPk(){
+	public HttpMethod getHttpMethodPk(){
 		return httpMethodPk;
 	}
 
-	public void setHttpMethodPk(String httpMethodPk){
+	public void setHttpMethodPk(HttpMethod httpMethodPk){
 		this.httpMethodPk = httpMethodPk;
 	}
 

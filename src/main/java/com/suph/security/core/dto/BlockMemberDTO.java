@@ -13,8 +13,10 @@ public class BlockMemberDTO{
 	
 	/** 차단 일련 번호 */
 	private Integer blockSqPk;
-	/** 계정 일련 번호 */
-	private Integer memFk;
+	/** 차단 대상 계정 일련 번호 */
+	private Integer blockTargetMemNo;
+	/** 차단 계정을 등록한 계정의 일련 번호 */
+	private Integer blockRegMemNo;
 	/** 차단 시작 일자 */
 	private java.util.Date blockStartDt;
 	/** 차단 만료 일자 */
@@ -38,14 +40,22 @@ public class BlockMemberDTO{
 		this.blockSqPk = blockSqPk;
 	}
 	
-	public Integer getMemFk(){
-		return memFk;
+	public Integer getBlockTargetMemNo(){
+		return blockTargetMemNo;
 	}
-	
-	public void setMemFk(Integer memFk){
-		this.memFk = memFk;
+
+	public void setBlockTargetMemNo(Integer blockTargetMemNo){
+		this.blockTargetMemNo = blockTargetMemNo;
 	}
-	
+
+	public Integer getBlockRegMemNo(){
+		return blockRegMemNo;
+	}
+
+	public void setBlockRegMemNo(Integer blockRegMemNo){
+		this.blockRegMemNo = blockRegMemNo;
+	}
+
 	public java.util.Date getBlockStartDt(){
 		return blockStartDt;
 	}
@@ -69,12 +79,12 @@ public class BlockMemberDTO{
 	public void setBlockCause(String blockCause){
 		this.blockCause = blockCause;
 	}
-	
+
 	@Override
 	public String toString(){
-		return "BlockMemberDTO [memInfo=" + memInfo + ", blockSqPk=" + blockSqPk + ", memFk=" + memFk
-				+ ", blockStartDt=" + blockStartDt + ", blockExpireDt=" + blockExpireDt + ", blockCause=" + blockCause
-				+ "]";
+		return "BlockMemberDTO [memInfo=" + memInfo + ", blockSqPk=" + blockSqPk + ", blockTargetMemNo="
+				+ blockTargetMemNo + ", blockRegMemNo=" + blockRegMemNo + ", blockStartDt=" + blockStartDt
+				+ ", blockExpireDt=" + blockExpireDt + ", blockCause=" + blockCause + "]";
 	}
 }
 

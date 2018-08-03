@@ -6,7 +6,8 @@
 
 	<resultMap type="com.suph.security.core.dto.BlockMemberDTO" id="BlockMemberDTO">
 		<result column="BLOCK_SQ_PK" property="blockSqPk"/>
-		<result column="MEM_FK" property="memFk"/>
+		<result column="BLOCK_TRGT_MEM_FK" property="blockTargetMemNo"/>
+		<result column="BLOCK_REG_MEM_FK" property="blockRegMemNo"/>
 		<result column="BLOCK_START_DT" property="blockStartDt" jdbcType="TIMESTAMP"/>
 		<result column="BLOCK_EXPIRE_DT" property="blockExpireDt" jdbcType="TIMESTAMP"/>
 		<result column="BLOCK_CAUSE" property="blockCause"/>
@@ -26,7 +27,7 @@
 		FROM
 			BLOCK_TB
 		WHERE
-			MEM_FK = #{memFk}
+			BLOCK_TRGT_MEM_FK = #{blockTargetMemNo}
 	</select>
 	
 	<!-- MemberServiceImpl의 loadUserByUsername()에서 차단 정보를 조회하는데 사용됩니다. -->
@@ -39,7 +40,7 @@
 		FROM
 			BLOCK_TB
 		WHERE
-				MEM_FK = #{memFk}
+				BLOCK_TRGT_MEM_FK = #{blockTargetMemNo}
 			AND
 				BLOCK_START_DT < CURRENT_TIMESTAMP()
 			AND
@@ -57,7 +58,7 @@
 		FROM
 			BLOCK_TB
 		WHERE
-				MEM_FK = #{memFk}
+				BLOCK_TRGT_MEM_FK = #{blockTargetMemNo}
 			AND
 				CURRENT_TIMESTAMP() < BLOCK_EXPIRE_DT
 		]]>
@@ -73,7 +74,7 @@
 		FROM
 			BLOCK_TB
 		WHERE
-				MEM_FK = #{memFk}
+				BLOCK_TRGT_MEM_FK = #{blockTargetMemNo}
 			AND
 				BLOCK_START_DT < CURRENT_TIMESTAMP()
 			AND
@@ -86,7 +87,7 @@
 		
 		SELECT
 			BM.BLOCK_SQ_PK,
-			BM.MEM_FK,
+			BM.BLOCK_TRGT_MEM_FK,
 			BM.BLOCK_START_DT,
 			BM.BLOCK_EXPIRE_DT,
 			BM.BLOCK_CAUSE,
@@ -94,7 +95,7 @@
 			CONCAT(M.MEM_ID, ' / ', M.MEM_NICKNM, ' / ', M.MEM_SQ_PK) AS memInfo
 		FROM
 			BLOCK_TB AS BM
-			INNER JOIN MEM_TB AS M ON(BM.MEM_FK = M.MEM_SQ_PK)
+			INNER JOIN MEM_TB AS M ON(BM.BLOCK_TRGT_MEM_FK = M.MEM_SQ_PK)
 		WHERE
 			1=1
 			<choose>
@@ -164,12 +165,14 @@
 	<insert id="insertBlockMember" parameterType="BlockMemberDTO">
 		INSERT INTO
 			BLOCK_TB(
-				MEM_FK,
+				BLOCK_TRGT_MEM_FK,
+				BLOCK_REG_MEM_FK,
 				BLOCK_START_DT,
 				BLOCK_EXPIRE_DT,
 				BLOCK_CAUSE
 			)VALUES(
-				#{memFk},
+				#{blockTargetMemNo},
+				#{blockRegMemNo},
 				#{blockStartDt},
 				#{blockExpireDt},
 				#{blockCause}

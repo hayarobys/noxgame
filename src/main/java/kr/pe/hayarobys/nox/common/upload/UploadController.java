@@ -26,7 +26,7 @@ public class UploadController{
 	 * Form 형식의 SmartEditor 이미지 업로드
 	 * @param fileVO
 	 */
-	@RequestMapping(value="/upload/photo", method=RequestMethod.POST, headers=("content-type=multipart/*"))
+	@RequestMapping(value="/upload/photo/form", method=RequestMethod.POST, headers=("content-type=multipart/*"))
 	public String imageUploadSmartEditorByForm(ImageFileVO fileVO, HttpServletRequest request){
 			return uploadService.imageUploadSmartEditorByForm(fileVO);
 		
@@ -37,7 +37,7 @@ public class UploadController{
 	 * @param request
 	 * @param response
 	 */
-	@RequestMapping(value="/upload/photos", method=RequestMethod.POST)
+	@RequestMapping(value="/upload/photo/ajax", method=RequestMethod.POST)
 	public void imageUploadSmartEditorByStream(
 			HttpServletResponse response
 	){

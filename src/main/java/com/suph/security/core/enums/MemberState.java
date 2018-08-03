@@ -7,7 +7,7 @@ public enum MemberState{
 	
 	private String state;
 	
-	MemberState(String state){
+	private MemberState(String state){
 		this.state = state;
 	}
 	

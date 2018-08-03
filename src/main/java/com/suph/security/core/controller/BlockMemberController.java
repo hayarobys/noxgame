@@ -114,7 +114,7 @@ public class BlockMemberController{
 		
 		if(StringUtils.hasText(memSqPk)){
 			try{
-				blockMemberDTO.setMemFk( Integer.parseInt(memSqPk) );
+				blockMemberDTO.setBlockTargetMemNo( Integer.parseInt(memSqPk) );
 			}catch(NumberFormatException nfe){ nfe.printStackTrace(); }
 		}
 		
