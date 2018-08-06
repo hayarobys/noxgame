@@ -24,6 +24,10 @@ public enum TempSaveCategory{
 		this.value = value;
 	}
 	
+	public int getValue(){
+		return value;
+	}
+	
 	public static TempSaveCategory valueOf(int value){
 		switch(value){
 		case 1: return TempSaveCategory.MEMBER_SOFTWARE;

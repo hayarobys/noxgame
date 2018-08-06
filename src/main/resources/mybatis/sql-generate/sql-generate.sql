@@ -275,6 +275,7 @@ CREATE TABLE TEMP_SAVE_TB
     `MEM_FK`              INT                                                                                    NOT NULL    COMMENT '계정 외래키', 
     `FILE_GRP_FK`         INT                                                                                    NOT NULL    COMMENT '파일 묶음 외래키', 
     `TEMP_SAVE_CATEGORY`  ENUM('MEMBER_SOFTWARE','FREEBOARD','SCREENSHOT','ART_GALLERY','RECOMMEND_STRATEGY')    NOT NULL    COMMENT '분류 어느 게시판의 데이터인지 Enum으로 관리', 
+    `TEMP_SAVE_MOD_DT`    TIMESTAMP                                                                              NOT NULL    COMMENT '임시 저장 수정 날짜', 
     `TEMP_SAVE_TITLE`     TINYTEXT                                                                               NOT NULL    COMMENT '임시 저장 제목', 
     `TEMP_SAVE_BODY`      MEDIUMTEXT                                                                             NOT NULL    COMMENT '임시 저장 본문', 
     PRIMARY KEY (TEMP_SAVE_SQ_PK)

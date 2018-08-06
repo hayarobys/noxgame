@@ -10,14 +10,23 @@ public class EnumTest{
 	private static final Logger LOGGER = LoggerFactory.getLogger(EnumTest.class);
 	@Test
 	public void test(){
-		// 결과: 자유 게시판
-		//LOGGER.debug("프리보드.겟밸류: {}", TempSaveCategorization.FREEBOARD.getValue());
+		
 		// 결과: FREEBOARD
 		LOGGER.debug("프리보드.네임: {}", TempSaveCategory.FREEBOARD.name());
-		// 결과: 0
+		// 결과: 1
 		LOGGER.debug("프리보드.오디널: {}", TempSaveCategory.FREEBOARD.ordinal());
 		// 결과: FREEBOARD
 		LOGGER.debug("밸류오브(프리보드): {}", TempSaveCategory.valueOf("FREEBOARD"));
+		
+		// 결과: FREEBOARD
+		LOGGER.debug("프리보드: {}", TempSaveCategory.FREEBOARD);
+		// 결과: FREEBOARD
+		LOGGER.debug("프리보드.투스트링: {}", TempSaveCategory.FREEBOARD.toString());
+		
+		// 결과: 2
+		LOGGER.debug("프리보드.겟밸류: {}", TempSaveCategory.FREEBOARD.getValue());
+		// 결과: FREEBOARD
+		LOGGER.debug("밸류오브(2): {}", TempSaveCategory.valueOf(2));
 	}
 
 }

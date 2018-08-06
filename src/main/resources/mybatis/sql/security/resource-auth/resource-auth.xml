@@ -28,7 +28,7 @@
 		WHERE
 			R.RES_TYPE = LCASE(#{type})
 		ORDER BY
-			R.SORT_ORDER DESC,
+			R.RES_ORD DESC,
 			A.AUTH_SQ_PK DESC
 	</select>
 	

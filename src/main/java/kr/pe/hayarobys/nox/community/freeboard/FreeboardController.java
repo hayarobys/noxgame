@@ -16,19 +16,53 @@ public class FreeboardController{
 	@Autowired
 	private FreeboardService freeboardService;
 	
+	/** 자유 게시판 목록 페이지 */
 	@RequestMapping(method=RequestMethod.GET)
 	public String freeboard() {
 		return "community/freeboard/freeboard";
 	}
 	
-	@RequestMapping(value="/edit", method=RequestMethod.GET)
-	public ModelAndView edit(ModelAndView mav){
-		return freeboardService.getTempSaveSqPk(mav);
+	/** 자유 게시판 글 목록 */
+	@RequestMapping(value="/list", method=RequestMethod.GET)
+	public void getList(){
+		
 	}
 	
-	// modification
-	@RequestMapping(value="/edit/{frbrdGrpSqPk}")
-	public String modificationEdit(){
-		return null;
+	/** 자유 게시판 신규 글 작성 페이지 */
+	@RequestMapping(value="/write", method=RequestMethod.GET)
+	public ModelAndView getWrite(ModelAndView mav){
+		return freeboardService.getTempSaveNo(mav);
 	}
+	
+	/** 자유 게시판 신규 글 등록 */
+	@RequestMapping(value="/write", method=RequestMethod.POST)
+	public void postWrite(){
+		
+	}
+	
+	/** 자유 게시판 특정 글 수정 페이지 */
+	@RequestMapping(value="/{frbrdGrpNo}/write", method=RequestMethod.GET)
+	public void getWrite(){
+		
+	}
+	
+	/** 자유 게시판 상세 조회 */
+	@RequestMapping(value="/{frbrdGrpNo}", method=RequestMethod.GET)
+	public void getDetail(){
+		
+	}
+	
+	/** 자유 게시판 특정 글 수정 */
+	@RequestMapping(value="/{frbrdGrpNo}/write", method=RequestMethod.PATCH)
+	public void patchWrite(){
+		
+	}
+	
+	/** 자유 게시판 특정 글 삭제 */
+	@RequestMapping(value="/{frbrdGrpNo}", method=RequestMethod.DELETE)
+	public void deleteDetail(){
+		
+	}
+	
+	
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.suph.security.core.enums.TempSaveCategory;
 import com.suph.security.core.userdetails.MemberInfo;
 import com.suph.security.core.util.ContextUtil;
 
@@ -20,28 +21,39 @@ public class FreeboardServiceImpl implements FreeboardService{
 	private FreeboardDAO freeboardDAO;
 	
 	@Override
-	public ModelAndView getTempSaveSqPk(ModelAndView mav){
+	public ModelAndView getTempSaveNo(ModelAndView mav){
 		MemberInfo memberInfo = ContextUtil.getMemberInfo();
-		// vo가 null이면 어쩌지?
+		// 미로그인 유저여서 authentication이 null일 가능성은 security 단에서 1차적으로 차단한 상태이므로 부가 처리를 하지 않습니다.
 		Integer memNo = memberInfo.getNo();
 		
+		// 기존에 FREEBOARD로 등록된 임시 저장글이 있는가?
+		// 있다면 가장 최근에 작성한 임시 저장글의 일련 번호를 반환
+		TempSaveVO lastTempSaveVO = freeboardDAO.selectLastTempSaveNoFromFreeboard(memNo);
+		logger.debug("마지막 임시저장글 발견: {}", lastTempSaveVO);
 		
+		// 파일 묶음 레코드 생성
 		FileGrpVO fileGrpVO = new FileGrpVO();
 		fileGrpVO.setMemNo(memNo);
 		
-		// 최소 조회 권한은 어찌할까?
+		// TODO: 최소 조회 권한은 어찌할까? > 임시로 유저, 관리자, 매니저를 묶은 1번 권한 그룹으로 지정해 둡니다. 추후 필히 수정
+		fileGrpVO.setAuthGrpNo(1);
+		
+		
 		
 		freeboardDAO.insertFileGrp(fileGrpVO);
 		Integer fileGrpNo = fileGrpVO.getFileGrpNo();
-		if(fileGrpNo == null){
-			
-			// 생성에 실패했다면 ?
-			logger.debug("파일그룹넘버: {}", fileGrpNo);
-		}
+		
+		// 생성에 실패했다면 ?
+		logger.debug("파일그룹넘버: {}", fileGrpNo);
 		
 		TempSaveVO tempSaveVO = new TempSaveVO();
 		tempSaveVO.setMemNo(memNo);
 		tempSaveVO.setFileGrpNo(fileGrpNo);
+		tempSaveVO.setTempSaveCategory(TempSaveCategory.FREEBOARD);
+		tempSaveVO.setTempSaveTitle("");
+		tempSaveVO.setTempSaveBody("");
+		
+		freeboardDAO.insertTempSave(tempSaveVO);
 		
 		mav.addObject("tempSaveNo", fileGrpNo);
 		mav.setViewName("community/freeboard/edit");
