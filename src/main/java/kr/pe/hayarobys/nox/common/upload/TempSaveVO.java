@@ -1,6 +1,10 @@
 package kr.pe.hayarobys.nox.common.upload;
 
+import java.util.Date;
+
 import com.suph.security.core.enums.TempSaveCategory;
+
+
 
 public class TempSaveVO{
 	/** TEMP_SAVE_SQ_PK 임시 저장 번호 */
@@ -15,15 +19,17 @@ public class TempSaveVO{
 	private String tempSaveTitle;
 	/** TEMP_SAVE_BODY 임시 저장 본문 */
 	private String tempSaveBody;
+	/** TEMP_SAVE_MOD_DT 마지막 수정 일 */
+	private Date tempSaveModDt;
 	
 	public Integer getTempSaveNo(){
 		return tempSaveNo;
 	}
-
+	
 	public void setTempSaveNo(Integer tempSaveNo){
 		this.tempSaveNo = tempSaveNo;
 	}
-
+	
 	public Integer getMemNo(){
 		return memNo;
 	}
@@ -64,9 +70,17 @@ public class TempSaveVO{
 		this.tempSaveBody = tempSaveBody;
 	}
 	
+	public Date getTempSaveModDt(){
+		return tempSaveModDt;
+	}
+	
+	public void setTempSaveModDt(Date tempSaveModDt){
+		this.tempSaveModDt = tempSaveModDt;
+	}
+	
 	@Override
 	public String toString(){
 		return "TempSaveVO [tempSaveNo=" + tempSaveNo + ", memNo=" + memNo + ", tempSaveCategory=" + tempSaveCategory + ", fileGrpNo=" + fileGrpNo
-				+ ", tempSaveTitle=" + tempSaveTitle + ", tempSaveBody=" + tempSaveBody + "]";
+				+ ", tempSaveTitle=" + tempSaveTitle + ", tempSaveBody=" + tempSaveBody + ", tempSaveModDt=" + tempSaveModDt + "]";
 	}
 }

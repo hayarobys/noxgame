@@ -28,7 +28,12 @@
 			
 			<article class="freeboard-contents">
 				<form method="post">
-					<textarea name="ir1" id="ir1" rows="10" cols="100">에디터에 기본으로 삽입할 글(수정 모드)이 없다면 이 value 값을 지정하지 않으시면 됩니다.</textarea>
+					<input type="text" value="${lastTempSaveVO.tempSaveTitle}" />
+					<textarea name="ir1" id="ir1" rows="10" cols="100">
+						${lastTempSaveVO.tempSaveBody}<br/>
+						"${lastTempSaveVO.tempSaveModDt}"에 저장한 글입니다.
+					</textarea>
+					<div>파일 묶음 일련 번호: ${lastTempSaveVO.fileGrpNo}</div>
 					
 					<p>
 						<!-- <input type="button" onclick="pasteHTML();" value="본문에 내용 넣기" />

@@ -5,9 +5,10 @@
 <mapper namespace="kr.pe.hayarobys.nox.community.freeboard.FreeboardDAO">
 	<resultMap type="kr.pe.hayarobys.nox.common.upload.TempSaveVO" id="TempSaveVO">
 		<result column="TEMP_SAVE_SQ_PK" property="tempSaveNo"/>	<!-- 임시 저장 시퀀스 기본키 -->
-		<result column="FILE_GRP_FK" property="tempSaveNo"/>		<!-- 파일 묶음 외래키 -->
-		<result column="TEMP_SAVE_TITLE" property="tempSaveNo"/>	<!-- 임시 저장 제목 -->
-		<result column="TEMP_SAVE_BODY" property="tempSaveNo"/>		<!-- 임시 저장 본문 -->
+		<result column="FILE_GRP_FK" property="fileGrpNo"/>		<!-- 파일 묶음 외래키 -->
+		<result column="TEMP_SAVE_TITLE" property="tempSaveTitle"/>	<!-- 임시 저장 제목 -->
+		<result column="TEMP_SAVE_BODY" property="tempSaveBody"/>		<!-- 임시 저장 본문 -->
+		<result column="TEMP_SAVE_MOD_DT" property="tempSaveModDt"/>		<!-- 임시 저장 본문 -->
 	</resultMap>
 
 	<!-- 파일 묶음을 추가하고 새로 생성된 시퀀스를 가져옵니다. -->
@@ -35,13 +36,21 @@
 	</insert>
 	
 	<!-- 특정 아이디가 FREEBOARD 항목에서 마지막으로 저장한 임시 저장 글의 일련 번호 조회   -->
-	<select id="selectLastTempSaveNoFromFreeboard" parameterType="java.lang.Integer" resultType="TempSaveVO">
-		SELECT	*
-		FROM	TEMP_SAVE_TB
-		WHERE	MEM_FK = #{memNo}
-			AND
-				TEMP_SAVE_CATEGORY = '${@com.suph.security.core.enums.TempSaveCategory@FREEBOARD}'
-		ORDER BY	TEMP_SAVE_MOD_DT DESC
+	<select id="selectLastTempSaveNoFromFreeboard" parameterType="java.lang.Integer" resultMap="TempSaveVO">
+		SELECT *
+		FROM(
+			SELECT
+				TEMP_SAVE_SQ_PK,
+				FILE_GRP_FK,
+				TEMP_SAVE_TITLE,
+				TEMP_SAVE_BODY,
+				TEMP_SAVE_MOD_DT
+			FROM	TEMP_SAVE_TB
+			WHERE	MEM_FK = #{memNo}
+				AND
+					TEMP_SAVE_CATEGORY = '${@com.suph.security.core.enums.TempSaveCategory@FREEBOARD}'
+			ORDER BY	TEMP_SAVE_MOD_DT DESC
+		) AS T
 		LIMIT	1;
 	</select>
 	
