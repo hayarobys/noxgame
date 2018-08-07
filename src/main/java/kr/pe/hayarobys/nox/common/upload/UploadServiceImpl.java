@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.suph.security.core.util.ContextUtil;
 
@@ -28,16 +29,17 @@ public class UploadServiceImpl implements UploadService{
 	}
 
 	@Override
-	public String imageUploadSmartEditorByForm(ImageFileVO fileVO){
+	public String imageUploadSmartEditorByForm(ImageFileVO imageFileVO){
 		StringBuilder result = new StringBuilder();
 		result.append("redirect:");
-		result.append(fileVO.getCallback());
+		result.append(imageFileVO.getCallback());
 		result.append("?callback_func=");
-		result.append(fileVO.getCallback_func());
+		result.append(imageFileVO.getCallback_func());
 		
-		if(		fileVO.getFiledata() != null
-			&&	fileVO.getFiledata().getOriginalFilename() != null
-			&&	!fileVO.getFiledata().getOriginalFilename().equals("")
+		MultipartFile file = imageFileVO.getFiledata();
+		if(		file != null
+			&&	file.getOriginalFilename() != null
+			&&	!file.getOriginalFilename().equals("")
 		){
 			result.append("&errstr=error");
 			return result.toString();
@@ -45,7 +47,8 @@ public class UploadServiceImpl implements UploadService{
 		
 		HttpServletRequest request	= ContextUtil.getCurrentRequest();
 		
-		String originalFileName	= fileVO.getFiledata().getOriginalFilename();
+		long fileSize			= file.getSize();
+		String originalFileName	= file.getOriginalFilename();
 		String fileExtension	= originalFileName.substring(originalFileName.lastIndexOf(".")+1);
 		String projectPath		= request.getSession().getServletContext().getRealPath(File.separator);
 		String uploadPath		= projectPath + File.separator + "resources" + File.separator + "upload" + File.separator;
@@ -59,8 +62,18 @@ public class UploadServiceImpl implements UploadService{
 		String saveFileName	= today + UUID.randomUUID().toString() + "." + fileExtension;
 		
 		try{
-			//서버에 파일쓰기
-			fileVO.getFiledata().transferTo(
+			// 파일 묶음 일련 번호와 요청자의 일
+			// DB에 메타 정보 입력
+			FileVO fileVO = new FileVO();
+			//fileVO.setFileGrpNo(fileGrpNo);
+			fileVO.setFileSize(fileSize);
+			fileVO.setExtensionName(fileExtension);
+			fileVO.setOriginalFileName(originalFileName);
+			fileVO.setSaveFileName(saveFileName);
+			fileVO.setFileSaveDirectory(uploadPath);
+			
+			// 서버에 파일쓰기
+			file.transferTo(
 					new File(uploadPath + saveFileName)
 			);
 			
@@ -97,7 +110,10 @@ public class UploadServiceImpl implements UploadService{
 		String today		= formatter.format(new java.util.Date());
 		String saveFileName	= today + UUID.randomUUID().toString() + "." + fileExtension;
 		
-		try{	
+		try{
+			// DB에 메타 정보 입력
+			
+			
 			// 서버에 파일쓰기
 			InputStream is	= request.getInputStream();
 			OutputStream os	= new FileOutputStream(uploadPath + saveFileName);

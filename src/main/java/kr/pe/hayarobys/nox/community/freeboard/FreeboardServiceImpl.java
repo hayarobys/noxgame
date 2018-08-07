@@ -43,7 +43,7 @@ public class FreeboardServiceImpl implements FreeboardService{
 			
 			// 생성에 실패했다면 ?
 			logger.debug("파일그룹넘버: {}", fileGrpNo);
-			
+			lastTempSaveVO = new TempSaveVO();
 			lastTempSaveVO.setMemNo(memNo);
 			lastTempSaveVO.setFileGrpNo(fileGrpNo);
 			lastTempSaveVO.setTempSaveCategory(TempSaveCategory.FREEBOARD);
