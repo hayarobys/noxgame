@@ -2,8 +2,8 @@ package kr.pe.hayarobys.nox.community.freeboard;
 
 import org.springframework.stereotype.Repository;
 
+import kr.pe.hayarobys.nox.common.tempsave.TempSaveVO;
 import kr.pe.hayarobys.nox.common.upload.FileGrpVO;
-import kr.pe.hayarobys.nox.common.upload.TempSaveVO;
 
 @Repository
 public interface FreeboardDAO{

@@ -1,4 +1,4 @@
-package kr.pe.hayarobys.nox.common.upload;
+package kr.pe.hayarobys.nox.common.tempsave;
 
 import java.util.Date;
 

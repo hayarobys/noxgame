@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.pe.hayarobys.nox.common.upload.UploadDAO">
+	
+	<insert id="insertFile" parameterType="FileVO">
+		INSERT INTO FILE_TB(
+			FILE_GRP_FK, MEM_FK,
+			FILE_REG_DT, FILE_SIZE,
+			EXT_NM, ORGN_FILE_NM,
+			SAVE_FILE_NM, FILE_SAVE_DIR
+		)VALUES(
+			#{fileGroupNo}, #{memNo},
+			CURRENT_TIMESTAMP(), #{fileSize},
+			#{extensionName}, #{originalFileName},
+			#{saveFileName}, #{fileSaveDirectory}
+		)
+	</insert>
+
+</mapper>

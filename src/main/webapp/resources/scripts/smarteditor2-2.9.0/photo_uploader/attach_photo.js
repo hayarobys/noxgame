@@ -1,4 +1,5 @@
 	//변수 선언 및 초기화
+	var fileGroupNo = -1;		// 업로드 할 파일 묶음 일련 번호
 	var nImageInfoCnt = 0;
 	var htImageInfo = [];		//image file정보 저장
 	var aResult = [];
@@ -334,7 +335,7 @@
     	var tempFile,
     		sUploadURL;
     	
-    	sUploadURL= CONTEXT_PATH + "/upload/photo/ajax"; 	//다중 파일 업로드 URL
+    	sUploadURL= CONTEXT_PATH + "/upload/" + fileGroupNo + "/photo/ajax"; 	//다중 파일 업로드 URL
     	
     	//파일을 하나씩 보내고, 결과를 받음.
     	for(var j=0, k=0; j < nImageInfoCnt; j++) {
@@ -381,7 +382,6 @@
 		oAjax.header("file-name",encodeURIComponent(tempFile.name));
 		oAjax.header("file-size",tempFile.size);
 		oAjax.header("file-Type",tempFile.type);
-		console.log(tempFile);
 		oAjax.request(tempFile);
     }
     
@@ -487,7 +487,7 @@
  	 */
  	function callFileUploader (){
  		oFileUploader = new jindo.FileUploader(jindo.$("uploadInputBox"),{
- 			sUrl  : CONTEXT_PATH + '/upload/photo/form',	// 단일 파일 업로드 URL입니다.
+ 			sUrl  : CONTEXT_PATH + '/upload/' + fileGroupNo + '/photo/form',	// 단일 파일 업로드 URL입니다.
  	        sCallback : CONTEXT_PATH + '/resources/scripts/smarteditor2-2.9.0/photo_uploader/callback.html',	//업로드 이후에 iframe이 redirect될 콜백페이지의 주소
  	    	sFiletype : "*.jpg;*.png;*.bmp;*.gif",						//허용할 파일의 형식. ex) "*", "*.*", "*.jpg", 구분자(;)	
  	    	sMsgNotAllowedExt : 'JPG, GIF, PNG, BMP 확장자만 가능합니다',	//허용할 파일의 형식이 아닌경우에 띄워주는 경고창의 문구
@@ -550,6 +550,7 @@
     }
     
 	window.onload = function(){
+		fileGroupNo = document.getElementById("fileGroupNo").value;
   		checkDragAndDropAPI();
   		
   		if(bSupportDragAndDropAPI){

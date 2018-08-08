@@ -26,6 +26,10 @@
 		<!-- //header -->
 		
 		<!-- container -->
+		
+		<!-- 업로드할 파일 묶음 일련 번호 저장 -->
+		<input type="hidden" id="fileGroupNo" name="fileGroupNo" value="${fileGroupNo}" />
+		
 		<!-- [D] HTML5인 경우 pop_container 클래스와 하위 HTML 적용
 			그밖의 경우 pop_container2 클래스와 하위 HTML 적용      -->
 		<div id="pop_container2" class="pop_container2">

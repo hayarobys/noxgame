@@ -3,7 +3,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.pe.hayarobys.nox.community.freeboard.FreeboardDAO">
-	<resultMap type="kr.pe.hayarobys.nox.common.upload.TempSaveVO" id="TempSaveVO">
+	<resultMap type="kr.pe.hayarobys.nox.common.tempsave.TempSaveVO" id="TempSaveVO">
 		<result column="TEMP_SAVE_SQ_PK" property="tempSaveNo"/>	<!-- 임시 저장 시퀀스 기본키 -->
 		<result column="FILE_GRP_FK" property="fileGrpNo"/>		<!-- 파일 묶음 외래키 -->
 		<result column="TEMP_SAVE_TITLE" property="tempSaveTitle"/>	<!-- 임시 저장 제목 -->

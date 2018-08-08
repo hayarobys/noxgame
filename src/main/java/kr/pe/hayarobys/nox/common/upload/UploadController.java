@@ -1,14 +1,14 @@
 package kr.pe.hayarobys.nox.common.upload;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class UploadController{
@@ -17,17 +17,27 @@ public class UploadController{
 	@Autowired
 	private UploadService uploadService;
 	
-	@RequestMapping(value="/upload/photo/edit", method=RequestMethod.GET)
-	public String uploadEdit(){
-		return "common/upload/photo_uploader";
+	@RequestMapping(value="/upload/{fileGroupNo}/photo/edit", method=RequestMethod.GET)
+	public ModelAndView uploadEdit(
+			@PathVariable(value="fileGroupNo", required=true) String fileGroupNo,
+			ModelAndView mav
+	){
+		// 서비스에 넘겨서 본인 여부 확인 할 것
+		mav.addObject("fileGroupNo", fileGroupNo);
+		mav.setViewName("common/upload/photo_uploader");
+		return mav;
 	}
 	
 	/**
 	 * Form 형식의 SmartEditor 이미지 업로드
 	 * @param fileVO
 	 */
-	@RequestMapping(value="/upload/photo/form", method=RequestMethod.POST, headers=("content-type=multipart/*"))
-	public String imageUploadSmartEditorByForm(ImageFileVO fileVO, HttpServletRequest request){
+	@RequestMapping(value="/upload/{fileGroupNo}/photo/form", method=RequestMethod.POST, headers=("content-type=multipart/*"))
+	public String imageUploadSmartEditorByForm(
+			@PathVariable(value="fileGroupNo", required=true) String fileGroupNo,
+			ImageFileVO fileVO, HttpServletRequest request
+	){
+			fileVO.setFileGroupNo(Integer.parseInt(fileGroupNo));
 			return uploadService.imageUploadSmartEditorByForm(fileVO);
 		
 	}
@@ -37,10 +47,10 @@ public class UploadController{
 	 * @param request
 	 * @param response
 	 */
-	@RequestMapping(value="/upload/photo/ajax", method=RequestMethod.POST)
-	public void imageUploadSmartEditorByStream(
-			HttpServletResponse response
+	@RequestMapping(value="/upload/{fileGroupNo}/photo/ajax", method=RequestMethod.POST)
+	@ResponseBody public void imageUploadSmartEditorByStream(
+			@PathVariable(value="fileGroupNo", required=true) String fileGroupNo
 	){
-		uploadService.imageUploadSmartEditorByStream();
+		uploadService.imageUploadSmartEditorByStream(Integer.parseInt(fileGroupNo));
 	}
 }

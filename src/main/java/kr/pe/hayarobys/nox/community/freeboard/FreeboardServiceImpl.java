@@ -10,8 +10,8 @@ import com.suph.security.core.enums.TempSaveCategory;
 import com.suph.security.core.userdetails.MemberInfo;
 import com.suph.security.core.util.ContextUtil;
 
+import kr.pe.hayarobys.nox.common.tempsave.TempSaveVO;
 import kr.pe.hayarobys.nox.common.upload.FileGrpVO;
-import kr.pe.hayarobys.nox.common.upload.TempSaveVO;
 
 @Service
 public class FreeboardServiceImpl implements FreeboardService{

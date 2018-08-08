@@ -33,7 +33,7 @@
 						${lastTempSaveVO.tempSaveBody}<br/>
 						"${lastTempSaveVO.tempSaveModDt}"에 저장한 글입니다.
 					</textarea>
-					<div>파일 묶음 일련 번호: ${lastTempSaveVO.fileGrpNo}</div>
+					<div>파일 묶음 일련 번호: <input type="number" id="fileGroupNo" value="${lastTempSaveVO.fileGrpNo}"/></div>
 					
 					<p>
 						<!-- <input type="button" onclick="pasteHTML();" value="본문에 내용 넣기" />

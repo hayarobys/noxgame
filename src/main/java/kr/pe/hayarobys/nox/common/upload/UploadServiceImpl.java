@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,10 +23,12 @@ import com.suph.security.core.util.ContextUtil;
 public class UploadServiceImpl implements UploadService{
 	private static Logger logger = LoggerFactory.getLogger(UploadServiceImpl.class);
 	
+	@Autowired
+	private UploadDAO uploadDAO;
+	
 	@Override
-	public void insertFile(File file){
-		// TODO Auto-generated method stub
-
+	public void insertFile(FileVO fileVO){
+		uploadDAO.insertFile(fileVO);
 	}
 
 	@Override
@@ -60,17 +63,22 @@ public class UploadServiceImpl implements UploadService{
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
 		String today		= formatter.format(new java.util.Date());
 		String saveFileName	= today + UUID.randomUUID().toString() + "." + fileExtension;
+	
+		// 파일 묶음 일련 번호와 요청자의 일치 여부 확인
+		// DB에 메타 정보 입력
+		FileVO fileVO = new FileVO();
+		fileVO.setFileGroupNo(imageFileVO.getFileGroupNo());
+		fileVO.setMemNo(ContextUtil.getMemberInfo().getNo());
+		fileVO.setFileSize(fileSize);
+		fileVO.setExtensionName(fileExtension);
+		fileVO.setOriginalFileName(originalFileName);
+		fileVO.setSaveFileName(saveFileName);
+		fileVO.setFileSaveDirectory(uploadPath);
+		
+		logger.debug("파일 정보: {}", fileVO);
 		
 		try{
-			// 파일 묶음 일련 번호와 요청자의 일
-			// DB에 메타 정보 입력
-			FileVO fileVO = new FileVO();
-			//fileVO.setFileGrpNo(fileGrpNo);
-			fileVO.setFileSize(fileSize);
-			fileVO.setExtensionName(fileExtension);
-			fileVO.setOriginalFileName(originalFileName);
-			fileVO.setSaveFileName(saveFileName);
-			fileVO.setFileSaveDirectory(uploadPath);
+			insertFile(fileVO);
 			
 			// 서버에 파일쓰기
 			file.transferTo(
@@ -86,6 +94,8 @@ public class UploadServiceImpl implements UploadService{
 												result.append("/resources/upload/");
 												result.append(saveFileName);
 		} catch (Exception e) {
+			// TODO: 익셉션 분할 할 것
+			// TODO: 트랜젝션 처리 할 것
 			e.printStackTrace();
 		}
 		
@@ -93,10 +103,12 @@ public class UploadServiceImpl implements UploadService{
 	}
 
 	@Override
-	public void imageUploadSmartEditorByStream(){
+	public void imageUploadSmartEditorByStream(Integer fileGroupNo){
 		HttpServletRequest request		= ContextUtil.getCurrentRequest();
 		HttpServletResponse response	= ContextUtil.getCurrentResponse();
 		
+		Long fileSize			= Long.parseLong(request.getHeader("file-size"));
+		String fileType			= request.getHeader("file-Type");
 		String originalFileName	= request.getHeader("file-name");											// 원본 파일 명
 		String fileExtension	= originalFileName.substring( originalFileName.lastIndexOf(".") + 1 ).toLowerCase();	// 확장자를 소문자로 변경
 		String projectPath		= request.getSession().getServletContext().getRealPath(File.separator);		// 파일 기본경로
@@ -110,9 +122,21 @@ public class UploadServiceImpl implements UploadService{
 		String today		= formatter.format(new java.util.Date());
 		String saveFileName	= today + UUID.randomUUID().toString() + "." + fileExtension;
 		
+		// 파일 묶음 일련 번호와 요청자의 일치 여부 확인
+		// DB에 메타 정보 입력
+		FileVO fileVO = new FileVO();
+		fileVO.setFileGroupNo(fileGroupNo);
+		fileVO.setMemNo(ContextUtil.getMemberInfo().getNo());
+		fileVO.setFileSize(fileSize);
+		fileVO.setExtensionName(fileExtension);
+		fileVO.setOriginalFileName(originalFileName);
+		fileVO.setSaveFileName(saveFileName);
+		fileVO.setFileSaveDirectory(uploadPath);
+		
+		logger.debug("파일 정보: {}", fileVO);
+		
 		try{
-			// DB에 메타 정보 입력
-			
+			insertFile(fileVO);
 			
 			// 서버에 파일쓰기
 			InputStream is	= request.getInputStream();
@@ -137,12 +161,14 @@ public class UploadServiceImpl implements UploadService{
 			result.append("&sFileURL=");		result.append(request.getContextPath());	// img 태그의 src 속성에 쓰일 저장 경로
 												result.append("/resources/upload/");
 												result.append(saveFileName);
-						
+					
 			PrintWriter print = response.getWriter();
 			print.print(result.toString());
 			print.flush();
 			print.close();
 		}catch(Exception e){
+			// TODO: 익셉션 분할 할 것
+			// TODO: 트랜젝션 처리 할 것
 			e.printStackTrace();
 		}
 	}

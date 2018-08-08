@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class FileVO{
 	private int fileNo;
-	private int fileGrpNo;
+	private int fileGroupNo;
 	private int memNo;
 	private Date fileRegDt;
 	private int downloadCount;
@@ -22,12 +22,12 @@ public class FileVO{
 		this.fileNo = fileNo;
 	}
 
-	public int getFileGrpNo(){
-		return fileGrpNo;
+	public int getFileGroupNo(){
+		return fileGroupNo;
 	}
 
-	public void setFileGrpNo(int fileGrpNo){
-		this.fileGrpNo = fileGrpNo;
+	public void setFileGroupNo(int fileGroupNo){
+		this.fileGroupNo = fileGroupNo;
 	}
 
 	public int getMemNo(){
@@ -96,9 +96,8 @@ public class FileVO{
 
 	@Override
 	public String toString(){
-		return "FileVO [fileNo=" + fileNo + ", fileGrpNo=" + fileGrpNo + ", memNo=" + memNo + ", fileRegDt=" + fileRegDt
-				+ ", downloadCount=" + downloadCount + ", fileSize=" + fileSize + ", extensionName=" + extensionName
-				+ ", originalFileName=" + originalFileName + ", saveFileName=" + saveFileName + ", fileSaveDirectory="
-				+ fileSaveDirectory + "]";
+		return "FileVO [fileNo=" + fileNo + ", fileGroupNo=" + fileGroupNo + ", memNo=" + memNo + ", fileRegDt=" + fileRegDt + ", downloadCount="
+				+ downloadCount + ", fileSize=" + fileSize + ", extensionName=" + extensionName + ", originalFileName=" + originalFileName
+				+ ", saveFileName=" + saveFileName + ", fileSaveDirectory=" + fileSaveDirectory + "]";
 	}
 }
