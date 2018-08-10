@@ -28,11 +28,18 @@
 		<typeAlias type="kr.pe.hayarobys.nox.common.upload.FileGrpVO" alias="FileGrpVO"/>
 		<!-- 파일 정보를 옮기는데 사용됩니다. -->
 		<typeAlias type="kr.pe.hayarobys.nox.common.upload.FileVO" alias="FileVO"/>
+		<!-- 댓글 묶음 정보를 옮기는데 사용됩니다. -->
+		<typeAlias type="kr.pe.hayarobys.nox.common.comment.CommentGroupVO" alias="CommentGroupVO"/>
 		<!-- 게시글 임시 저장 정보를 옮기는데 사용됩니다. -->
 		<typeAlias type="kr.pe.hayarobys.nox.common.tempsave.TempSaveVO" alias="TempSaveVO"/>
+		<!-- 자유게시판 그룹 정보를 옮기는데 사용됩니다. -->
+		<typeAlias type="kr.pe.hayarobys.nox.community.freeboard.FreeboardGroupVO" alias="FreeboardGroupVO"/>
+		<!-- 자유게시판 상세 정보를 옮기는데 사용됩니다. -->
+		<typeAlias type="kr.pe.hayarobys.nox.community.freeboard.FreeboardVO" alias="FreeboardVO"/>
+		
 	</typeAliases>
 	
 	<typeHandlers>
-		<typeHandler javaType="java.sql.Timestamp" handler="org.apache.ibatis.type.DateTypeHandler" />
+		<typeHandler javaType="java.sql.Timestamp" handler="org.apache.ibatis.type.DateTypeHandler"/>
 	</typeHandlers>
 </configuration>

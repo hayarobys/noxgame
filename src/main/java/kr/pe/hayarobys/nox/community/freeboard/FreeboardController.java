@@ -4,14 +4,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.suph.security.core.dto.JsonResultVO;
+
+import kr.pe.hayarobys.nox.common.tempsave.TempSaveVO;
 
 @Controller
 @RequestMapping(value="/community/freeboard")
 public class FreeboardController{
-	private static Logger logger = LoggerFactory.getLogger(FreeboardController.class);
+	protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
 	private FreeboardService freeboardService;
@@ -36,8 +42,8 @@ public class FreeboardController{
 	
 	/** 자유 게시판 신규 글 등록 */
 	@RequestMapping(value="/write", method=RequestMethod.POST)
-	public void postWrite(){
-		
+	@ResponseBody public JsonResultVO<Integer> postWrite(@RequestBody TempSaveVO tempSaveVO){
+		return freeboardService.postWrite(tempSaveVO);
 	}
 	
 	/** 자유 게시판 특정 글 수정 페이지 */

@@ -15,7 +15,3 @@ public enum MemberState{
 		return state;
 	}
 }
-/*
- * 작성자: 홍길동
- * 작성자: (탈퇴회원)
- */

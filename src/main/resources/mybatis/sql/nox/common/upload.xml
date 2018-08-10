@@ -3,6 +3,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.pe.hayarobys.nox.common.upload.UploadDAO">
+	<resultMap type="kr.pe.hayarobys.nox.common.upload.FileVO" id="FileVO">
+		<result column="FILE_SQ_PK" property="fileNo" />	<!-- 파일 시퀀스 기본키 -->
+		<result column="FILE_SIZE" property="fileSize" />	<!-- 파일 크기 -->
+		<result column="ORGN_FILE_NM" property="originalFileName" />	<!-- 원본 파일 이름 -->
+		<result column="SAVE_FILE_NM" property="saveFileName" />	<!-- 저장 파일 이름 -->
+	</resultMap>
 	
 	<insert id="insertFile" parameterType="FileVO">
 		INSERT INTO FILE_TB(
@@ -16,6 +22,20 @@
 			#{extensionName}, #{originalFileName},
 			#{saveFileName}, #{fileSaveDirectory}
 		)
+		<selectKey resultType="java.lang.Integer" keyProperty="fileNo" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
 	</insert>
-
+	
+	<select id="selectFileByFileGroupNo" parameterType="java.lang.Integer" resultMap="FileVO">
+		SELECT
+			FILE_SQ_PK, FILE_SIZE,
+			ORGN_FILE_NM, SAVE_FILE_NM
+		FROM
+			FILE_TB
+		WHERE
+			FILE_GRP_FK = #{fileGrpNo}
+		ORDER BY
+			FILE_SQ_PK ASC
+	</select>
 </mapper>

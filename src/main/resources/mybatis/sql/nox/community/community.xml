@@ -10,7 +10,7 @@
 		<result column="TEMP_SAVE_BODY" property="tempSaveBody"/>		<!-- 임시 저장 본문 -->
 		<result column="TEMP_SAVE_MOD_DT" property="tempSaveModDt"/>		<!-- 임시 저장 본문 -->
 	</resultMap>
-
+	
 	<!-- 파일 묶음을 추가하고 새로 생성된 시퀀스를 가져옵니다. -->
 	<insert id="insertFileGrp" parameterType="FileGrpVO">
 		INSERT INTO FILE_GRP_TB(
@@ -54,4 +54,36 @@
 		LIMIT	1;
 	</select>
 	
+	<!-- 특정 일련번호의 임시 저장 글이 바라보고 있는 파일 그룹 번호를 조회합니다. -->
+	<select id="selectTempSaveByTempSaveNo" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		SELECT	FILE_GRP_FK
+		FROM	TEMP_SAVE_TB
+		WHERE	TEMP_SAVE_SQ_PK = #{tempSaveNo}
+	</select>
+	
+	<!-- 자유 게시판 그룹을 등록하고 생성된 일련 번호를 조회합니다. -->
+	<insert id="insertFreeboardGroup" parameterType="FreeboardGroupVO" statementType="CALLABLE">
+		{ call INSERT_FREEBOARD_GROUP( #{memNo, mode=IN, jdbcType=INTEGER, javaType=java.lang.Integer}, #{commentGroupNo, mode=IN, jdbcType=INTEGER, javaType=java.lang.Integer}, #{fileGroupNo, mode=IN, jdbcType=INTEGER, javaType=java.lang.Integer}, #{authGroupNo, mode=IN, jdbcType=INTEGER, javaType=java.lang.Integer}, #{freeboardGroupClassOrder, mode=IN, jdbcType=INTEGER, javaType=java.lang.Integer}, #{freeboardGroupClassDepth, mode=IN, jdbcType=INTEGER, javaType=java.lang.Integer}, #{freeboardGroupNo, mode=OUT, jdbcType=INTEGER, javaType=java.lang.Integer} ) }
+	</insert>
+	
+	<!-- 자유게시판 상세 정보를 등록합니다. -->
+	<insert id="insertFreeboard" parameterType="FreeboardVO">
+		INSERT INTO FRBRD_TB(
+			FRBRD_GRP_FK,
+			FRBRD_REG_DT,
+			FRBRD_TITLE,
+			FRBRD_BODY
+		)VALUES(
+			#{freeboardGroupNo},
+			CURRENT_TIMESTAMP(),
+			#{freeboardTitle},
+			#{freeboardBody}
+		)
+	</insert>
+	
+	<!-- 특정 일련 번호의 게시물 임시 저장 레코드를 제거합니다. -->
+	<delete id="deleteTempSaveByTempSaveNo" parameterType="java.lang.Integer">
+		DELETE FROM TEMP_SAVE_TB
+		WHERE TEMP_SAVE_SQ_PK = #{tempSaveNo}
+	</delete>
 </mapper>

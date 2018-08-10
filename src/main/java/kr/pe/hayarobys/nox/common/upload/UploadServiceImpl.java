@@ -158,9 +158,11 @@ public class UploadServiceImpl implements UploadService{
 			StringBuilder result = new StringBuilder();
 			result.append("&bNewLine=true&sFileName=");										// 이미지 사이에 간격주기
 												result.append(originalFileName);			// img 태그의 title 속성에 쓰일 원본 파일명
+			// &sFileURL=/nox/resources/upload/20180809102839dbb939e5-a3c2-4062-bd1d-eea17d2146e9.jpg
 			result.append("&sFileURL=");		result.append(request.getContextPath());	// img 태그의 src 속성에 쓰일 저장 경로
 												result.append("/resources/upload/");
 												result.append(saveFileName);
+			result.append("&sFileNo=");			result.append(fileVO.getFileNo());
 					
 			PrintWriter print = response.getWriter();
 			print.print(result.toString());

@@ -76,6 +76,7 @@ nhn.husky.SE2M_AttachQuickPhoto = jindo.$Class({
 				}
 				
 				aPhotoInfo = {
+					sFileNo : htData.sFileNo,
 				    sName : htData.sFileName || "",
 				    sOriginalImageURL : htData.sFileURL,
 					bNewLine : htData.bNewLine || false 
@@ -96,7 +97,7 @@ nhn.husky.SE2M_AttachQuickPhoto = jindo.$Class({
 	 */
 	_getPhotoTag : function(htPhotoInfo){
 		// id와 class는 썸네일과 연관이 많습니다. 수정시 썸네일 영역도 Test
-		var sTag = '<img src="{=sOriginalImageURL}" title="{=sName}" width="600px ">';
+		var sTag = '<img data-file-no="{=sFileNo}" src="{=sOriginalImageURL}" title="{=sName}" width="600px ">';
 		if(htPhotoInfo.bNewLine){
 			sTag += '<br style="clear:both;">';
 		}
