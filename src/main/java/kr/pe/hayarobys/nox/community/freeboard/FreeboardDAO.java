@@ -28,11 +28,11 @@ public interface FreeboardDAO{
 	public abstract TempSaveVO selectLastTempSaveNoFromFreeboard(Integer memNo);
 	
 	/**
-	 * 특정 일련 번호의 임시 저장 글이 바라보고 있는 파일 그룹 일련 번호를 조회합니다.
+	 * 특정 일련 번호의 임시 저장 글이 바라보고 있는 파일 그룹 일련 번호와 계정 일련 번호를 조회합니다.
 	 * @param tempSaveNo
 	 * @return
 	 */
-	public abstract Integer selectTempSaveByTempSaveNo(Integer tempSaveNo);
+	public abstract TempSaveVO selectTempSaveByTempSaveNo(Integer tempSaveNo);
 	
 	/**
 	 * 자유게시판 그룹을 등록하고 생성된 일련 번호를 조회 합니다.
@@ -51,4 +51,11 @@ public interface FreeboardDAO{
 	 * @param tempSaveNo
 	 */
 	public abstract void deleteTempSaveByTempSaveNo(Integer tempSaveNo);
+	
+	/**
+	 * 게시글 상세 조회시 필요한 값들을 조회합니다.
+	 * 특정 일련 번호의 게시글 그룹에 속한 마지막 게시글과 파일 그룹, 댓글 그룹, 계정 아이디, 계정 닉네임, 등록일 등의 정보를 조회합니다.
+	 * @param freeboardGroupNo
+	 */
+	public abstract FreeboardDetailVO selectFreeboardDetail(Integer freeboardGroupNo);
 }

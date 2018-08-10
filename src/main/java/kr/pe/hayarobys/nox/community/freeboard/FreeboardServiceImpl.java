@@ -16,6 +16,7 @@ import com.suph.security.core.util.ContextUtil;
 
 import kr.pe.hayarobys.nox.common.comment.CommentDAO;
 import kr.pe.hayarobys.nox.common.comment.CommentGroupVO;
+import kr.pe.hayarobys.nox.common.exception.ForbiddenException;
 import kr.pe.hayarobys.nox.common.tempsave.TempSaveVO;
 import kr.pe.hayarobys.nox.common.upload.FileGrpVO;
 import kr.pe.hayarobys.nox.common.upload.FileVO;
@@ -80,13 +81,20 @@ public class FreeboardServiceImpl implements FreeboardService{
 	public JsonResultVO<Integer> postWrite(TempSaveVO requestTempSaveVO){
 		logger.debug("글 등록 요청: {}", requestTempSaveVO);
 		
-		// 요청 들어온 임시 저장 번호와 요청자의 계정 일련 번호 조회
+		// 요청 들어온 임시 저장 번호로 원본 임시 저장 글 조회
 		Integer tempSaveNo = requestTempSaveVO.getTempSaveNo();
+		TempSaveVO originalTempSaveVO = freeboardDAO.selectTempSaveByTempSaveNo(tempSaveNo);
+		
+		// 원본 임시 저장글과 요청자의 계정 일치 여부 확인
 		Integer memNo = ContextUtil.getMemberInfo().getNo();
+		if( memNo != originalTempSaveVO.getMemNo() ){
+			logger.debug("요청자: {}, 원본 임시 저장 글 등록자: {}", memNo, originalTempSaveVO.getMemNo());
+			throw new ForbiddenException("임시 저장 글의 등록자와 현재 요청자의 계정 정보가 불일치 합니다.");
+		}
+		requestTempSaveVO.setMemNo(memNo);
 		
 		// 원본 임시 저장글로부터 파일 그룹 번호 조회
-		requestTempSaveVO.setMemNo(memNo);
-		Integer fileGroupNo = freeboardDAO.selectTempSaveByTempSaveNo(tempSaveNo);
+		Integer fileGroupNo = originalTempSaveVO.getFileGrpNo();
 		requestTempSaveVO.setFileGrpNo(fileGroupNo);
 		
 		// 댓글 그룹 생성
@@ -106,7 +114,7 @@ public class FreeboardServiceImpl implements FreeboardService{
 		
 		// 자유 게시판 상세 생성
 		FreeboardVO freeboardVO = new FreeboardVO();
-		freeboardVO.setFreeboardGroupNo(freeboardGroupVO.getFileGroupNo());
+		freeboardVO.setFreeboardGroupNo(freeboardGroupVO.getFreeboardGroupNo());
 		freeboardVO.setFreeboardTitle(requestTempSaveVO.getTempSaveTitle());
 		freeboardVO.setFreeboardBody(requestTempSaveVO.getTempSaveBody());
 		freeboardDAO.insertFreeboard(freeboardVO);
@@ -118,6 +126,16 @@ public class FreeboardServiceImpl implements FreeboardService{
 		JsonResultVO<Integer> jsonResultVO = new JsonResultVO<Integer>(freeboardGroupVO.getFreeboardGroupNo());
 		return jsonResultVO;
 	}
-	
+
+	@Override
+	public ModelAndView getDetail(Integer freeboardGroupNo, ModelAndView mav){
+		FreeboardDetailVO freeboardDetailVO = freeboardDAO.selectFreeboardDetail(freeboardGroupNo);
+		
+		// TODO: 요청자가 이 게시글의 최소 조회 권한을 통과하는지 확인 할 것
+		
+		mav.addObject("freeboardDetailVO", freeboardDetailVO);
+		mav.setViewName("/community/freeboard/detail");
+		return mav;
+	}
 	
 }

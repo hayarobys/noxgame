@@ -20,4 +20,12 @@ public interface FreeboardService{
 	 * @return
 	 */
 	public abstract JsonResultVO<Integer> postWrite(TempSaveVO tempSaveVO);
+	
+	/**
+	 * 게시글 상세 정보를 조회합니다.
+	 * @param freeboardGroupNo
+	 * @param mav
+	 * @return
+	 */
+	public abstract ModelAndView getDetail(Integer freeboardGroupNo, ModelAndView mav);
 }

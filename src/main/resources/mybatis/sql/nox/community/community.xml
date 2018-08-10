@@ -4,11 +4,28 @@
 
 <mapper namespace="kr.pe.hayarobys.nox.community.freeboard.FreeboardDAO">
 	<resultMap type="kr.pe.hayarobys.nox.common.tempsave.TempSaveVO" id="TempSaveVO">
+		<result column="MEM_FK" property="memNo"/>	<!-- 계정 일련 번호 외래키 -->
 		<result column="TEMP_SAVE_SQ_PK" property="tempSaveNo"/>	<!-- 임시 저장 시퀀스 기본키 -->
 		<result column="FILE_GRP_FK" property="fileGrpNo"/>		<!-- 파일 묶음 외래키 -->
 		<result column="TEMP_SAVE_TITLE" property="tempSaveTitle"/>	<!-- 임시 저장 제목 -->
 		<result column="TEMP_SAVE_BODY" property="tempSaveBody"/>		<!-- 임시 저장 본문 -->
 		<result column="TEMP_SAVE_MOD_DT" property="tempSaveModDt"/>		<!-- 임시 저장 본문 -->
+	</resultMap>
+	
+	<resultMap type="kr.pe.hayarobys.nox.community.freeboard.FreeboardDetailVO" id="FreeboardDetailVO">
+		<result column="MEM_SQ_PK" property="memNo"/>
+		<result column="MEM_NICKNM" property="nickname"/>
+		<result column="MEM_ID" property="id"/>
+		
+		<result column="FRBRD_GRP_SQ_PK" property="freeboardGroupNo"/>
+		<result column="FILE_GRP_FK" property="fileGroupNo"/>
+		<result column="CMT_GRP_FK" property="commentGroupNo"/>
+		<result column="AUTH_GRP_FK" property="authGroupNo"/>
+		
+		<result column="FRBRD_SQ_PK" property="freeboardNo"/>
+		<result column="FRBRD_REG_DT" property="freeboardRegDate"/>
+		<result column="FRBRD_TITLE" property="freeboardTitle"/>
+		<result column="FRBRD_BODY" property="freeboardBody"/>
 	</resultMap>
 	
 	<!-- 파일 묶음을 추가하고 새로 생성된 시퀀스를 가져옵니다. -->
@@ -54,9 +71,9 @@
 		LIMIT	1;
 	</select>
 	
-	<!-- 특정 일련번호의 임시 저장 글이 바라보고 있는 파일 그룹 번호를 조회합니다. -->
-	<select id="selectTempSaveByTempSaveNo" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-		SELECT	FILE_GRP_FK
+	<!-- 특정 일련번호의 임시 저장 글이 바라보고 있는 파일 그룹 번호와 계정 번호를 조회합니다. -->
+	<select id="selectTempSaveByTempSaveNo" parameterType="java.lang.Integer" resultMap="TempSaveVO">
+		SELECT	FILE_GRP_FK, MEM_FK
 		FROM	TEMP_SAVE_TB
 		WHERE	TEMP_SAVE_SQ_PK = #{tempSaveNo}
 	</select>
@@ -86,4 +103,33 @@
 		DELETE FROM TEMP_SAVE_TB
 		WHERE TEMP_SAVE_SQ_PK = #{tempSaveNo}
 	</delete>
+	
+	<!-- 특정 게시글 상세 조회에 필요한 정보들을 조회합니다. -->
+	<select id="selectFreeboardDetail" parameterType="java.lang.Integer" resultMap="FreeboardDetailVO">
+		SELECT *
+		FROM(
+			SELECT
+				M.MEM_SQ_PK,
+				M.MEM_NICKNM,
+				M.MEM_ID,
+				
+				FG.FRBRD_GRP_SQ_PK,
+				FG.FILE_GRP_FK,
+				FG.CMT_GRP_FK,
+				FG.AUTH_GRP_FK,
+				
+				F.FRBRD_SQ_PK,
+				F.FRBRD_REG_DT,
+				F.FRBRD_TITLE,
+				F.FRBRD_BODY
+			FROM
+				FRBRD_GRP_TB AS FG
+				INNER JOIN MEM_TB AS M		ON(FG.MEM_FK = M.MEM_SQ_PK)
+				INNER JOIN FRBRD_TB AS F	ON(FG.FRBRD_GRP_SQ_PK = F.FRBRD_GRP_FK)
+			WHERE
+				FG.FRBRD_GRP_SQ_PK = #{freeboardGroupNo}
+			ORDER BY F.FRBRD_SQ_PK DESC
+		) AS T
+		LIMIT 1;
+	</select>
 </mapper>

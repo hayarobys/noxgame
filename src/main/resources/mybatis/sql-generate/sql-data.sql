@@ -142,7 +142,7 @@ INSERT INTO res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES
 
 
 
-INSERT INTO nox2.auth_grp_tb (AUTH_GRP_NM_UNQ,AUTH_GRP_EXPLN) VALUES 
+INSERT INTO auth_grp_tb (AUTH_GRP_NM_UNQ,AUTH_GRP_EXPLN) VALUES 
 ('일반 회원과 관리자','일반 회원과 관리자 등급의 조회가 가능합니다.')
 ;
 

@@ -45,10 +45,7 @@ jQuery(function() {
 				tempSaveBody: jQuery("#ir1").val()
 		};
 		
-		// 출력
-		console.log("전송할 json 데이터", formData);
-		
-		// 수정 요청 전송
+		// 등록 요청 전송
 		var token = jQuery("meta[name='_csrf']").attr("content");
 		var header = jQuery("meta[name='_csrf_header']").attr("content");
 		
@@ -64,6 +61,7 @@ jQuery(function() {
 			},
 			success: function(data, statusText, xhr){
 				console.log("응답값: ", data);
+				location.href = CONTEXT_PATH + "/community/" + data.data;
 			},
 			error: function(xhr){
 				console.log("error", xhr);

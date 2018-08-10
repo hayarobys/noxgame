@@ -1,4 +1,4 @@
-CREATE DEFINER=`suph`@`%` PROCEDURE `nox2`.`insert_freeboard_group`(
+CREATE PROCEDURE `insert_freeboard_group`(
 	IN _MEM_NO INT,
 	IN _COMMENT_GROUP_NO INT,
 	IN _FILE_GROUP_NO INT,
@@ -29,5 +29,5 @@ BEGIN
 		
 		SET FOREIGN_KEY_CHECKS = 1;
 	COMMIT;
-	SET RESULT = 0;
+	SET RESULT = LAST_INSERT_ID();
 END
