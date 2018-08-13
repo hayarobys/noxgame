@@ -38,4 +38,11 @@
 		ORDER BY
 			FILE_SQ_PK ASC
 	</select>
+	
+	<!-- 특정 파일 그룹을 등록한 계정의 일련 번호 조회 -->
+	<select id="selectMemNoOfFileGroupByFileGroupNo" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		SELECT	MEM_FK
+		FROM	FILE_GRP_TB
+		WHERE	FILE_GRP_SQ_PK = #{fileGroupNo}
+	</select>
 </mapper>

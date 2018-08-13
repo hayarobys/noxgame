@@ -19,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.suph.security.core.util.ContextUtil;
 
+import kr.pe.hayarobys.nox.common.exception.ForbiddenException;
+
 @Service
 public class UploadServiceImpl implements UploadService{
 	private static Logger logger = LoggerFactory.getLogger(UploadServiceImpl.class);
@@ -26,13 +28,27 @@ public class UploadServiceImpl implements UploadService{
 	@Autowired
 	private UploadDAO uploadDAO;
 	
-	@Override
-	public void insertFile(FileVO fileVO){
+	/**
+	 * 파일 정보를 DB에 넣습니다.
+	 * - 파일 그룹 생성
+	 * - 파일 
+	 * @param fileVO
+	 */
+	private void insertFile(FileVO fileVO){
 		uploadDAO.insertFile(fileVO);
 	}
 
 	@Override
 	public String imageUploadSmartEditorByForm(ImageFileVO imageFileVO){
+		// 파일 묶음 일련 번호와 요청자의 일치 여부 확인
+		Integer memNoOfFileGroup = uploadDAO.selectMemNoOfFileGroupByFileGroupNo(imageFileVO.getFileGroupNo());
+		Integer memNoOfRequester = ContextUtil.getMemberInfo().getNo();
+		
+		if(!memNoOfRequester.equals(memNoOfFileGroup)){
+			logger.debug("요청자: {}, 대상 파일 그룹의 등록자: {}", memNoOfRequester, memNoOfFileGroup);
+			throw new ForbiddenException("대상 파일 그룹의 등록자와 업로드 요청자의 계정 정보가 불일치 합니다.");
+		}
+		
 		StringBuilder result = new StringBuilder();
 		result.append("redirect:");
 		result.append(imageFileVO.getCallback());
@@ -48,6 +64,7 @@ public class UploadServiceImpl implements UploadService{
 			return result.toString();
 		}
 		
+		// 업로드 요청된 파일의 정보 확인
 		HttpServletRequest request	= ContextUtil.getCurrentRequest();
 		
 		long fileSize			= file.getSize();
@@ -57,14 +74,13 @@ public class UploadServiceImpl implements UploadService{
 		String uploadPath		= projectPath + File.separator + "resources" + File.separator + "upload" + File.separator;
 		File folder				= new File(uploadPath);
 		
-		// 폴더 생성
-		if( !folder.exists() ){ folder.mkdirs(); }
-		
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
 		String today		= formatter.format(new java.util.Date());
 		String saveFileName	= today + UUID.randomUUID().toString() + "." + fileExtension;
-	
-		// 파일 묶음 일련 번호와 요청자의 일치 여부 확인
+		
+		// 폴더 생성
+		if( !folder.exists() ){ folder.mkdirs(); }
+		
 		// DB에 메타 정보 입력
 		FileVO fileVO = new FileVO();
 		fileVO.setFileGroupNo(imageFileVO.getFileGroupNo());
@@ -75,11 +91,14 @@ public class UploadServiceImpl implements UploadService{
 		fileVO.setSaveFileName(saveFileName);
 		fileVO.setFileSaveDirectory(uploadPath);
 		
-		logger.debug("파일 정보: {}", fileVO);
+		try{
+			logger.debug("파일 정보: {}", fileVO);
+			insertFile(fileVO);
+		}catch(Exception e){
+			// TODO: handle exception
+		}
 		
 		try{
-			insertFile(fileVO);
-			
 			// 서버에 파일쓰기
 			file.transferTo(
 					new File(uploadPath + saveFileName)
@@ -93,8 +112,7 @@ public class UploadServiceImpl implements UploadService{
 			result.append("&sFileURL=");		result.append(request.getContextPath());	// img 태그의 src 속성에 쓰일 저장 경로
 												result.append("/resources/upload/");
 												result.append(saveFileName);
-		} catch (Exception e) {
-			// TODO: 익셉션 분할 할 것
+		}catch(Exception e){
 			// TODO: 트랜젝션 처리 할 것
 			e.printStackTrace();
 		}
@@ -104,40 +122,52 @@ public class UploadServiceImpl implements UploadService{
 
 	@Override
 	public void imageUploadSmartEditorByStream(Integer fileGroupNo){
+		// 파일 묶음 일련 번호와 요청자의 일치 여부 확인
+		Integer memNoOfFileGroup = uploadDAO.selectMemNoOfFileGroupByFileGroupNo(fileGroupNo);
+		Integer memNoOfRequester = ContextUtil.getMemberInfo().getNo();
+		
+		if(!memNoOfRequester.equals(memNoOfFileGroup)){
+			logger.debug("요청자: {}, 대상 파일 그룹의 등록자: {}", memNoOfRequester, memNoOfFileGroup);
+			throw new ForbiddenException("대상 파일 그룹의 등록자와 업로드 요청자의 계정 정보가 불일치 합니다.");
+		}
+		
+		// 업로드 요청된 파일의 정보 확인
 		HttpServletRequest request		= ContextUtil.getCurrentRequest();
 		HttpServletResponse response	= ContextUtil.getCurrentResponse();
 		
 		Long fileSize			= Long.parseLong(request.getHeader("file-size"));
-		String fileType			= request.getHeader("file-Type");
-		String originalFileName	= request.getHeader("file-name");											// 원본 파일 명
-		String fileExtension	= originalFileName.substring( originalFileName.lastIndexOf(".") + 1 ).toLowerCase();	// 확장자를 소문자로 변경
-		String projectPath		= request.getSession().getServletContext().getRealPath(File.separator);		// 파일 기본경로
-		String uploadPath		= projectPath + File.separator + "resources" + File.separator + "upload" + File.separator;	// 파일 상세경로
+		//String fileType			= request.getHeader("file-Type");
+		String originalFileName	= request.getHeader("file-name"); // 원본 파일 명
+		String fileExtension	= originalFileName.substring( originalFileName.lastIndexOf(".") + 1 ).toLowerCase(); // 확장자를 소문자로 변경
+		String projectPath		= request.getSession().getServletContext().getRealPath(File.separator); // 파일 기본경로
+		String uploadPath		= projectPath + File.separator + "resources" + File.separator + "upload" + File.separator; // 파일 상세경로
 		File folder				= new File(uploadPath);
-		
-		// 폴더 생성
-		if( !folder.exists() ){ folder.mkdirs(); }
 		
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
 		String today		= formatter.format(new java.util.Date());
 		String saveFileName	= today + UUID.randomUUID().toString() + "." + fileExtension;
 		
-		// 파일 묶음 일련 번호와 요청자의 일치 여부 확인
+		// 폴더 생성
+		if( !folder.exists() ){ folder.mkdirs(); }
+		
 		// DB에 메타 정보 입력
 		FileVO fileVO = new FileVO();
 		fileVO.setFileGroupNo(fileGroupNo);
-		fileVO.setMemNo(ContextUtil.getMemberInfo().getNo());
+		fileVO.setMemNo(memNoOfRequester);
 		fileVO.setFileSize(fileSize);
 		fileVO.setExtensionName(fileExtension);
 		fileVO.setOriginalFileName(originalFileName);
 		fileVO.setSaveFileName(saveFileName);
 		fileVO.setFileSaveDirectory(uploadPath);
 		
-		logger.debug("파일 정보: {}", fileVO);
+		try{
+			logger.debug("파일 정보: {}", fileVO);
+			insertFile(fileVO);
+		}catch(Exception e){
+			// TODO: handle exception
+		}
 		
 		try{
-			insertFile(fileVO);
-			
 			// 서버에 파일쓰기
 			InputStream is	= request.getInputStream();
 			OutputStream os	= new FileOutputStream(uploadPath + saveFileName);
@@ -169,7 +199,6 @@ public class UploadServiceImpl implements UploadService{
 			print.flush();
 			print.close();
 		}catch(Exception e){
-			// TODO: 익셉션 분할 할 것
 			// TODO: 트랜젝션 처리 할 것
 			e.printStackTrace();
 		}

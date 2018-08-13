@@ -18,4 +18,11 @@ public interface UploadDAO{
 	 * @return
 	 */
 	public abstract List<FileVO> selectFileByFileGroupNo(Integer fileGroupNo);
+	
+	/**
+	 * 특정 파일 그룹을 등록한 계정의 일련 번호 조회
+	 * @param fileGroupNo
+	 * @return
+	 */
+	public abstract Integer selectMemNoOfFileGroupByFileGroupNo(Integer fileGroupNo);
 }
