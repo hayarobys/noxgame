@@ -1,10 +1,7 @@
 package kr.pe.hayarobys.nox.common.upload;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.UUID;
 
@@ -15,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.suph.security.core.util.ContextUtil;
@@ -163,12 +162,9 @@ public class UploadServiceImpl implements UploadService{
 		try{
 			logger.debug("파일 정보: {}", fileVO);
 			insertFile(fileVO);
-		}catch(Exception e){
-			// TODO: handle exception
-		}
 		
-		try{
-			// 서버에 파일쓰기
+			throw new IOException("업로드 실패!");
+		/*	// 서버에 파일쓰기
 			InputStream is	= request.getInputStream();
 			OutputStream os	= new FileOutputStream(uploadPath + saveFileName);
 			
@@ -197,10 +193,11 @@ public class UploadServiceImpl implements UploadService{
 			PrintWriter print = response.getWriter();
 			print.print(result.toString());
 			print.flush();
-			print.close();
+			print.close();*/
 		}catch(Exception e){
 			// TODO: 트랜젝션 처리 할 것
-			e.printStackTrace();
+			//e.printStackTrace();
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 		}
 	}
 }
