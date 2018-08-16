@@ -27,14 +27,15 @@ jQuery(function() {
 
 	});
 	
-	jQuery("[data-type='attachment']").on("click", function(event){
+	// 첨부파일 영역의 이미지 클릭시 현재 에디터 내 커서 위치에 해당 이미지를 삽입합니다.
+	jQuery(document).on("click", "[data-type='attachment']", function(event){
 		var fileNo = event.target.getAttribute("data-file-no");
 		var title = event.target.title;
 		var src = event.target.src;
-		console.log("이미지 클릭: ", event.target);
 		pasteHTML("<img data-file-no='" + fileNo + "' src='" + src + "' title='" + title + "' width='600px' />");
 	});
 	
+	// 게시글 작성 완료 버튼 클릭 이벤트 입니다.
 	jQuery("#writeComplete").on("click", function(event){
 		event.preventDefault();
 		oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FIELD", []);	// 에디터의 내용이 textarea에 적용됩니다.
@@ -70,6 +71,11 @@ jQuery(function() {
 	});
 });
 
+/**
+ * iframe으로 띄워진 SE2에디터에서 작성한 내용을 개발자가 접근할 수 있는 textarea로 복사합니다.
+ * @param sHTML
+ * @returns
+ */
 function pasteHTML(sHTML) {
 	//var sHTML = "<span style='color:#FF0000;'>이미지도 같은 방식으로 삽입합니다.<\/span>";
 	oEditors.getById["ir1"].exec("PASTE_HTML", [sHTML]);
@@ -98,4 +104,18 @@ function setDefaultFont() {
 	oEditors.getById["ir1"].setDefaultFont(sDefaultFont, nFontSize);
 }
 
-
+/**
+ * 첨부파일폼에 이미지 정보 추가
+ * @returns
+ */
+function addPhotoInfoToAttachmentForm(htPhotoInfo){
+	/*	htPhotoInfo is
+		bNewLine:"true"
+		sSaveFileName:"201808161750066922de9f-fead-4a73-a17a-8d8dd735e081.jpg"
+		sFileNo:"45"
+		sName:"waterfowl-lake-banff-national-park-alberta-canada.jpg"
+		sOriginalImageURL:"/nox/resources/upload/201808161750066922de9f-fead-4a73-a17a-8d8dd735e081.jpg"
+	 */
+	var tag = '<img data-file-no="' + htPhotoInfo.sFileNo + '" data-type="attachment" id="' + htPhotoInfo.sSaveFileName + '" title="' + htPhotoInfo.sName + '" src="' + htPhotoInfo.sOriginalImageURL + '" style="width:100px; height: 100px;" />';
+	jQuery("#attachmentPhoto").append(tag);
+}

@@ -2,16 +2,7 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="kr.pe.hayarobys.nox.community.freeboard.FreeboardDAO">
-	<resultMap type="kr.pe.hayarobys.nox.common.tempsave.TempSaveVO" id="TempSaveVO">
-		<result column="MEM_FK" property="memNo"/>	<!-- 계정 일련 번호 외래키 -->
-		<result column="TEMP_SAVE_SQ_PK" property="tempSaveNo"/>	<!-- 임시 저장 시퀀스 기본키 -->
-		<result column="FILE_GRP_FK" property="fileGrpNo"/>		<!-- 파일 묶음 외래키 -->
-		<result column="TEMP_SAVE_TITLE" property="tempSaveTitle"/>	<!-- 임시 저장 제목 -->
-		<result column="TEMP_SAVE_BODY" property="tempSaveBody"/>		<!-- 임시 저장 본문 -->
-		<result column="TEMP_SAVE_MOD_DT" property="tempSaveModDt"/>		<!-- 임시 저장 본문 -->
-	</resultMap>
-	
+<mapper namespace="kr.pe.hayarobys.nox.community.freeboard.FreeboardDAO">	
 	<resultMap type="kr.pe.hayarobys.nox.community.freeboard.FreeboardDetailVO" id="FreeboardDetailVO">
 		<result column="MEM_SQ_PK" property="memNo"/>
 		<result column="MEM_NICKNM" property="nickname"/>
@@ -39,45 +30,7 @@
 			SELECT LAST_INSERT_ID()
 		</selectKey>
 	</insert>
-	
-	<!-- 게시글 임시 저장 레코드 추가하고 새로 생성된 시퀀스를 가져옵니다. -->
-	<insert id="insertTempSave" parameterType="TempSaveVO">
-		INSERT INTO TEMP_SAVE_TB(
-			MEM_FK, FILE_GRP_FK, TEMP_SAVE_CATEGORY, TEMP_SAVE_TITLE, TEMP_SAVE_BODY
-		)VALUES(
-			#{memNo}, #{fileGrpNo}, #{tempSaveCategory.value}, #{tempSaveTitle}, #{tempSaveBody}
-		)
-		<selectKey resultType="java.lang.Integer" keyProperty="tempSaveNo" order="AFTER">
-			SELECT LAST_INSERT_ID()
-		</selectKey>
-	</insert>
-	
-	<!-- 특정 아이디가 FREEBOARD 항목에서 마지막으로 저장한 임시 저장 글의 일련 번호 조회   -->
-	<select id="selectLastTempSaveNoFromFreeboard" parameterType="java.lang.Integer" resultMap="TempSaveVO">
-		SELECT *
-		FROM(
-			SELECT
-				TEMP_SAVE_SQ_PK,
-				FILE_GRP_FK,
-				TEMP_SAVE_TITLE,
-				TEMP_SAVE_BODY,
-				TEMP_SAVE_MOD_DT
-			FROM	TEMP_SAVE_TB
-			WHERE	MEM_FK = #{memNo}
-				AND
-					TEMP_SAVE_CATEGORY = '${@com.suph.security.core.enums.TempSaveCategory@FREEBOARD}'
-			ORDER BY	TEMP_SAVE_MOD_DT DESC
-		) AS T
-		LIMIT	1;
-	</select>
-	
-	<!-- 특정 일련번호의 임시 저장 글이 바라보고 있는 파일 그룹 번호와 계정 번호를 조회합니다. -->
-	<select id="selectTempSaveByTempSaveNo" parameterType="java.lang.Integer" resultMap="TempSaveVO">
-		SELECT	FILE_GRP_FK, MEM_FK
-		FROM	TEMP_SAVE_TB
-		WHERE	TEMP_SAVE_SQ_PK = #{tempSaveNo}
-	</select>
-	
+		
 	<!-- 자유 게시판 그룹을 등록하고 생성된 일련 번호를 조회합니다. -->
 	<insert id="insertFreeboardGroup" parameterType="FreeboardGroupVO" statementType="CALLABLE">
 		{ call INSERT_FREEBOARD_GROUP( #{memNo, mode=IN, jdbcType=INTEGER, javaType=java.lang.Integer}, #{commentGroupNo, mode=IN, jdbcType=INTEGER, javaType=java.lang.Integer}, #{fileGroupNo, mode=IN, jdbcType=INTEGER, javaType=java.lang.Integer}, #{authGroupNo, mode=IN, jdbcType=INTEGER, javaType=java.lang.Integer}, #{freeboardGroupClassOrder, mode=IN, jdbcType=INTEGER, javaType=java.lang.Integer}, #{freeboardGroupClassDepth, mode=IN, jdbcType=INTEGER, javaType=java.lang.Integer}, #{freeboardGroupNo, mode=OUT, jdbcType=INTEGER, javaType=java.lang.Integer} ) }
@@ -97,12 +50,6 @@
 			#{freeboardBody}
 		)
 	</insert>
-	
-	<!-- 특정 일련 번호의 게시물 임시 저장 레코드를 제거합니다. -->
-	<delete id="deleteTempSaveByTempSaveNo" parameterType="java.lang.Integer">
-		DELETE FROM TEMP_SAVE_TB
-		WHERE TEMP_SAVE_SQ_PK = #{tempSaveNo}
-	</delete>
 	
 	<!-- 특정 게시글 상세 조회에 필요한 정보들을 조회합니다. -->
 	<select id="selectFreeboardDetail" parameterType="java.lang.Integer" resultMap="FreeboardDetailVO">

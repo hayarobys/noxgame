@@ -4,7 +4,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class ImageFileVO{
+public class SmartEditorImageFileVO{
 	private int fileGroupNo;
 	private String callback;
 	private String callback_func;

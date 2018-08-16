@@ -77,12 +77,14 @@ nhn.husky.SE2M_AttachQuickPhoto = jindo.$Class({
 				
 				aPhotoInfo = {
 					sFileNo : htData.sFileNo,
+					sSaveFileName : htData.sSaveFileName,
 				    sName : htData.sFileName || "",
 				    sOriginalImageURL : htData.sFileURL,
 					bNewLine : htData.bNewLine || false 
 				};
 				
 				sContents += this._getPhotoTag(aPhotoInfo);
+				parent.addPhotoInfoToAttachmentForm(aPhotoInfo); // 사진 정보를 iframe 바깥쪽으로 전달
 			}
 
 			this.oApp.exec("PASTE_HTML", [sContents]); // 위즐 첨부 파일 부분 확인
@@ -102,7 +104,6 @@ nhn.husky.SE2M_AttachQuickPhoto = jindo.$Class({
 			sTag += '<br style="clear:both;">';
 		}
 		sTag = jindo.$Template(sTag).process(htPhotoInfo);
-		
 		return sTag;
 	}
 });

@@ -38,7 +38,7 @@ public class FreeboardController{
 	/** 자유 게시판 신규 글 작성 페이지 */
 	@RequestMapping(value="/write", method=RequestMethod.GET)
 	public ModelAndView getWrite(ModelAndView mav){
-		return freeboardService.getTempSaveNo(mav);
+		return freeboardService.getFreeboardTempSaveNo(mav);
 	}
 	
 	/** 자유 게시판 신규 글 등록 */

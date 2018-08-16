@@ -44,7 +44,7 @@
 	</tx:advice>
 	
 	<aop:config proxy-target-class="true">
-		<aop:pointcut id="txPointCut" expression="execution(* kr.pe.hayarobys.nox.common.upload.UploadServiceImpl.*(..))"/>
+		<aop:pointcut id="txPointCut" expression="execution(* com.suph.security.core.impl..*ServiceImpl.*(..)) || execution(* kr.pe.hayarobys.nox.common.upload..*ServiceImpl.*(..))"/>
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPointCut"/>
 	</aop:config>
 	

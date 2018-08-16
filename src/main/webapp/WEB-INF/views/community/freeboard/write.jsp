@@ -50,7 +50,7 @@
 							<button>파일추가</button>
 						</article>
 					</header>
-					<article>
+					<article id="attachmentPhoto">
 						<c:forEach var="fileVO" items="${fileVOList}">
 							<img data-file-no="${fileVO.fileNo}" data-type="attachment" id="${fileVO.saveFileName}" title="${fileVO.originalFileName}" src="<c:url value='/resources/upload/${fileVO.saveFileName}' />" style="width:100px; height: 100px;" />
 						</c:forEach>

@@ -17,6 +17,12 @@ public class UploadController{
 	@Autowired
 	private UploadService uploadService;
 	
+	/**
+	 * 네이버 스마트 에디터2의 포토 업로드 화면을 보여줍니다.
+	 * @param fileGroupNo
+	 * @param mav
+	 * @return
+	 */
 	@RequestMapping(value="/upload/{fileGroupNo}/photo/edit", method=RequestMethod.GET)
 	public ModelAndView uploadEdit(
 			@PathVariable(value="fileGroupNo", required=true) String fileGroupNo,
@@ -35,7 +41,7 @@ public class UploadController{
 	@RequestMapping(value="/upload/{fileGroupNo}/photo/form", method=RequestMethod.POST, headers=("content-type=multipart/*"))
 	public String imageUploadSmartEditorByForm(
 			@PathVariable(value="fileGroupNo", required=true) String fileGroupNo,
-			ImageFileVO fileVO, HttpServletRequest request
+			SmartEditorImageFileVO fileVO, HttpServletRequest request
 	){
 			fileVO.setFileGroupNo(Integer.parseInt(fileGroupNo));
 			return uploadService.imageUploadSmartEditorByForm(fileVO);

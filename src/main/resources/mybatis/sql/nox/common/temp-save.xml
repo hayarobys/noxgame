@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.pe.hayarobys.nox.common.tempsave.TempSaveDAO">
+	<resultMap type="kr.pe.hayarobys.nox.common.tempsave.TempSaveVO" id="TempSaveVO">
+		<result column="MEM_FK" property="memNo"/>	<!-- 계정 일련 번호 외래키 -->
+		<result column="TEMP_SAVE_SQ_PK" property="tempSaveNo"/>	<!-- 임시 저장 시퀀스 기본키 -->
+		<result column="FILE_GRP_FK" property="fileGrpNo"/>		<!-- 파일 묶음 외래키 -->
+		<result column="TEMP_SAVE_TITLE" property="tempSaveTitle"/>	<!-- 임시 저장 제목 -->
+		<result column="TEMP_SAVE_BODY" property="tempSaveBody"/>		<!-- 임시 저장 본문 -->
+		<result column="TEMP_SAVE_MOD_DT" property="tempSaveModDt"/>		<!-- 임시 저장 본문 -->
+	</resultMap>
+	
+	<!-- 특정 아이디가 특정 카테고리에 마지막으로 저장한 임시 저장 글 조회   -->
+	<select id="selectLastTempSaveNoFromCategory" parameterType="TempSaveVO" resultMap="TempSaveVO">
+		SELECT *
+		FROM(
+			SELECT
+				TEMP_SAVE_SQ_PK,
+				FILE_GRP_FK,
+				TEMP_SAVE_TITLE,
+				TEMP_SAVE_BODY,
+				TEMP_SAVE_MOD_DT
+			FROM	TEMP_SAVE_TB
+			WHERE	MEM_FK = #{memNo}
+				AND
+					TEMP_SAVE_CATEGORY = #{tempSaveCategory.value}
+			ORDER BY	TEMP_SAVE_MOD_DT DESC
+		) AS T
+		LIMIT	1;
+	</select>
+	
+	<!-- 게시글 임시 저장 레코드 추가하고 새로 생성된 시퀀스를 가져옵니다. -->
+	<insert id="insertTempSave" parameterType="TempSaveVO">
+		INSERT INTO TEMP_SAVE_TB(
+			MEM_FK, FILE_GRP_FK, TEMP_SAVE_CATEGORY, TEMP_SAVE_TITLE, TEMP_SAVE_BODY
+		)VALUES(
+			#{memNo}, #{fileGrpNo}, #{tempSaveCategory.value}, #{tempSaveTitle}, #{tempSaveBody}
+		)
+		<selectKey resultType="java.lang.Integer" keyProperty="tempSaveNo" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<!-- 특정 일련번호의 임시 저장 글이 바라보고 있는 파일 그룹 번호와 계정 번호를 조회합니다. -->
+	<select id="selectTempSaveByTempSaveNo" parameterType="java.lang.Integer" resultMap="TempSaveVO">
+		SELECT	FILE_GRP_FK, MEM_FK
+		FROM	TEMP_SAVE_TB
+		WHERE	TEMP_SAVE_SQ_PK = #{tempSaveNo}
+	</select>
+	
+	<!-- 특정 일련 번호의 게시물 임시 저장 레코드를 제거합니다. -->
+	<delete id="deleteTempSaveByTempSaveNo" parameterType="java.lang.Integer">
+		DELETE FROM TEMP_SAVE_TB
+		WHERE TEMP_SAVE_SQ_PK = #{tempSaveNo}
+	</delete>
+	
+</mapper>

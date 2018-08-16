@@ -12,7 +12,7 @@ public interface FreeboardService{
 	 * @param mav
 	 * @return
 	 */
-	public abstract ModelAndView getTempSaveNo(ModelAndView mav);
+	public abstract ModelAndView getFreeboardTempSaveNo(ModelAndView mav);
 	
 	/**
 	 * 신규 글쓰기 완료 요청 입니다. 요청받은 데이터를 DB상의 임시 저장 목록에서 제거 후, 자유게시판 상세 테이블에 등록합니다.

@@ -10,7 +10,7 @@ public interface UploadService{
 	 * @param fileVO
 	 * @return
 	 */
-	public String imageUploadSmartEditorByForm(ImageFileVO fileVO);
+	public String imageUploadSmartEditorByForm(SmartEditorImageFileVO fileVO);
 	
 	/**
 	 * stream 형식의 파일 업로드를 처리합니다.

@@ -1,7 +1,13 @@
 package kr.pe.hayarobys.nox.common.upload;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.UUID;
 
@@ -12,13 +18,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.suph.security.core.util.ContextUtil;
 
 import kr.pe.hayarobys.nox.common.exception.ForbiddenException;
+import kr.pe.hayarobys.nox.common.exception.InternalServerErrorException;
 
 @Service
 public class UploadServiceImpl implements UploadService{
@@ -29,8 +35,8 @@ public class UploadServiceImpl implements UploadService{
 	
 	/**
 	 * 파일 정보를 DB에 넣습니다.
-	 * - 파일 그룹 생성
-	 * - 파일 
+	 * - 파일 레코드 생성
+	 * - 파일 레코드의 일련 번호 반환
 	 * @param fileVO
 	 */
 	private void insertFile(FileVO fileVO){
@@ -38,7 +44,7 @@ public class UploadServiceImpl implements UploadService{
 	}
 
 	@Override
-	public String imageUploadSmartEditorByForm(ImageFileVO imageFileVO){
+	public String imageUploadSmartEditorByForm(SmartEditorImageFileVO imageFileVO){
 		// 파일 묶음 일련 번호와 요청자의 일치 여부 확인
 		Integer memNoOfFileGroup = uploadDAO.selectMemNoOfFileGroupByFileGroupNo(imageFileVO.getFileGroupNo());
 		Integer memNoOfRequester = ContextUtil.getMemberInfo().getNo();
@@ -80,7 +86,7 @@ public class UploadServiceImpl implements UploadService{
 		// 폴더 생성
 		if( !folder.exists() ){ folder.mkdirs(); }
 		
-		// DB에 메타 정보 입력
+		// DB에 파일 정보 입력
 		FileVO fileVO = new FileVO();
 		fileVO.setFileGroupNo(imageFileVO.getFileGroupNo());
 		fileVO.setMemNo(ContextUtil.getMemberInfo().getNo());
@@ -90,32 +96,37 @@ public class UploadServiceImpl implements UploadService{
 		fileVO.setSaveFileName(saveFileName);
 		fileVO.setFileSaveDirectory(uploadPath);
 		
-		try{
-			logger.debug("파일 정보: {}", fileVO);
+		logger.debug("파일 정보: {}", fileVO);
+		
+		try{	
 			insertFile(fileVO);
 		}catch(Exception e){
-			// TODO: handle exception
+			throw new InternalServerErrorException("업로드 실패 - 데이터베이스 기록 실패");
 		}
 		
+		// 서버에 파일쓰기
 		try{
-			// 서버에 파일쓰기
 			file.transferTo(
 					new File(uploadPath + saveFileName)
 			);
-			
-			logger.debug("ImageUpload - SaveName: {}, Path: {}", saveFileName, uploadPath);
-			
-			// 반환값 정리
-			result.append("&bNewLine=true&sFileName=");										// 이미지 사이에 간격주기
-												result.append(originalFileName);			// img 태그의 title 속성에 쓰일 원본 파일명
-			result.append("&sFileURL=");		result.append(request.getContextPath());	// img 태그의 src 속성에 쓰일 저장 경로
-												result.append("/resources/upload/");
-												result.append(saveFileName);
 		}catch(Exception e){
-			// TODO: 트랜젝션 처리 할 것
-			e.printStackTrace();
+			throw new InternalServerErrorException("업로드 실패 - 물리 저장소 쓰기 실패");
 		}
 		
+		logger.debug("ImageUpload - SaveName: {}, Path: {}", saveFileName, uploadPath);
+		
+		// 반환값 정리
+		result.append("&bNewLine=true&sFileName=");	// 이미지 사이에 간격주기
+		result.append(originalFileName);			// img 태그의 title 속성에 쓰일 원본 파일명
+		result.append("&sFileURL=");
+		result.append(request.getContextPath());	// img 태그의 src 속성에 쓰일 저장 경로
+		result.append("/resources/upload/");
+		result.append(saveFileName);
+		result.append("&sFileNo=");
+		result.append(fileVO.getFileNo());
+		result.append("&sSaveFileName=");
+		result.append(saveFileName);
+	
 		return result.toString();
 	}
 
@@ -149,7 +160,7 @@ public class UploadServiceImpl implements UploadService{
 		// 폴더 생성
 		if( !folder.exists() ){ folder.mkdirs(); }
 		
-		// DB에 메타 정보 입력
+		// DB에 파일 정보 입력
 		FileVO fileVO = new FileVO();
 		fileVO.setFileGroupNo(fileGroupNo);
 		fileVO.setMemNo(memNoOfRequester);
@@ -159,14 +170,20 @@ public class UploadServiceImpl implements UploadService{
 		fileVO.setSaveFileName(saveFileName);
 		fileVO.setFileSaveDirectory(uploadPath);
 		
-		try{
-			logger.debug("파일 정보: {}", fileVO);
-			insertFile(fileVO);
+		logger.debug("파일 정보: {}", fileVO);
 		
-			throw new IOException("업로드 실패!");
-		/*	// 서버에 파일쓰기
-			InputStream is	= request.getInputStream();
-			OutputStream os	= new FileOutputStream(uploadPath + saveFileName);
+		try{
+			insertFile(fileVO);	
+		}catch(Exception e){
+			throw new InternalServerErrorException("업로드 실패 - 데이터베이스 기록 실패");
+		}
+		
+		// 서버에 파일쓰기
+		InputStream is = null;
+		OutputStream os = null;
+		try{
+			is	= new BufferedInputStream( request.getInputStream() );
+			os	= new BufferedOutputStream( new FileOutputStream(uploadPath + saveFileName) );
 			
 			int numRead;
 			byte b[] = new byte[ Integer.parseInt(request.getHeader("file-size")) ];
@@ -176,28 +193,34 @@ public class UploadServiceImpl implements UploadService{
 			
 			if( is != null ){ is.close(); }
 			os.flush();
-			os.close();
-			
-			logger.debug("ImageUpload - SaveName: {}, Path: {}", saveFileName, uploadPath);
-			
-			// 반환값 정리
-			StringBuilder result = new StringBuilder();
-			result.append("&bNewLine=true&sFileName=");										// 이미지 사이에 간격주기
-												result.append(originalFileName);			// img 태그의 title 속성에 쓰일 원본 파일명
-			// &sFileURL=/nox/resources/upload/20180809102839dbb939e5-a3c2-4062-bd1d-eea17d2146e9.jpg
-			result.append("&sFileURL=");		result.append(request.getContextPath());	// img 태그의 src 속성에 쓰일 저장 경로
-												result.append("/resources/upload/");
-												result.append(saveFileName);
-			result.append("&sFileNo=");			result.append(fileVO.getFileNo());
-					
-			PrintWriter print = response.getWriter();
+		}catch(Exception e){
+			throw new InternalServerErrorException("업로드 실패 - 물리 저장소 쓰기 실패");
+		}finally{
+			try{ is.close(); }catch(IOException e){e.printStackTrace();}
+			try{ os.close(); }catch(IOException e){e.printStackTrace();}
+		}
+		
+		logger.debug("ImageUpload - SaveName: {}, Path: {}", saveFileName, uploadPath);
+		
+		// 저장 경로 문자열로 정리
+		StringBuilder result = new StringBuilder();
+		result.append("&bNewLine=true&sFileName=");	// 이미지 사이에 간격주기
+		result.append(originalFileName);			// img 태그의 title 속성에 쓰일 원본 파일명
+		result.append("&sFileURL=");				// &sFileURL=/nox/resources/upload/20180809102839dbb939e5-a3c2-4062-bd1d-eea17d2146e9.jpg
+		result.append(request.getContextPath());	// img 태그의 src 속성에 쓰일 저장 경로
+		result.append("/resources/upload/");
+		result.append(saveFileName);
+		result.append("&sFileNo=");
+		result.append(fileVO.getFileNo());
+		result.append("&sSaveFileName=");
+		result.append(fileVO.getSaveFileName());
+		
+		// 저장 경로 반환
+		try( PrintWriter print = response.getWriter() ){
 			print.print(result.toString());
 			print.flush();
-			print.close();*/
 		}catch(Exception e){
-			// TODO: 트랜젝션 처리 할 것
-			//e.printStackTrace();
-			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			throw new InternalServerErrorException("저장 경로 반환 실패");
 		}
 	}
 }

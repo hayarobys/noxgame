@@ -17,6 +17,7 @@ import com.suph.security.core.util.ContextUtil;
 import kr.pe.hayarobys.nox.common.comment.CommentDAO;
 import kr.pe.hayarobys.nox.common.comment.CommentGroupVO;
 import kr.pe.hayarobys.nox.common.exception.ForbiddenException;
+import kr.pe.hayarobys.nox.common.tempsave.TempSaveDAO;
 import kr.pe.hayarobys.nox.common.tempsave.TempSaveVO;
 import kr.pe.hayarobys.nox.common.upload.FileGrpVO;
 import kr.pe.hayarobys.nox.common.upload.FileVO;
@@ -30,20 +31,26 @@ public class FreeboardServiceImpl implements FreeboardService{
 	private FreeboardDAO freeboardDAO;
 	
 	@Autowired
+	private TempSaveDAO tempSaveDAO;
+	
+	@Autowired
 	private UploadDAO uploadDAO;
 	
 	@Autowired
 	private CommentDAO commentDAO;
 	
 	@Override
-	public ModelAndView getTempSaveNo(ModelAndView mav){
+	public ModelAndView getFreeboardTempSaveNo(ModelAndView mav){
 		MemberInfo memberInfo = ContextUtil.getMemberInfo();
 		// 미로그인 유저여서 authentication이 null일 가능성은 security 단에서 1차적으로 차단한 상태이므로 부가 처리를 하지 않습니다.
 		Integer memNo = memberInfo.getNo();
 		
 		// 기존에 FREEBOARD로 등록된 임시 저장글이 있는가?
 		// 있다면 가장 최근에 작성한 임시 저장글의 일련 번호를 반환
-		TempSaveVO lastTempSaveVO = freeboardDAO.selectLastTempSaveNoFromFreeboard(memNo);
+		TempSaveVO searchTempSaveVO = new TempSaveVO();
+		searchTempSaveVO.setMemNo(memNo);
+		searchTempSaveVO.setTempSaveCategory(TempSaveCategory.FREEBOARD);
+		TempSaveVO lastTempSaveVO = tempSaveDAO.selectLastTempSaveNoFromCategory(searchTempSaveVO);
 		List<FileVO> fileVOList = null;
 		if(lastTempSaveVO != null){
 			logger.debug("마지막 임시저장글 발견: {}", lastTempSaveVO);
@@ -58,7 +65,6 @@ public class FreeboardServiceImpl implements FreeboardService{
 			freeboardDAO.insertFileGrp(fileGrpVO);
 			Integer fileGrpNo = fileGrpVO.getFileGrpNo();
 			
-			// 생성에 실패했다면 ?
 			logger.debug("파일그룹넘버: {}", fileGrpNo);
 			lastTempSaveVO = new TempSaveVO();
 			lastTempSaveVO.setMemNo(memNo);
@@ -67,7 +73,7 @@ public class FreeboardServiceImpl implements FreeboardService{
 			lastTempSaveVO.setTempSaveTitle("");
 			lastTempSaveVO.setTempSaveBody("");
 			
-			freeboardDAO.insertTempSave(lastTempSaveVO);
+			tempSaveDAO.insertTempSave(lastTempSaveVO);
 		}
 		
 		mav.addObject("lastTempSaveVO", lastTempSaveVO);
@@ -83,7 +89,7 @@ public class FreeboardServiceImpl implements FreeboardService{
 		
 		// 요청 들어온 임시 저장 번호로 원본 임시 저장 글 조회
 		Integer tempSaveNo = requestTempSaveVO.getTempSaveNo();
-		TempSaveVO originalTempSaveVO = freeboardDAO.selectTempSaveByTempSaveNo(tempSaveNo);
+		TempSaveVO originalTempSaveVO = tempSaveDAO.selectTempSaveByTempSaveNo(tempSaveNo);
 		
 		// 원본 임시 저장글과 요청자의 계정 일치 여부 확인
 		Integer memNo = ContextUtil.getMemberInfo().getNo();
@@ -120,7 +126,7 @@ public class FreeboardServiceImpl implements FreeboardService{
 		freeboardDAO.insertFreeboard(freeboardVO);
 		
 		// 임시 저장 데이터 제거
-		freeboardDAO.deleteTempSaveByTempSaveNo(tempSaveNo);
+		tempSaveDAO.deleteTempSaveByTempSaveNo(tempSaveNo);
 		
 		// 생성된 게시글 그룹 번호 반환
 		JsonResultVO<Integer> jsonResultVO = new JsonResultVO<Integer>(freeboardGroupVO.getFreeboardGroupNo());
