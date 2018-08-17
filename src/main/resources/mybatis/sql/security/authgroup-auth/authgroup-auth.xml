@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.suph.security.core.dao.AuthgroupAuthDAO">
+	<resultMap type="com.suph.security.core.dto.AuthDTO" id="AuthDTO">
+		<result column="AUTH_SQ_PK" property="authSqPk" />
+		<result column="AUTH_NM_UNQ" property="authNmUnq" />
+		<result column="AUTH_EXPLN" property="authExplanation" />
+	</resultMap>
+	
+	<!-- 특정 권한 그룹에 매핑된 권한 정보를 조회합니다 -->
+	<select id="getAuthListByAuthgroupNo" parameterType="java.lang.Integer" resultMap="AuthDTO">
+		SELECT
+			A.AUTH_SQ_PK,
+			A.AUTH_NM_UNQ,
+			A.AUTH_EXPLN
+		FROM
+			AUTH_GRP_TB AS R
+			INNER JOIN AUTH_GRP_AUTH_TB AS RA ON (RA.AUTH_GRP_FK_PK = R.AUTH_GRP_SQ_PK)
+			INNER JOIN AUTH_TB AS A ON (RA.AUTH_FK_PK = A.AUTH_SQ_PK)
+		WHERE
+				R.AUTH_GRP_SQ_PK = #{authgroupNo}
+		ORDER BY
+			A.AUTH_SQ_PK
+	</select>
+	
+	<!-- 특정 권한 그룹에 새 권한들을 부여합니다. -->
+	<insert id="insertAuthListByAuthgroupNo" parameterType="AuthgroupAuthDTO">
+		INSERT INTO
+			AUTH_GRP_AUTH_TB(
+				AUTH_GRP_FK_PK, AUTH_FK_PK
+			)
+		VALUES
+		<foreach collection="authSqPkList" item="authNo" separator=",">
+			(#{authgroupNo}, #{authNo})
+		</foreach>
+	</insert>
+	
+	<!-- 특정 권한 그룹에 매칭된 권한들을 제거합니다. -->
+	<delete id="deleteAuthListByAuthgroupNo" parameterType="int">
+		DELETE FROM
+			AUTH_GRP_AUTH_TB
+		WHERE
+			AUTH_GRP_FK_PK = #{authgroupNo}
+	</delete>
+</mapper>

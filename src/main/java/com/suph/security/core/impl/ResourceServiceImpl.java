@@ -30,7 +30,7 @@ public class ResourceServiceImpl implements ResourceService{
 	private ResourceDAO resourceDAO;
 	
 	@Autowired
-	private ResourceAuthDAO securedObjectDAO;
+	private ResourceAuthDAO resourceAuthDAO;
 	
 	@Override
 	public Map<String, Object> getResourceList(PaginationRequest paginationRequest){
@@ -60,7 +60,7 @@ public class ResourceServiceImpl implements ResourceService{
 		search.put("type", "url");
 		search.put("resSqPk", resSqPk);
 		
-		List<AuthDTO> list = securedObjectDAO.getAuthListByResourceNo(search);
+		List<AuthDTO> list = resourceAuthDAO.getAuthListByResourceNo(search);
 		
 		result.put("result", "success");
 		result.put("list", list);

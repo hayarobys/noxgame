@@ -12,7 +12,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.suph.security.core.dao.AuthgroupAuthDAO;
 import com.suph.security.core.dao.AuthgroupDAO;
+import com.suph.security.core.dto.AuthDTO;
 import com.suph.security.core.dto.AuthgroupDTO;
 import com.suph.security.core.dto.PaginationRequest;
 import com.suph.security.core.dto.PaginationResponse;
@@ -25,6 +27,9 @@ public class AuthgroupServiceImpl implements AuthgroupService{
 	
 	@Autowired
 	private AuthgroupDAO authgroupDAO;
+	
+	@Autowired
+	private AuthgroupAuthDAO authgroupAuthDAO;
 	
 	@Override
 	public Map<String, Object> getAuthgroupList(PaginationRequest paginationRequest){
@@ -42,6 +47,18 @@ public class AuthgroupServiceImpl implements AuthgroupService{
 			sqle.printStackTrace();
 			result.put("result", "fail");
 		}
+		
+		return result;
+	}
+	
+	@Override
+	public Map<String, Object> getAuthListByAuthgroupNo(Integer authgroupNo){
+		Map<String, Object> result = new HashMap<String, Object>();
+		
+		List<AuthDTO> list = authgroupAuthDAO.getAuthListByAuthgroupNo(authgroupNo);
+		
+		result.put("result", "success");
+		result.put("list", list);
 		
 		return result;
 	}
