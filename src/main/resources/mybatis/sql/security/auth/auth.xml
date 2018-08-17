@@ -39,10 +39,10 @@
 			AUTH_TB
 		<set>
 			<if test="authNmUnq != null and !''.equals(authNmUnq)">
-				,AUTH_NM_UNQ = #{authNmUnq}
+				AUTH_NM_UNQ = #{authNmUnq},
 			</if>
 			<if test="authExplanation != null and !''.equals(authExplanation)">
-				,AUTH_EXPLN = #{authExplanation}
+				AUTH_EXPLN = #{authExplanation},
 			</if>
 		</set>
 		WHERE
