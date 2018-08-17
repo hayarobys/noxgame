@@ -17,6 +17,7 @@ import com.suph.security.core.util.ContextUtil;
 import kr.pe.hayarobys.nox.common.comment.CommentDAO;
 import kr.pe.hayarobys.nox.common.comment.CommentGroupVO;
 import kr.pe.hayarobys.nox.common.exception.ForbiddenException;
+import kr.pe.hayarobys.nox.common.exception.InternalServerErrorException;
 import kr.pe.hayarobys.nox.common.tempsave.TempSaveDAO;
 import kr.pe.hayarobys.nox.common.tempsave.TempSaveVO;
 import kr.pe.hayarobys.nox.common.upload.FileGrpVO;
@@ -116,7 +117,7 @@ public class FreeboardServiceImpl implements FreeboardService{
 		freeboardGroupVO.setAuthGroupNo(1); // TODO: 권한그룹 수정할 것
 		freeboardGroupVO.setFreeboardGroupClassOrder(0);
 		freeboardGroupVO.setFreeboardGroupClassDepth(1);
-		freeboardDAO.insertFreeboardGroup(freeboardGroupVO);
+		this.insertFreeboardGroup(freeboardGroupVO);
 		
 		// 자유 게시판 상세 생성
 		FreeboardVO freeboardVO = new FreeboardVO();
@@ -144,4 +145,13 @@ public class FreeboardServiceImpl implements FreeboardService{
 		return mav;
 	}
 	
+	/**
+	 * 자유게시판 그룹을 생성하고 계층 최상위 게시물로 자기 자신을 참조합니다.
+	 * @param freeboardGroupVO
+	 */
+	private void insertFreeboardGroup(FreeboardGroupVO freeboardGroupVO){
+		freeboardDAO.insertFreeboardGroup(freeboardGroupVO);
+		freeboardGroupVO.setFreeboardGroupClassNo(freeboardGroupVO.getFreeboardGroupNo());
+		freeboardDAO.updateFreeboardGroupClassNo(freeboardGroupVO);
+	}
 }

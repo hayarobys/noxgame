@@ -61,8 +61,8 @@ jQuery(function() {
 				xhr.setRequestHeader(header, token);	// 헤더의 csrf meta태그를 읽어 CSRF 토큰 함께 전송
 			},
 			success: function(data, statusText, xhr){
-				console.log("응답값: ", data);
-				location.href = CONTEXT_PATH + "/community/" + data.data;
+				//console.log("응답값: ", data);
+				location.href = CONTEXT_PATH + "/community/freeboard/" + data.data;
 			},
 			error: function(xhr){
 				console.log("error", xhr);
@@ -116,6 +116,6 @@ function addPhotoInfoToAttachmentForm(htPhotoInfo){
 		sName:"waterfowl-lake-banff-national-park-alberta-canada.jpg"
 		sOriginalImageURL:"/nox/resources/upload/201808161750066922de9f-fead-4a73-a17a-8d8dd735e081.jpg"
 	 */
-	var tag = '<img data-file-no="' + htPhotoInfo.sFileNo + '" data-type="attachment" id="' + htPhotoInfo.sSaveFileName + '" title="' + htPhotoInfo.sName + '" src="' + htPhotoInfo.sOriginalImageURL + '" style="width:100px; height: 100px;" />';
+	var tag = '<img data-file-no="' + htPhotoInfo.sFileNo + '" data-type="attachment" id="' + htPhotoInfo.sSaveFileName + '" title="' + htPhotoInfo.sName + '" src="' + htPhotoInfo.sOriginalImageURL + '" style="width:90px; height: 90px;" />';
 	jQuery("#attachmentPhoto").append(tag);
 }

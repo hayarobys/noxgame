@@ -8,11 +8,8 @@
 	<jsp:include page="/WEB-INF/views/common/common-head.jsp" flush="false"/>
 	<title>자유게시판 상세보기</title>
 	
-	<link rel="stylesheet" href="<c:url value='/resources/css/ui/community/freeboard/write.css'/>" />
-	
-	<!-- Naver SmartEditor2 -->
-	<script type="text/javascript" src="<c:url value='/resources/scripts/smarteditor2-2.9.0/js/service/HuskyEZCreator.js'/>" charset="utf-8"></script>
-	<script src="<c:url value='/resources/scripts/ui/community/freeboard/write.js'/>"></script>
+	<link rel="stylesheet" href="<c:url value='/resources/css/ui/community/freeboard/detail.css'/>" />
+	<script src="<c:url value='/resources/scripts/ui/community/freeboard/detail.js'/>"></script>
 	
 </head>
 <body>

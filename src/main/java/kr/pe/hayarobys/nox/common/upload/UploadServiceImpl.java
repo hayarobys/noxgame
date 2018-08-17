@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +19,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.suph.security.core.util.ContextUtil;
@@ -76,14 +76,34 @@ public class UploadServiceImpl implements UploadService{
 		String originalFileName	= file.getOriginalFilename();
 		String fileExtension	= originalFileName.substring(originalFileName.lastIndexOf(".")+1);
 		String projectPath		= request.getSession().getServletContext().getRealPath(File.separator);
-		String uploadPath		= projectPath + File.separator + "resources" + File.separator + "upload" + File.separator;
-		File folder				= new File(uploadPath);
+
+		SimpleDateFormat formatterFull	= new SimpleDateFormat("yyyyMMddHHmmss");
+		SimpleDateFormat formatterYear	= new SimpleDateFormat("yyyy");
+		SimpleDateFormat formatterMonth	= new SimpleDateFormat("MM");
+		SimpleDateFormat formatterDay	= new SimpleDateFormat("dd");
 		
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
-		String today		= formatter.format(new java.util.Date());
-		String saveFileName	= today + UUID.randomUUID().toString() + "." + fileExtension;
+		Date nowTime		= new java.util.Date();
+		String today		= formatterFull.format(nowTime);
+		String saveFileName	= today + "-" + UUID.randomUUID().toString() + "." + fileExtension; // 저장하기위해 변경한 파일 명
+		
+		StringBuffer uploadPathBuffer = new StringBuffer();
+		uploadPathBuffer.append(projectPath);
+		uploadPathBuffer.append(File.separator);
+		uploadPathBuffer.append("resources");
+		uploadPathBuffer.append(File.separator);
+		uploadPathBuffer.append("upload");
+		uploadPathBuffer.append(File.separator);
+		uploadPathBuffer.append(formatterYear.format(nowTime));
+		uploadPathBuffer.append(File.separator);
+		uploadPathBuffer.append(formatterMonth.format(nowTime));
+		uploadPathBuffer.append(File.separator);
+		uploadPathBuffer.append(formatterDay.format(nowTime));
+		uploadPathBuffer.append(File.separator);
+		
+		String uploadPath = uploadPathBuffer.toString(); // 파일 상세경로
 		
 		// 폴더 생성
+		File folder = new File(uploadPath);
 		if( !folder.exists() ){ folder.mkdirs(); }
 		
 		// DB에 파일 정보 입력
@@ -150,14 +170,34 @@ public class UploadServiceImpl implements UploadService{
 		String originalFileName	= request.getHeader("file-name"); // 원본 파일 명
 		String fileExtension	= originalFileName.substring( originalFileName.lastIndexOf(".") + 1 ).toLowerCase(); // 확장자를 소문자로 변경
 		String projectPath		= request.getSession().getServletContext().getRealPath(File.separator); // 파일 기본경로
-		String uploadPath		= projectPath + File.separator + "resources" + File.separator + "upload" + File.separator; // 파일 상세경로
-		File folder				= new File(uploadPath);
 		
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
-		String today		= formatter.format(new java.util.Date());
-		String saveFileName	= today + UUID.randomUUID().toString() + "." + fileExtension;
+		SimpleDateFormat formatterFull	= new SimpleDateFormat("yyyyMMddHHmmss");
+		SimpleDateFormat formatterYear	= new SimpleDateFormat("yyyy");
+		SimpleDateFormat formatterMonth	= new SimpleDateFormat("MM");
+		SimpleDateFormat formatterDay	= new SimpleDateFormat("dd");
+		
+		Date nowTime		= new java.util.Date();
+		String today		= formatterFull.format(nowTime);
+		String saveFileName	= today + "-" + UUID.randomUUID().toString() + "." + fileExtension; // 저장하기위해 변경한 파일 명
+		
+		StringBuffer uploadPathBuffer = new StringBuffer();
+		uploadPathBuffer.append(projectPath);
+		uploadPathBuffer.append(File.separator);
+		uploadPathBuffer.append("resources");
+		uploadPathBuffer.append(File.separator);
+		uploadPathBuffer.append("upload");
+		uploadPathBuffer.append(File.separator);
+		uploadPathBuffer.append(formatterYear.format(nowTime));
+		uploadPathBuffer.append(File.separator);
+		uploadPathBuffer.append(formatterMonth.format(nowTime));
+		uploadPathBuffer.append(File.separator);
+		uploadPathBuffer.append(formatterDay.format(nowTime));
+		uploadPathBuffer.append(File.separator);
+		
+		String uploadPath = uploadPathBuffer.toString(); // 파일 상세경로
 		
 		// 폴더 생성
+		File folder = new File(uploadPath);
 		if( !folder.exists() ){ folder.mkdirs(); }
 		
 		// DB에 파일 정보 입력

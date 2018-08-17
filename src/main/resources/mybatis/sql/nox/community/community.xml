@@ -32,9 +32,27 @@
 	</insert>
 		
 	<!-- 자유 게시판 그룹을 등록하고 생성된 일련 번호를 조회합니다. -->
-	<insert id="insertFreeboardGroup" parameterType="FreeboardGroupVO" statementType="CALLABLE">
-		{ call INSERT_FREEBOARD_GROUP( #{memNo, mode=IN, jdbcType=INTEGER, javaType=java.lang.Integer}, #{commentGroupNo, mode=IN, jdbcType=INTEGER, javaType=java.lang.Integer}, #{fileGroupNo, mode=IN, jdbcType=INTEGER, javaType=java.lang.Integer}, #{authGroupNo, mode=IN, jdbcType=INTEGER, javaType=java.lang.Integer}, #{freeboardGroupClassOrder, mode=IN, jdbcType=INTEGER, javaType=java.lang.Integer}, #{freeboardGroupClassDepth, mode=IN, jdbcType=INTEGER, javaType=java.lang.Integer}, #{freeboardGroupNo, mode=OUT, jdbcType=INTEGER, javaType=java.lang.Integer} ) }
+	<insert id="insertFreeboardGroup" parameterType="FreeboardGroupVO">		
+		INSERT INTO FRBRD_GRP_TB(
+			MEM_FK, CMT_GRP_FK,
+			FILE_GRP_FK, AUTH_GRP_FK,
+			FRBRD_GRP_CLS_ORD, FRBRD_GRP_CLS_DPTH
+		)VALUES(
+			#{memNo}, #{commentGroupNo},
+			#{fileGroupNo}, #{authGroupNo},
+			#{freeboardGroupClassOrder}, #{freeboardGroupClassDepth}
+		)
+		<selectKey resultType="java.lang.Integer" keyProperty="freeboardGroupNo" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
 	</insert>
+	
+	<!-- 특정 일련 번호의 자유 게시판 그룹이 가진 계층 번호를 수정합니다. -->
+	<update id="updateFreeboardGroupClassNo" parameterType="FreeboardGroupVO">
+		UPDATE	FRBRD_GRP_TB
+		SET		FRBRD_GRP_CLS_FK = #{freeboardGroupClassNo}
+		WHERE	FRBRD_GRP_SQ_PK = #{freeboardGroupNo}
+	</update>
 	
 	<!-- 자유게시판 상세 정보를 등록합니다. -->
 	<insert id="insertFreeboard" parameterType="FreeboardVO">

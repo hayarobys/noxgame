@@ -12,7 +12,7 @@
 	<context:component-scan base-package="com.suph.security, kr.pe.hayarobys.nox">
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>	
 	</context:component-scan>
-	
+		
 	<!-- Spring Security Properties -->
 	<!-- <context:property-placeholder location="classpath:/properties/security.properties"/> -->
 	<util:properties id="security" location="classpath:/properties/security.properties"/>
@@ -39,13 +39,13 @@
 	
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
-			<tx:method name="*"/>
+			<tx:method name="*" rollback-for="Exception"/>
 		</tx:attributes>
 	</tx:advice>
 	
 	<aop:config proxy-target-class="true">
-		<aop:pointcut id="txPointCut" expression="execution(* com.suph.security.core.impl..*ServiceImpl.*(..)) || execution(* kr.pe.hayarobys.nox.common.upload..*ServiceImpl.*(..))"/>
-		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPointCut"/>
+		<aop:pointcut id="txPointCut" expression="execution(* com.suph.security.core.impl..*Service.*(..)) || execution(* kr.pe.hayarobys.nox..*Service.*(..))"/>
+		<aop:advisor pointcut-ref="txPointCut" advice-ref="txAdvice"/>
 	</aop:config>
 	
 	<!-- SqlSessionFactory -->

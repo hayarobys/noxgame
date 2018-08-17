@@ -15,8 +15,15 @@ public interface FreeboardDAO{
 	/**
 	 * 자유게시판 그룹을 등록하고 생성된 일련 번호를 조회 합니다.
 	 * @param freeboardGroupVO
+	 * @return 
 	 */
 	public abstract void insertFreeboardGroup(FreeboardGroupVO freeboardGroupVO);
+	
+	/**
+	 * 특정 일련 번호의 자유 게시판 그룹이 가진 계층 번호를 수정합니다.
+	 * @param freeboardGroupVO
+	 */
+	public abstract void updateFreeboardGroupClassNo(FreeboardGroupVO freeboardGroupVO);
 	
 	/**
 	 * 자유게시판 상세 정보를 등록합니다.

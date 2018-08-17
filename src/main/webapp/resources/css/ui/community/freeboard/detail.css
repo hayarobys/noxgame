@@ -1,0 +1,16 @@
+@CHARSET "UTF-8";
+
+#contents{
+	margin: 0 auto;
+	width: 1280px;
+	min-height: 1px;
+}
+
+#contents #mainContents{
+	width: 800px;
+	margin: 0 auto;
+}
+
+#contents #mainContents .freeboard-contents{
+	/*background-color: white;*/
+}

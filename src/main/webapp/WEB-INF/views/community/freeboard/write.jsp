@@ -29,7 +29,7 @@
 			<article class="freeboard-contents">
 				<form action="<c:url value='/community/freeboard/write' />" method="post">
 					<p>
-						글 번호 <input type="number" id="tempSaveNo" name="tempSaveNo" value="${lastTempSaveVO.tempSaveNo}" />
+						임시 저장 번호 <input type="number" id="tempSaveNo" name="tempSaveNo" value="${lastTempSaveVO.tempSaveNo}" />
 					</p>
 					제목 <input type="text" id="tempSaveTitle" name="tempSaveTitle" value="${lastTempSaveVO.tempSaveTitle}" />
 					<textarea id="ir1" name="tempSaveBody" rows="10" cols="100" style="width: 100%; height: 400px;">
@@ -52,11 +52,34 @@
 					</header>
 					<article id="attachmentPhoto">
 						<c:forEach var="fileVO" items="${fileVOList}">
-							<img data-file-no="${fileVO.fileNo}" data-type="attachment" id="${fileVO.saveFileName}" title="${fileVO.originalFileName}" src="<c:url value='/resources/upload/${fileVO.saveFileName}' />" style="width:100px; height: 100px;" />
+							<img data-file-no="${fileVO.fileNo}" data-type="attachment" id="${fileVO.saveFileName}" title="${fileVO.originalFileName}" src="<c:url value='/resources/upload/${fileVO.saveFileName}' />" style="width:90px; height: 90px;" />
 						</c:forEach>
 					</article>
 				</section>
 				
+				<section>
+					<ul>
+						<li>
+							<label>설정정보</label>
+							<div>
+								<p>
+									<input type="radio" id="setAny" value="1" name="openType">
+									<label for="setAny">전체공개</label>
+									<input type="radio" id="setMember" value="2" name="openType">
+									<label for="setMember">회원공개</label>
+									<input type="radio" id="setAdmin" value="3" name="openType">
+									<label for="setAdmin">관리자에게 공개</label>
+									<input type="radio" id="setPrivate" value="0" name="openType">
+									<label for="setPrivate">비공개</label><!-- 이 항목은 관리자만 볼 수 있습니다. -->
+								</p>
+								<p>
+									<input type="checkbox" id="allowComment">
+									<label for="allowComment">댓글허용</label>
+								</p>
+							</div>
+						</li>
+					</ul>
+				</section>
 				<p>
 					<!-- <input type="button" onclick="pasteHTML();" value="본문에 내용 넣기" /> -->
 					<!-- <input type="button" onclick="showHTML();" value="본문 내용 가져오기" /> -->
