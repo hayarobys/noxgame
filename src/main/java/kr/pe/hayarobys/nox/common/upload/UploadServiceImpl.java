@@ -87,7 +87,6 @@ public class UploadServiceImpl implements UploadService{
 		String saveFileName	= today + "-" + UUID.randomUUID().toString() + "." + fileExtension; // 저장하기위해 변경한 파일 명
 		
 		StringBuffer uploadPathBuffer = new StringBuffer();
-		uploadPathBuffer.append(projectPath);
 		uploadPathBuffer.append(File.separator);
 		uploadPathBuffer.append("resources");
 		uploadPathBuffer.append(File.separator);
@@ -100,7 +99,7 @@ public class UploadServiceImpl implements UploadService{
 		uploadPathBuffer.append(formatterDay.format(nowTime));
 		uploadPathBuffer.append(File.separator);
 		
-		String uploadPath = uploadPathBuffer.toString(); // 파일 상세경로
+		String uploadPath = projectPath + uploadPathBuffer.toString(); // 파일 상세경로
 		
 		// 폴더 생성
 		File folder = new File(uploadPath);
@@ -140,7 +139,7 @@ public class UploadServiceImpl implements UploadService{
 		result.append(originalFileName);			// img 태그의 title 속성에 쓰일 원본 파일명
 		result.append("&sFileURL=");
 		result.append(request.getContextPath());	// img 태그의 src 속성에 쓰일 저장 경로
-		result.append("/resources/upload/");
+		result.append(uploadPathBuffer.toString());
 		result.append(saveFileName);
 		result.append("&sFileNo=");
 		result.append(fileVO.getFileNo());
@@ -181,7 +180,6 @@ public class UploadServiceImpl implements UploadService{
 		String saveFileName	= today + "-" + UUID.randomUUID().toString() + "." + fileExtension; // 저장하기위해 변경한 파일 명
 		
 		StringBuffer uploadPathBuffer = new StringBuffer();
-		uploadPathBuffer.append(projectPath);
 		uploadPathBuffer.append(File.separator);
 		uploadPathBuffer.append("resources");
 		uploadPathBuffer.append(File.separator);
@@ -194,7 +192,7 @@ public class UploadServiceImpl implements UploadService{
 		uploadPathBuffer.append(formatterDay.format(nowTime));
 		uploadPathBuffer.append(File.separator);
 		
-		String uploadPath = uploadPathBuffer.toString(); // 파일 상세경로
+		String uploadPath = projectPath + uploadPathBuffer.toString(); // 파일 상세경로
 		
 		// 폴더 생성
 		File folder = new File(uploadPath);
@@ -248,7 +246,7 @@ public class UploadServiceImpl implements UploadService{
 		result.append(originalFileName);			// img 태그의 title 속성에 쓰일 원본 파일명
 		result.append("&sFileURL=");				// &sFileURL=/nox/resources/upload/20180809102839dbb939e5-a3c2-4062-bd1d-eea17d2146e9.jpg
 		result.append(request.getContextPath());	// img 태그의 src 속성에 쓰일 저장 경로
-		result.append("/resources/upload/");
+		result.append(uploadPathBuffer.toString());
 		result.append(saveFileName);
 		result.append("&sFileNo=");
 		result.append(fileVO.getFileNo());

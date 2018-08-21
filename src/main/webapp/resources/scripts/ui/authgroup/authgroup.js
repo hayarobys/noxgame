@@ -25,7 +25,7 @@ function initAuthgroupGrid(){
 	var source = {
 		datatype: "json",
 		datafields: [
-			{name: 'authgroupNo', type: 'int'},
+			{name: 'authgroup', type: 'string'},
 			{name: 'authgroupName', type: 'string'},
 			{name: 'authgroupExplanation', type: 'string'}
 		],
@@ -61,9 +61,9 @@ function initAuthgroupGrid(){
 		editable: true,
 		editmode: 'dblclick',
 		columns: [
-			{text: '일련 번호', dataField: 'authgroupNo', cellsalign: 'center', align: 'center', editable: false, width: '10%'},
-			{text: '권한 그룹 명', dataField: 'authgroupName', cellsalign: 'center', align: 'center', editable: true, cellvaluechanging: cellValueChanging, width: '45%'},
-			{text: '권한 그룹 설명', dataField: 'authgroupExplanation', cellsalign: 'left', align: 'center', editable: true, cellvaluechanging: cellValueChanging, width: '45%'}
+			{text: 'ENUM', dataField: 'authgroup', cellsalign: 'center', align: 'center', editable: false, width: '10%'},
+			{text: '권한 그룹 명', dataField: 'authgroupName', cellsalign: 'center', align: 'center', editable: true, cellvaluechanging: cellValueChanging, width: '30%'},
+			{text: '권한 그룹 설명', dataField: 'authgroupExplanation', cellsalign: 'left', align: 'center', editable: true, cellvaluechanging: cellValueChanging, width: '60%'}
 		]
 	});
 	
@@ -81,7 +81,7 @@ function initAuthgroupGrid(){
 		/** 편집한 행 번호 */
 		var rowIndex = event.args.rowindex;
 		/** 편집한 권한 일련 번호 */
-		var authgroupNo = event.args.row.authgroupNo;
+		var authgroup = event.args.row.authgroup;
 		/** 편집한 컬럼명 */
 		var dataField = event.args.datafield;
 		
@@ -112,7 +112,7 @@ function initAuthgroupGrid(){
 		var jsonData = JSON.stringify(data);
 		
 		// 출력
-		console.log("전송할 json 데이터", authgroupNo, jsonData);
+		console.log("전송할 json 데이터", authgroup, jsonData);
 		
 		// 수정 요청 전송
 		var token = $("meta[name='_csrf']").attr("content");
@@ -120,7 +120,7 @@ function initAuthgroupGrid(){
 		
 		$.ajax({
 			type: "PATCH",
-			url: CONTEXT_PATH + "/authgroup/" + Number(authgroupNo),
+			url: CONTEXT_PATH + "/authgroup/" + authgroup,
 			data: jsonData,
 			contentType: 'application/json',
 			dataType: "json",	// 서버에서 응답한 데이터를 클라이언트에서 읽는 방식
@@ -176,49 +176,6 @@ function getSelectedNoArray(jqxGridId, returnColumnStr){
 }
 
 /**
- * 폼에 입력된 AUTHGROUP를 등록합니다.
- * @returns
- */
-function insertAuthgroup(){
-	// 전송할 json 데이터 생성
-	var serializeArrayForm = $(authgroupFormId).serializeArray();
-	var objectForm = objectifyForm(serializeArrayForm);
-	var jsonForm = JSON.stringify(objectForm);
-	
-	// 출력
-	console.log('전송할 json 데이터', jsonForm);
-	
-	// 전송
-	var token = $("meta[name='_csrf']").attr("content");
-	var header = $("meta[name='_csrf_header']").attr("content");
-	
-	$.ajax({
-		type: "POST",
-		url: CONTEXT_PATH + "/authgroup",
-		data: jsonForm,
-		contentType: 'application/json',
-		dataType: "json",	// 서버에서 응답한 데이터를 클라이언트에서 읽는 방식
-		beforeSend: function(xhr){
-			xhr.setRequestHeader("X-Ajax-call", "true");	// CustomAccessDeniedHandler에서 Ajax요청을 구분하기 위해 약속한 값
-			xhr.setRequestHeader(header, token);	// 헤더의 csrf meta태그를 읽어 CSRF 토큰 함께 전송
-		},
-		success: function(data, statusText, xhr){
-			if(data.result == 'success'){
-				console.log("data", data);
-				reloadAuthgroupGrid();
-				$(authgroupFormId)[0].reset();
-			}else{
-				console.log("AUTH 등록에 실패했습니다.");
-				console.log("message", data.message);
-			}
-		},
-		error: function(xhr){
-			console.log("error", xhr);
-		}
-	});
-}
-
-/**
  * $(form selector).serializeArray()로 전달된 객체를 오브젝트로 변환합니다.
  * 이렇게 변환한 객체를 JSON.stringify()에 사용할 수 있습니다.
  */
@@ -230,50 +187,6 @@ function objectifyForm(formArray){
 	return returnArray;
 }
 
-/**
- * AUTHGROUP jqxGrid에서 선택된 항목을 제거합니다.
- * @returns
- */
-function deleteSelectedAuthgroup(){
-	// 현재 선택한 권한의 일련 번호 구하기
-	var selectedAuthgroupNoArray = String(getSelectedNoArray(authgroupGridId, 'authgroupNo'));
-	
-	// 선택한 행이 없으면 이벤트 취소
-	if(selectedAuthgroupNoArray.length <= 0){
-		console.log('제거할 행을 선택해 주세요.');
-		return;
-	}
-	
-	// 출력
-	console.log('전송할 데이터', selectedAuthgroupNoArray);
-	
-	// 제거 요청 전송
-	var token = $("meta[name='_csrf']").attr("content");
-	var header = $("meta[name='_csrf_header']").attr("content");
-	
-	$.ajax({
-		type: "DELETE",
-		url: CONTEXT_PATH + "/authgroup/" + selectedAuthgroupNoArray,
-		dataType: "json",	// 서버에서 응답한 데이터를 클라이언트에서 읽는 방식
-		beforeSend: function(xhr){
-			xhr.setRequestHeader("X-Ajax-call", "true");	// CustomAccessDeniedHandler에서 Ajax요청을 구분하기 위해 약속한 값
-			xhr.setRequestHeader(header, token);	// 헤더의 csrf meta태그를 읽어 CSRF 토큰 함께 전송
-		},
-		success: function(data, statusText, xhr){
-			if(data.result == 'success'){
-				console.log("data", data);
-				reloadAuthgroupGrid();
-			}else{
-				console.log("다음의 AUTHGROUP 제거에 실패했습니다.");
-				console.log(data.result);
-				console.log("message", data.message);
-			}
-		},
-		error: function(xhr){
-			console.log("error", xhr);
-		}
-	});
-}
 
 
 

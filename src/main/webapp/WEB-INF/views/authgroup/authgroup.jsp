@@ -29,9 +29,9 @@
 				</section>
 				
 				<input type="button" value="새로고침" onclick="javascript:reloadAuthgroupGrid();" />
-				<input type="button" value="선택 항목 제거" onclick="javascript:deleteSelectedAuthgroup();" />
+				<%-- <input type="button" value="선택 항목 제거" onclick="javascript:deleteSelectedAuthgroup();" /> --%>
 			</div>
-			
+			<%-- 
 			<div class="data_box">
 				<form method="post" id="authgroupForm" >
 					<table id="authgroupFormTable">
@@ -55,6 +55,7 @@
 					<input type="button" value="리소스 등록" onclick="javascript:insertAuthgroup();">
 				</form>
 			</div>
+			--%>
 		</section>
 	</div>
 	

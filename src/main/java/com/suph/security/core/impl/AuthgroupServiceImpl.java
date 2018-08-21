@@ -18,6 +18,7 @@ import com.suph.security.core.dto.AuthDTO;
 import com.suph.security.core.dto.AuthgroupDTO;
 import com.suph.security.core.dto.PaginationRequest;
 import com.suph.security.core.dto.PaginationResponse;
+import com.suph.security.core.enums.Authgroup;
 import com.suph.security.core.service.AuthgroupService;
 
 @Service("authgroupService")
@@ -52,10 +53,10 @@ public class AuthgroupServiceImpl implements AuthgroupService{
 	}
 	
 	@Override
-	public Map<String, Object> getAuthListByAuthgroupNo(Integer authgroupNo){
+	public Map<String, Object> getAuthListByAuthgroupNo(Authgroup authgroup){
 		Map<String, Object> result = new HashMap<String, Object>();
 		
-		List<AuthDTO> list = authgroupAuthDAO.getAuthListByAuthgroupNo(authgroupNo);
+		List<AuthDTO> list = authgroupAuthDAO.getAuthListByAuthgroupNo(authgroup);
 		
 		result.put("result", "success");
 		result.put("list", list);
@@ -96,18 +97,18 @@ public class AuthgroupServiceImpl implements AuthgroupService{
 	}
 	
 	@Override
-	public Map<String, Object> patchAuthgroupByAuthgroupNo(Integer authgroupNo, AuthgroupDTO authgroupDTO){
+	public Map<String, Object> patchAuthgroupByAuthgroupNo(Authgroup authgroup, AuthgroupDTO authgroupDTO){
 		Map<String, Object> returnMap = new HashMap<String, Object>();
 		logger.debug("수정 요청 받은 권한 그룹: {}", authgroupDTO);
 		// 둘 다 공백 또는 null이 들어왔다면 fail 처리 합니다.
 		if(		StringUtils.hasText(authgroupDTO.getAuthgroupName())
 			||	StringUtils.hasText(authgroupDTO.getAuthgroupExplanation())
 		){logger.debug("if 통과");
-			authgroupDTO.setAuthgroupNo(authgroupNo);
+			authgroupDTO.setAuthgroup(authgroup);
 			try{
-				authgroupDAO.updateAuthgroupByAuthgroupNo(authgroupDTO);logger.debug("db요청 통과");
+				authgroupDAO.updateAuthgroupByAuthgroupNo(authgroupDTO);
 				returnMap.put("result", "success");
-			}catch(DataAccessException dae){logger.debug("에러발생");
+			}catch(DataAccessException dae){
 				returnMap.put("result", "fail");
 				dae.printStackTrace();
 			}
@@ -120,21 +121,21 @@ public class AuthgroupServiceImpl implements AuthgroupService{
 	}
 	
 	@Override
-	public Map<String, Object> deleteAuthgroupByAuthgroupNo(Integer authgroupNo){
+	public Map<String, Object> deleteAuthgroupByAuthgroupNo(Authgroup authgroup){
 		Map<String, Object> returnMap = new HashMap<String, Object>();
 		
-		if(authgroupNo == null){
+		if(authgroup == null){
 			returnMap.put("result", "fail");
 			returnMap.put("message", "삭제할 권한 그룹 일련 번호로 null값이 올 수 없습니다.");
 		}else{
 			StringBuffer errorInfo = new StringBuffer();
 			
 			try{
-				authgroupDAO.deleteAuthgroupByAuthgroupNo(authgroupNo);
+				authgroupDAO.deleteAuthgroupByAuthgroupNo(authgroup);
 				returnMap.put("result", "success");
 			}catch(DataIntegrityViolationException keyException){
-				errorInfo.append("\nauthgroupNo: ");
-				errorInfo.append(authgroupNo);
+				errorInfo.append("\nauthgroup: ");
+				errorInfo.append(authgroup);
 				errorInfo.append("\ncause: 제약조건에 위배되어 제거할 수 없습니다.");
 				
 				returnMap.put("message", errorInfo.toString());
@@ -145,8 +146,8 @@ public class AuthgroupServiceImpl implements AuthgroupService{
 				keyException.printStackTrace();
 			}catch(DataAccessException e){
 				// 제거 실패한 권한 그룹의 정보를 따로 보관한다.
-				errorInfo.append("\nauthgroupNo: ");
-				errorInfo.append(authgroupNo);
+				errorInfo.append("\nauthgroup: ");
+				errorInfo.append(authgroup);
 				errorInfo.append("\ncause: 알 수 없는 이유로 제거에 실패했습니다.");
 				
 				returnMap.put("message", errorInfo.toString());

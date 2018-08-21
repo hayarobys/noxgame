@@ -26,7 +26,7 @@ public class AuthgroupAuthServiceImpl implements AuthgroupAuthService{
 		Map<String, Object> returnMap = new HashMap<String, Object>();
 		
 		try{
-			authgroupAuthDAO.deleteAuthListByAuthgroupNo(authgroupAuthDTO.getAuthgroupNo());
+			authgroupAuthDAO.deleteAuthListByAuthgroupNo(authgroupAuthDTO.getAuthgroup());
 			if(		authgroupAuthDTO.getAuthSqPkList() != null
 				&&	authgroupAuthDTO.getAuthSqPkList().size() > 0
 			){

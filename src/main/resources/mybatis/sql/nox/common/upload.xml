@@ -36,7 +36,7 @@
 		FROM
 			FILE_TB
 		WHERE
-			FILE_GRP_FK = #{fileGrpNo}
+			FILE_GRP_FK = #{fileGroupNo}
 		ORDER BY
 			FILE_SQ_PK ASC
 	</select>
@@ -47,4 +47,10 @@
 		FROM	FILE_GRP_TB
 		WHERE	FILE_GRP_SQ_PK = #{fileGroupNo}
 	</select>
+	
+	<update id="updateAuthgroupOfFileGroupByFileGroupNo" parameterType="FileGroupVO">
+		UPDATE FILE_GRP_TB
+		SET AUTH_GRP_FK = #{authgroup.value}
+		WHERE FILE_GRP_SQ_PK = #{fileGroupNo}
+	</update>
 </mapper>

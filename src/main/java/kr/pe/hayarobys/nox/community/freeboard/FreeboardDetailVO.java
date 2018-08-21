@@ -2,6 +2,8 @@ package kr.pe.hayarobys.nox.community.freeboard;
 
 import java.util.Date;
 
+import com.suph.security.core.enums.Authgroup;
+
 /**
  * 자유 게시판 그룹 테이블과 자유 게시판 상세 테이블을 조인해 게시글 상세 화면 출력에 필요한 정보만 옮기는데 사용됩니다.
  * @author hayarobys
@@ -21,8 +23,8 @@ public class FreeboardDetailVO{
 	private Integer fileGroupNo;
 	/** 댓글 그룹 번호 */
 	private Integer commentGroupNo;
-	/** 최소 조회 권한 그룹 번호 */
-	private Integer authGroupNo;
+	/** 최소 조회 권한 그룹(공개 범위) */
+	private Authgroup authgroup;
 	
 	/** 게시글 번호 */
 	private Integer freeboardNo;
@@ -82,12 +84,12 @@ public class FreeboardDetailVO{
 		this.commentGroupNo = commentGroupNo;
 	}
 
-	public Integer getAuthGroupNo(){
-		return authGroupNo;
+	public Authgroup getAuthgroup(){
+		return authgroup;
 	}
 
-	public void setAuthGroupNo(Integer authGroupNo){
-		this.authGroupNo = authGroupNo;
+	public void setAuthgroup(Authgroup authgroup){
+		this.authgroup = authgroup;
 	}
 
 	public Integer getFreeboardNo(){
@@ -124,9 +126,8 @@ public class FreeboardDetailVO{
 
 	@Override
 	public String toString(){
-		return "FreeboardDetailVO [memNo=" + memNo + ", nickname=" + nickname + ", id=" + id + ", freeboardGroupNo="
-				+ freeboardGroupNo + ", fileGroupNo=" + fileGroupNo + ", commentGroupNo=" + commentGroupNo
-				+ ", authGroupNo=" + authGroupNo + ", freeboardNo=" + freeboardNo + ", freeboardRegDate="
+		return "FreeboardDetailVO [memNo=" + memNo + ", nickname=" + nickname + ", id=" + id + ", freeboardGroupNo=" + freeboardGroupNo
+				+ ", fileGroupNo=" + fileGroupNo + ", commentGroupNo=" + commentGroupNo + ", freeboardNo=" + freeboardNo + ", freeboardRegDate="
 				+ freeboardRegDate + ", freeboardTitle=" + freeboardTitle + ", freeboardBody=" + freeboardBody + "]";
 	}
 }

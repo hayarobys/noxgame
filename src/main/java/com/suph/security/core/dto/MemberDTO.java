@@ -1,12 +1,6 @@
 package com.suph.security.core.dto;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.util.StringUtils;
-
-public class MemberDTO extends PaginationRequest{
-	protected Logger logger = LoggerFactory.getLogger(getClass());
-	
+public class MemberDTO extends PaginationRequest{	
 	/** MEM_NO 계정 일련 번호 PK */
 	private Integer memSqPk;
 	/** MEM_ID 계정 아이디 */
@@ -19,14 +13,6 @@ public class MemberDTO extends PaginationRequest{
 	private String memState;
 	/** LAST_LOGIN_DATE 마지막 로그인 일자 */
 	private java.util.Date memLastLoginDt;
-
-	public Logger getLogger(){
-		return logger;
-	}
-
-	public void setLogger(Logger logger){
-		this.logger = logger;
-	}
 
 	public Integer getMemSqPk(){
 		return memSqPk;
@@ -78,9 +64,7 @@ public class MemberDTO extends PaginationRequest{
 
 	@Override
 	public String toString(){
-		return "MemberDTO [logger=" + logger + ", memSqPk=" + memSqPk + ", memId=" + memId + ", memPassword=[PROTECT]" + ", memNicknm=" + memNicknm
-				+ ", memState=" + memState + ", memLastLoginDt=" + memLastLoginDt + "]";
+		return "MemberDTO [memSqPk=" + memSqPk + ", memId=" + memId + ", memNicknm=" + memNicknm + ", memState=" + memState + ", memLastLoginDt="
+				+ memLastLoginDt + "]";
 	}
-	
-	
 }

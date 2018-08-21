@@ -59,6 +59,7 @@ INSERT INTO res_tb (HTTP_METHOD_PK,RES_ORD,RES_TYPE,RES_NM_UNQ,RES_PATTERN) VALU
 ,('POST',110200,'url','차단 계정 추가','/block-member')
 ,('PATCH',110300,'url','차단 계정 정보 수정','/block-member/*')
 ,('DELETE',110400,'url','차단 계정 정보 삭제','/block-member/*')
+,('GET',120000,'url','자유게시판 글쓰기 페이지','/community/freeboard/write')
 ;
 
 INSERT INTO mem_auth_tb (MEM_FK_PK,AUTH_FK_PK) VALUES 
@@ -137,18 +138,32 @@ INSERT INTO res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES
 ,(2,5)
 ,(3,5)
 ,(31,5)
+,(39,1)
+,(39,2)
+,(39,3)
 ;
 
-
-
-
-INSERT INTO auth_grp_tb (AUTH_GRP_NM_UNQ,AUTH_GRP_EXPLN) VALUES 
-('일반 회원과 관리자','일반 회원과 관리자 등급의 조회가 가능합니다.')
+INSERT INTO auth_grp_tb (AUTH_GRP_SQ_PK,AUTH_GRP_NM_UNQ,AUTH_GRP_EXPLN) VALUES 
+('PUBLIC','전체공개','비회원 조회가 가능합니다.')
+,('MEMBER','회원공개','로그인 한 계정의 조회가 가능합니다.')
+,('SECRET','비밀글','작성자와 답글의 경우 대상글의 작성자, 매니저, 어드민만 조회 할 수 있습니다.')
+,('CLOSE','비공개','매니저, 어드민만 조회 할 수 있습니다.')
 ;
 
 INSERT INTO auth_grp_auth_tb (AUTH_GRP_FK_PK,AUTH_FK_PK) VALUES 
-(1,1)
-,(1,2)
-,(1,3)
+('PUBLIC',1)
+,('MEMBER',1)
+,('SECRET',1)
+,('CLOSE',1)
+,('PUBLIC',2)
+,('MEMBER',2)
+,('PUBLIC',3)
+,('MEMBER',3)
+,('SECRET',3)
+,('CLOSE',3)
+;
+INSERT INTO auth_grp_auth_tb (AUTH_GRP_FK_PK,AUTH_FK_PK) VALUES 
+('PUBLIC',4)
+,('PUBLIC',5)
 ;
 

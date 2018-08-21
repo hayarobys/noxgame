@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.suph.security.core.dto.JsonResultVO;
+import com.suph.security.core.enums.Authgroup;
 import com.suph.security.core.enums.Flag;
 import com.suph.security.core.enums.TempSaveCategory;
 import com.suph.security.core.userdetails.MemberInfo;
@@ -17,10 +18,9 @@ import com.suph.security.core.util.ContextUtil;
 import kr.pe.hayarobys.nox.common.comment.CommentDAO;
 import kr.pe.hayarobys.nox.common.comment.CommentGroupVO;
 import kr.pe.hayarobys.nox.common.exception.ForbiddenException;
-import kr.pe.hayarobys.nox.common.exception.InternalServerErrorException;
 import kr.pe.hayarobys.nox.common.tempsave.TempSaveDAO;
 import kr.pe.hayarobys.nox.common.tempsave.TempSaveVO;
-import kr.pe.hayarobys.nox.common.upload.FileGrpVO;
+import kr.pe.hayarobys.nox.common.upload.FileGroupVO;
 import kr.pe.hayarobys.nox.common.upload.FileVO;
 import kr.pe.hayarobys.nox.common.upload.UploadDAO;
 
@@ -58,11 +58,11 @@ public class FreeboardServiceImpl implements FreeboardService{
 			fileVOList = uploadDAO.selectFileByFileGroupNo(lastTempSaveVO.getFileGrpNo());
 		}else{
 			// 파일 묶음 레코드 생성
-			FileGrpVO fileGrpVO = new FileGrpVO();
+			FileGroupVO fileGrpVO = new FileGroupVO();
 			fileGrpVO.setMemNo(memNo);
 			
-			// TODO: 최소 조회 권한은 어찌할까? > 임시로 유저, 관리자, 매니저를 묶은 1번 권한 그룹으로 지정해 둡니다. 추후 필히 수정
-			fileGrpVO.setAuthGrpNo(1);
+			// 파일 그룹의 기본 공개범위는 '비공개'. 추후 임시저장글 > 글 작성 완료시 설정한 값에 따라 공개범위 수정
+			fileGrpVO.setAuthgroup(Authgroup.SECRET);
 			freeboardDAO.insertFileGrp(fileGrpVO);
 			Integer fileGrpNo = fileGrpVO.getFileGrpNo();
 			
@@ -104,6 +104,18 @@ public class FreeboardServiceImpl implements FreeboardService{
 		Integer fileGroupNo = originalTempSaveVO.getFileGrpNo();
 		requestTempSaveVO.setFileGrpNo(fileGroupNo);
 		
+		// 공개범위 미 설정 시 기본값은 전체공개
+		Authgroup authgroup = requestTempSaveVO.getOpenType();
+		if(authgroup == null){
+			authgroup = Authgroup.PUBLIC;
+		}
+		
+		// 파일 그룹의 공개 범위를 작성자가 요청한 공개 범위로 수정.
+		FileGroupVO fileGroupVO = new FileGroupVO();
+		fileGroupVO.setFileGrpNo(fileGroupNo);
+		fileGroupVO.setAuthgroup(authgroup);
+		uploadDAO.updateAuthgroupOfFileGroupByFileGroupNo(fileGroupVO);
+		
 		// 댓글 그룹 생성
 		CommentGroupVO commentGroupVO = new CommentGroupVO();
 		commentGroupVO.setCommentGroupNewWriteFlag(Flag.Y);
@@ -114,7 +126,7 @@ public class FreeboardServiceImpl implements FreeboardService{
 		freeboardGroupVO.setMemNo(memNo);
 		freeboardGroupVO.setCommentGroupNo(commentGroupVO.getCommentGroupNo());
 		freeboardGroupVO.setFileGroupNo(fileGroupNo);
-		freeboardGroupVO.setAuthGroupNo(1); // TODO: 권한그룹 수정할 것
+		freeboardGroupVO.setAuthgroup(authgroup);
 		freeboardGroupVO.setFreeboardGroupClassOrder(0);
 		freeboardGroupVO.setFreeboardGroupClassDepth(1);
 		this.insertFreeboardGroup(freeboardGroupVO);

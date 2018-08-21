@@ -25,4 +25,10 @@ public interface UploadDAO{
 	 * @return
 	 */
 	public abstract Integer selectMemNoOfFileGroupByFileGroupNo(Integer fileGroupNo);
+	
+	/**
+	 * 특정 파일 그룹의 조회 권한(공개 범위)을 수정합니다.
+	 * @param fileGroupVO
+	 */
+	public abstract void updateAuthgroupOfFileGroupByFileGroupNo(FileGroupVO fileGroupVO);
 }

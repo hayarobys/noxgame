@@ -2,6 +2,7 @@ package kr.pe.hayarobys.nox.common.tempsave;
 
 import java.util.Date;
 
+import com.suph.security.core.enums.Authgroup;
 import com.suph.security.core.enums.TempSaveCategory;
 
 
@@ -21,6 +22,8 @@ public class TempSaveVO{
 	private String tempSaveBody;
 	/** TEMP_SAVE_MOD_DT 마지막 수정 일 */
 	private Date tempSaveModDt;
+	/** AUTH_GRP_FK 최소 조회 권한 (공개범위) */
+	private Authgroup openType;
 	
 	public Integer getTempSaveNo(){
 		return tempSaveNo;
@@ -78,9 +81,18 @@ public class TempSaveVO{
 		this.tempSaveModDt = tempSaveModDt;
 	}
 	
+	public Authgroup getOpenType(){
+		return openType;
+	}
+
+	public void setOpenType(Authgroup openType){
+		this.openType = openType;
+	}
+
 	@Override
 	public String toString(){
 		return "TempSaveVO [tempSaveNo=" + tempSaveNo + ", memNo=" + memNo + ", tempSaveCategory=" + tempSaveCategory + ", fileGrpNo=" + fileGrpNo
-				+ ", tempSaveTitle=" + tempSaveTitle + ", tempSaveBody=" + tempSaveBody + ", tempSaveModDt=" + tempSaveModDt + "]";
+				+ ", tempSaveTitle=" + tempSaveTitle + ", tempSaveBody=" + tempSaveBody + ", tempSaveModDt=" + tempSaveModDt + ", openType="
+				+ openType + "]";
 	}
 }

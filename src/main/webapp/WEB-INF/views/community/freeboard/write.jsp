@@ -33,7 +33,9 @@
 					</p>
 					제목 <input type="text" id="tempSaveTitle" name="tempSaveTitle" value="${lastTempSaveVO.tempSaveTitle}" />
 					<textarea id="ir1" name="tempSaveBody" rows="10" cols="100" style="width: 100%; height: 400px;">
-						${lastTempSaveVO.tempSaveBody}<br />"${lastTempSaveVO.tempSaveModDt}"에 저장한 글입니다.
+						<c:if test="${lastTempSaveVO.tempSaveBody}">
+							${lastTempSaveVO.tempSaveBody}<br />"${lastTempSaveVO.tempSaveModDt}"에 임시 저장된 글입니다.
+						</c:if>
 					</textarea>
 					<%-- <sec:csrfInput /> --%>
 				</form>
@@ -63,14 +65,16 @@
 							<label>설정정보</label>
 							<div>
 								<p>
-									<input type="radio" id="setAny" value="1" name="openType">
-									<label for="setAny">전체공개</label>
-									<input type="radio" id="setMember" value="2" name="openType">
-									<label for="setMember">회원공개</label>
-									<input type="radio" id="setAdmin" value="3" name="openType">
-									<label for="setAdmin">관리자에게 공개</label>
-									<input type="radio" id="setPrivate" value="0" name="openType">
-									<label for="setPrivate">비공개</label><!-- 이 항목은 관리자만 볼 수 있습니다. -->
+									<input type="radio" id="setPublic" value="PUBLIC" name="openType">
+									<label for="setPublic" title="비회원에게도 공개 합니다.">전체공개</label>
+									<input type="radio" id="setMember" value="MEMBER" name="openType">
+									<label for="setMember" title="로그인 한 계정에게 공개합니다.">회원공개</label>
+									<input type="radio" id="setSecret" value="SECRET" name="openType">
+									<label for="setSecret" title="작성자, 관리자, 답글의 경우 대상글의 작성자만 볼 수 있습니다.">비밀글</label>
+									<sec:authorize access="hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')">
+										<input type="radio" id="setCLOSE" value="CLOSE" name="openType">
+										<label for="setClose" title="매니저, 어드민만 조회 할 수 있습니다.">비공개</label><!-- 이 항목은 관리자만 볼 수 있습니다. -->
+									</sec:authorize>
 								</p>
 								<p>
 									<input type="checkbox" id="allowComment">

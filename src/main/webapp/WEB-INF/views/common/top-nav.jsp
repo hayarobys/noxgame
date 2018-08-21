@@ -43,7 +43,7 @@
 				<ul>
 					<li><a href="#">게임인터페이스</a></li>
 					<li><a href="#">캐릭터소개</a></li>
-					<li><a href="#">스킬&마법</a></li>
+					<li><a href="#">스킬&#38;마법</a></li>
 					<li><a href="#">아이템</a></li>
 					<li><a href="#">몬스터</a></li>
 					<li><a href="#">치트키</a></li>
@@ -70,7 +70,7 @@
 							<li><a href="#">마법세팅</a></li>
 						</ul>
 					</li>
-					<li><a href="#">아레나&엘리</a></li>
+					<li><a href="#">아레나&#38;엘리</a></li>
 					<li><a href="#">퀘스트</a></li>
 					<li><a href="#">싱글플레이</a></li>
 				</ul>
@@ -93,7 +93,7 @@
 					<li><a href="#">질문하기</a></li>
 					<li><a href="#">답변보기</a></li>
 					<li><a href="#">운영방침</a></li>
-					<li><a href="#">건의&문의</a></li>
+					<li><a href="#">건의&#38;문의</a></li>
 				</ul>
 			</li>
 			<li><a href="#">사이트</a>

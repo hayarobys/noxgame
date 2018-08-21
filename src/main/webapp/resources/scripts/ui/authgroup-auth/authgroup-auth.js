@@ -22,7 +22,7 @@ function initAuthgroupGrid(){
 	var source = {
 		datatype: "json",
 		datafields: [
-			{name: 'authgroupNo', type: 'int'},
+			{name: 'authgroup', type: 'string'},
 			{name: 'authgroupName', type: 'string'}
 		],
 		url: CONTEXT_PATH + '/authgroup',
@@ -58,12 +58,12 @@ function initAuthgroupGrid(){
 			if(key == 13){	// key 13 = enter
 				var row = $(authgroupGridId).jqxGrid('getselectedrowindex');
 				var rowData = $(authgroupGridId).jqxGrid("getrowdata", row);
-				reloadAuthGridByNo(rowData.authgroupNo);
+				reloadAuthGridByNo(rowData.authgroup);
 				return true;
 			}
 		},
 		columns: [
-			{text: '일련 번호', dataField: 'authgroupNo', cellsalign: 'center', align: 'center', editable: false, width: '30%'},
+			{text: 'ENUM', dataField: 'authgroup', cellsalign: 'center', align: 'center', editable: false, width: '30%'},
 			{text: '이름', dataField: 'authgroupName', cellsalign: 'center', align: 'center', editable: false, width: '70%'}
 		]
 	});
@@ -71,7 +71,7 @@ function initAuthgroupGrid(){
 	$(authgroupGridId).on("rowclick", function(event){
 		var row = event.args.rowindex;
 		var rowData = $(authgroupGridId).jqxGrid("getrowdata", row);
-		reloadAuthGridByNo(rowData.authgroupNo);
+		reloadAuthGridByNo(rowData.authgroup);
 	});
 }
 
@@ -142,13 +142,13 @@ function reloadAuthgroupGrid(){
 /**
 * 서버로부터 특정 URL패턴의 auth목록을 불러와 jqxGrid를 갱신 합니다.
 */
-function reloadAuthGridByNo(authgroupNo){
+function reloadAuthGridByNo(authgroup){
 	var token = $("meta[name='_csrf']").attr("content");
 	var header = $("meta[name='_csrf_header']").attr("content");
 	
 	$.ajax({
 		type: "GET",
-		url: CONTEXT_PATH + "/authgroup/" + authgroupNo + "/auth",
+		url: CONTEXT_PATH + "/authgroup/" + authgroup + "/auth",
 		dataType: "json",	// 서버에서 응답한 데이터를 클라이언트에서 읽는 방식
 		beforeSend: function(xhr){
 			xhr.setRequestHeader("X-Ajax-call", "true");	// CustomAccessDeniedHandler에서 Ajax요청을 구분하기 위해 약속한 값
@@ -225,7 +225,7 @@ function selectRowByValueList(jqxGridSelector, searchValueList){
  */
 function save(){
 	// 현재 선택한 권한그룹과 권한의 일련 번호 구하기
-	var selectedAuthgroupNoArray = getSelectedNoArray(authgroupGridId, 'authgroupNo');
+	var selectedAuthgroupNoArray = getSelectedNoArray(authgroupGridId, 'authgroup');
 	var selectedAuthNoArray = getSelectedNoArray(authGridId, 'authSqPk');
 	
 	// 전송할 json 데이터 생성
@@ -243,7 +243,7 @@ function save(){
 	
 	$.ajax({
 		type: "PATCH",
-		url: CONTEXT_PATH + "/authgroup/" + Number(selectedAuthgroupNoArray[0]) + "/auth",
+		url: CONTEXT_PATH + "/authgroup/" + selectedAuthgroupNoArray[0] + "/auth",
 		data: data,
 		contentType: 'application/json',
 		dataType: "json",	// 서버에서 응답한 데이터를 클라이언트에서 읽는 방식
@@ -272,7 +272,7 @@ function getSelectedNoArray(jqxGridId, returnColumnStr){
 	var selectedRowData = [];
 	
 	for(var i=0; i<selectedRowIndexes.length; i++){
-		selectedRowData[i] = Number($(jqxGridId).jqxGrid('getcellvalue', selectedRowIndexes[i], returnColumnStr));
+		selectedRowData[i] = $(jqxGridId).jqxGrid('getcellvalue', selectedRowIndexes[i], returnColumnStr);
 	}
 	
 	return selectedRowData;

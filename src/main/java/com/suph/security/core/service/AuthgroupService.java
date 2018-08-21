@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.suph.security.core.dto.AuthgroupDTO;
 import com.suph.security.core.dto.PaginationRequest;
+import com.suph.security.core.enums.Authgroup;
 
 public interface AuthgroupService{
 	/**
@@ -15,10 +16,10 @@ public interface AuthgroupService{
 	
 	/**
 	 * 특정 권한 그룹 접근에 필요한 권한 목록을 조회합니다.
-	 * @param authgroupNo
+	 * @param authgroup
 	 * @return
 	 */
-	public abstract Map<String, Object> getAuthListByAuthgroupNo(Integer authgroupNo);
+	public abstract Map<String, Object> getAuthListByAuthgroupNo(Authgroup authgroup);
 	
 	/**
 	 * 권한 그룹을 등록합니다.
@@ -29,15 +30,15 @@ public interface AuthgroupService{
 	
 	/**
 	 * 특정 권한 그룹을 수정합니다.
-	 * @param authgroupNo
+	 * @param authgroup
 	 * @param authgroupDTO
 	 * @return
 	 */
-	public abstract Map<String, Object> patchAuthgroupByAuthgroupNo(Integer authgroupNo, AuthgroupDTO authgroupDTO);
+	public abstract Map<String, Object> patchAuthgroupByAuthgroupNo(Authgroup authgroup, AuthgroupDTO authgroupDTO);
 	
 	/**
 	 * 특정 권한 그룹을 삭제합니다.
 	 * @return
 	 */
-	public abstract Map<String, Object> deleteAuthgroupByAuthgroupNo(Integer authgroupNo);
+	public abstract Map<String, Object> deleteAuthgroupByAuthgroupNo(Authgroup authgroup);
 }

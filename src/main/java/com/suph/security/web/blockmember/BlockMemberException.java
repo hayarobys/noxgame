@@ -3,6 +3,7 @@ package com.suph.security.web.blockmember;
 import com.suph.security.core.userdetails.MemberInfo;
 
 public class BlockMemberException extends RuntimeException{
+	private static final long serialVersionUID = 974836622766311123L;
 	/** 차단된 계정의 정보를 담는 멤버 변수 입니다. */
 	private MemberInfo memberInfo;
 	

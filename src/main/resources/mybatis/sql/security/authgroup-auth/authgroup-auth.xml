@@ -9,7 +9,7 @@
 	</resultMap>
 	
 	<!-- 특정 권한 그룹에 매핑된 권한 정보를 조회합니다 -->
-	<select id="getAuthListByAuthgroupNo" parameterType="java.lang.Integer" resultMap="AuthDTO">
+	<select id="getAuthListByAuthgroupNo" parameterType="com.suph.security.core.enums.Authgroup" resultMap="AuthDTO">
 		SELECT
 			A.AUTH_SQ_PK,
 			A.AUTH_NM_UNQ,
@@ -19,7 +19,7 @@
 			INNER JOIN AUTH_GRP_AUTH_TB AS RA ON (RA.AUTH_GRP_FK_PK = R.AUTH_GRP_SQ_PK)
 			INNER JOIN AUTH_TB AS A ON (RA.AUTH_FK_PK = A.AUTH_SQ_PK)
 		WHERE
-				R.AUTH_GRP_SQ_PK = #{authgroupNo}
+				R.AUTH_GRP_SQ_PK = #{authgroup.value}
 		ORDER BY
 			A.AUTH_SQ_PK
 	</select>
@@ -32,15 +32,15 @@
 			)
 		VALUES
 		<foreach collection="authSqPkList" item="authNo" separator=",">
-			(#{authgroupNo}, #{authNo})
+			(#{authgroup.value}, #{authNo})
 		</foreach>
 	</insert>
 	
 	<!-- 특정 권한 그룹에 매칭된 권한들을 제거합니다. -->
-	<delete id="deleteAuthListByAuthgroupNo" parameterType="int">
+	<delete id="deleteAuthListByAuthgroupNo" parameterType="com.suph.security.core.enums.Authgroup">
 		DELETE FROM
 			AUTH_GRP_AUTH_TB
 		WHERE
-			AUTH_GRP_FK_PK = #{authgroupNo}
+			AUTH_GRP_FK_PK = #{authgroup.value}
 	</delete>
 </mapper>

@@ -1,5 +1,7 @@
 package kr.pe.hayarobys.nox.community.freeboard;
 
+import com.suph.security.core.enums.Authgroup;
+
 /** 자유게시판 묶음 테이블 */
 public class FreeboardGroupVO{
 	/** 자유게시판 묶음 일련 번호 */
@@ -10,8 +12,8 @@ public class FreeboardGroupVO{
 	private Integer commentGroupNo;
 	/** 자유게시판 파일 묶음 일련 번호 */
 	private Integer fileGroupNo;
-	/** 자유게시판 권한 묶음 일련 번호 */
-	private Integer authGroupNo;
+	/** 자유게시판 권한 묶음 일련 번호(공개범위, 최소 조회 권한) */
+	private Authgroup authgroup;
 	
 	/** 자유게시판 묶음 계층 번호 */
 	private Integer freeboardGroupClassNo;
@@ -44,13 +46,12 @@ public class FreeboardGroupVO{
 	public void setFileGroupNo(Integer fileGroupNo){
 		this.fileGroupNo = fileGroupNo;
 	}
-	public Integer getAuthGroupNo(){
-		return authGroupNo;
+	public Authgroup getAuthgroup(){
+		return authgroup;
 	}
-	public void setAuthGroupNo(Integer authGroupNo){
-		this.authGroupNo = authGroupNo;
+	public void setAuthgroup(Authgroup authgroup){
+		this.authgroup = authgroup;
 	}
-	
 	public Integer getFreeboardGroupClassNo(){
 		return freeboardGroupClassNo;
 	}
@@ -69,11 +70,10 @@ public class FreeboardGroupVO{
 	public void setFreeboardGroupClassDepth(Integer freeboardGroupClassDepth){
 		this.freeboardGroupClassDepth = freeboardGroupClassDepth;
 	}
-	
 	@Override
 	public String toString(){
-		return "FreeboardVO [freeboardGroupNo=" + freeboardGroupNo + ", memNo=" + memNo + ", commentGroupNo=" + commentGroupNo + ", fileGroupNo="
-				+ fileGroupNo + ", authGroupNo=" + authGroupNo + ", freeboardGroupClassNo=" + freeboardGroupClassNo + ", freeboardGroupClassOrder="
+		return "FreeboardGroupVO [freeboardGroupNo=" + freeboardGroupNo + ", memNo=" + memNo + ", commentGroupNo=" + commentGroupNo + ", fileGroupNo="
+				+ fileGroupNo + ", authgroup=" + authgroup + ", freeboardGroupClassNo=" + freeboardGroupClassNo + ", freeboardGroupClassOrder="
 				+ freeboardGroupClassOrder + ", freeboardGroupClassDepth=" + freeboardGroupClassDepth + "]";
 	}
 }

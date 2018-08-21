@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.suph.security.core.dto.AuthgroupDTO;
 import com.suph.security.core.dto.PaginationRequest;
+import com.suph.security.core.enums.Authgroup;
 import com.suph.security.core.service.AuthgroupService;
 
 @Controller
@@ -48,30 +49,33 @@ public class AuthgroupController{
 	 * 권한그룹을 등록합니다.
 	 * @return
 	 */
+	/*	
 	@RequestMapping(value="/authgroup", method=RequestMethod.POST)
 	public @ResponseBody Map<String, Object> postAuthgroup(@RequestBody AuthgroupDTO authgroupDTO){
 		return authgroupService.postAuthgroup(authgroupDTO);
 	}
-	
+	*/
 	/**
 	 * 특정 권한 그룹을 수정합니다.
 	 * @param authgroupNo
 	 * @param authgroupDTO
 	 * @return
 	 */
-	@RequestMapping(value="/authgroup/{authgroupNo}", method=RequestMethod.PATCH)
+	@RequestMapping(value="/authgroup/{authgroup}", method=RequestMethod.PATCH)
 	public @ResponseBody Map<String, Object> patchAuthgroupByAuthgroupNo(
-			@PathVariable(required=true) Integer authgroupNo,
+			@PathVariable(required=true) Authgroup authgroup,
 			@RequestBody AuthgroupDTO authgroupDTO
 	){
-		return authgroupService.patchAuthgroupByAuthgroupNo(authgroupNo, authgroupDTO);
+		return authgroupService.patchAuthgroupByAuthgroupNo(authgroup, authgroupDTO);
 	}
 	
 	/**
 	 * 요청받은 특정 권한 그룹을 삭제 합니다.
 	 */
-	@RequestMapping(value="/authgroup/{authgroupNo}", method=RequestMethod.DELETE)
-	public @ResponseBody Map<String, Object> deleteAuthgroupByAuthgroupNo(@PathVariable(required=true) Integer authgroupNo){
-		return authgroupService.deleteAuthgroupByAuthgroupNo(authgroupNo);
+	/*
+	@RequestMapping(value="/authgroup/{authgroup}", method=RequestMethod.DELETE)
+	public @ResponseBody Map<String, Object> deleteAuthgroupByAuthgroupNo(@PathVariable(required=true) Authgroup authgroup){
+		return authgroupService.deleteAuthgroupByAuthgroupNo(authgroup);
 	}
+	*/
 }

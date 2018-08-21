@@ -43,7 +43,8 @@ jQuery(function() {
 		var formData = {
 				tempSaveNo: jQuery("#tempSaveNo").val(),
 				tempSaveTitle: jQuery("#tempSaveTitle").val(),
-				tempSaveBody: jQuery("#ir1").val()
+				tempSaveBody: jQuery("#ir1").val(),
+				openType: jQuery("input[name='openType']:checked").val()
 		};
 		
 		// 등록 요청 전송

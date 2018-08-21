@@ -2,6 +2,8 @@ package com.suph.security.core.dto;
 
 import java.util.List;
 
+import com.suph.security.core.enums.Authgroup;
+
 /**
  * 권한 그룹-권한 정보를 담는데 사용됩니다.
  * (권한 그룹 접근에 필요한 권한 정보)
@@ -9,7 +11,7 @@ import java.util.List;
 // AUTH_GRP_AUTH_TB 테이블
 public class AuthgroupAuthDTO{
 	/** 권한 그룹 일련 번호 */
-	private Integer authgroupNo;
+	private Authgroup authgroup;
 	/** 권한 그룹 이름 */
 	private String authgroupName;
 	/** 권한 일련 번호 */
@@ -19,12 +21,12 @@ public class AuthgroupAuthDTO{
 	/** 접근 가능한 권한 목록 */
 	private List<Integer> authSqPkList;
 
-	public Integer getAuthgroupNo(){
-		return authgroupNo;
+	public Authgroup getAuthgroup(){
+		return authgroup;
 	}
 
-	public void setAuthgroupNo(Integer authgroupNo){
-		this.authgroupNo = authgroupNo;
+	public void setAuthgroup(Authgroup authgroup){
+		this.authgroup = authgroup;
 	}
 
 	public String getAuthgroupName(){
@@ -61,7 +63,7 @@ public class AuthgroupAuthDTO{
 
 	@Override
 	public String toString(){
-		return "AuthgroupAuthDTO [authgroupNo=" + authgroupNo + ", authgroupName=" + authgroupName + ", authFkPk=" + authFkPk + ", authNmUnq="
+		return "AuthgroupAuthDTO [authgroup=" + authgroup + ", authgroupName=" + authgroupName + ", authFkPk=" + authFkPk + ", authNmUnq="
 				+ authNmUnq + ", authSqPkList=" + authSqPkList + "]";
 	}
 }

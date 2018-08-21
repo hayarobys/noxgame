@@ -29,7 +29,7 @@
 		<typeAlias type="com.suph.security.core.dto.AuthgroupAuthDTO" alias="AuthgroupAuthDTO"/>
 		
 		<!-- 파일 묶음 정보를 옮기는데 사용됩니다. -->
-		<typeAlias type="kr.pe.hayarobys.nox.common.upload.FileGrpVO" alias="FileGrpVO"/>
+		<typeAlias type="kr.pe.hayarobys.nox.common.upload.FileGroupVO" alias="FileGroupVO"/>
 		<!-- 파일 정보를 옮기는데 사용됩니다. -->
 		<typeAlias type="kr.pe.hayarobys.nox.common.upload.FileVO" alias="FileVO"/>
 		<!-- 댓글 묶음 정보를 옮기는데 사용됩니다. -->

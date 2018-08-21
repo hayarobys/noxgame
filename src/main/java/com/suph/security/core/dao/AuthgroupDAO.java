@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.suph.security.core.dto.AuthgroupDTO;
 import com.suph.security.core.dto.PaginationRequest;
+import com.suph.security.core.enums.Authgroup;
 
 @Repository
 public interface AuthgroupDAO{
@@ -37,7 +38,7 @@ public interface AuthgroupDAO{
 	
 	/**
 	 * 특정 권한 그룹을 제거합니다.
-	 * @param authgroupNo	제거할 권한 그룹의 일련 번호
+	 * @param authgroup	제거할 권한 그룹의 일련 번호
 	 */
-	public abstract void deleteAuthgroupByAuthgroupNo(Integer authgroupNo);
+	public abstract void deleteAuthgroupByAuthgroupNo(Authgroup authgroup);
 }

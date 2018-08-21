@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.suph.security.core.dto.AuthgroupAuthDTO;
+import com.suph.security.core.enums.Authgroup;
 import com.suph.security.core.service.AuthgroupAuthService;
 import com.suph.security.core.service.AuthgroupService;
 
@@ -36,21 +37,21 @@ public class AuthgroupAuthController{
 	 * @param authgroupNo
 	 * @return
 	 */
-	@RequestMapping(value="/authgroup/{authgroupNo}/auth", method=RequestMethod.GET)
-	public @ResponseBody Map<String, Object> authList(@PathVariable(required=true) Integer authgroupNo){
-		return authgroupService.getAuthListByAuthgroupNo(authgroupNo);
+	@RequestMapping(value="/authgroup/{authgroup}/auth", method=RequestMethod.GET)
+	public @ResponseBody Map<String, Object> authList(@PathVariable(required=true) Authgroup authgroup){
+		return authgroupService.getAuthListByAuthgroupNo(authgroup);
 	}
 	
 	/**
 	 * 특정 권한 그룹 접근에 필요한 권한을 재지정 합니다.
 	 * @return
 	 */
-	@RequestMapping(value="/authgroup/{authgroupNo}/auth", method=RequestMethod.PATCH)
+	@RequestMapping(value="/authgroup/{authgroup}/auth", method=RequestMethod.PATCH)
 	public @ResponseBody Map<String, Object> changeAuthgroupAuth(
-			@PathVariable(required=true) Integer authgroupNo,
+			@PathVariable(required=true) Authgroup authgroup,
 			@RequestBody AuthgroupAuthDTO authgroupAuthDTO
 	){
-		authgroupAuthDTO.setAuthgroupNo(authgroupNo);
+		authgroupAuthDTO.setAuthgroup(authgroup);
 		return authgroupAuthService.changeAuthgroupAuth(authgroupAuthDTO);
 	}
 }
