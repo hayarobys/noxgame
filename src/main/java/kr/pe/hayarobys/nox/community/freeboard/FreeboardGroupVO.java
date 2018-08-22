@@ -10,8 +10,6 @@ public class FreeboardGroupVO{
 	private Integer memNo;
 	/** 자유게시판 댓글 묶음 일련 번호 */
 	private Integer commentGroupNo;
-	/** 자유게시판 파일 묶음 일련 번호 */
-	private Integer fileGroupNo;
 	/** 자유게시판 권한 묶음 일련 번호(공개범위, 최소 조회 권한) */
 	private Authgroup authgroup;
 	
@@ -40,12 +38,6 @@ public class FreeboardGroupVO{
 	public void setCommentGroupNo(Integer commentGroupNo){
 		this.commentGroupNo = commentGroupNo;
 	}
-	public Integer getFileGroupNo(){
-		return fileGroupNo;
-	}
-	public void setFileGroupNo(Integer fileGroupNo){
-		this.fileGroupNo = fileGroupNo;
-	}
 	public Authgroup getAuthgroup(){
 		return authgroup;
 	}
@@ -72,8 +64,8 @@ public class FreeboardGroupVO{
 	}
 	@Override
 	public String toString(){
-		return "FreeboardGroupVO [freeboardGroupNo=" + freeboardGroupNo + ", memNo=" + memNo + ", commentGroupNo=" + commentGroupNo + ", fileGroupNo="
-				+ fileGroupNo + ", authgroup=" + authgroup + ", freeboardGroupClassNo=" + freeboardGroupClassNo + ", freeboardGroupClassOrder="
-				+ freeboardGroupClassOrder + ", freeboardGroupClassDepth=" + freeboardGroupClassDepth + "]";
+		return "FreeboardGroupVO [freeboardGroupNo=" + freeboardGroupNo + ", memNo=" + memNo + ", commentGroupNo=" + commentGroupNo + ", authgroup="
+				+ authgroup + ", freeboardGroupClassNo=" + freeboardGroupClassNo + ", freeboardGroupClassOrder=" + freeboardGroupClassOrder
+				+ ", freeboardGroupClassDepth=" + freeboardGroupClassDepth + "]";
 	}
 }

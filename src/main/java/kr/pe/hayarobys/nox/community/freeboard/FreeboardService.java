@@ -28,4 +28,12 @@ public interface FreeboardService{
 	 * @return
 	 */
 	public abstract ModelAndView getDetail(Integer freeboardGroupNo, ModelAndView mav);
+	
+	/**
+	 * 게시글 수정 폼을 반환합니다.
+	 * @param freeboardGroupNo
+	 * @param mav
+	 * @return
+	 */
+	public abstract ModelAndView getModifyForm(Integer freeboardGroupNo, ModelAndView mav);
 }

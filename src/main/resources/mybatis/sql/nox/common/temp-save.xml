@@ -6,14 +6,14 @@
 	<resultMap type="kr.pe.hayarobys.nox.common.tempsave.TempSaveVO" id="TempSaveVO">
 		<result column="MEM_FK" property="memNo"/>	<!-- 계정 일련 번호 외래키 -->
 		<result column="TEMP_SAVE_SQ_PK" property="tempSaveNo"/>	<!-- 임시 저장 시퀀스 기본키 -->
-		<result column="FILE_GRP_FK" property="fileGrpNo"/>		<!-- 파일 묶음 외래키 -->
+		<result column="FILE_GRP_FK" property="fileGroupNo"/>		<!-- 파일 묶음 외래키 -->
 		<result column="TEMP_SAVE_TITLE" property="tempSaveTitle"/>	<!-- 임시 저장 제목 -->
 		<result column="TEMP_SAVE_BODY" property="tempSaveBody"/>		<!-- 임시 저장 본문 -->
 		<result column="TEMP_SAVE_MOD_DT" property="tempSaveModDt"/>		<!-- 임시 저장 본문 -->
 	</resultMap>
 	
-	<!-- 특정 아이디가 특정 카테고리에 마지막으로 저장한 임시 저장 글 조회   -->
-	<select id="selectLastTempSaveNoFromCategory" parameterType="TempSaveVO" resultMap="TempSaveVO">
+	<!-- 특정 아이디가 특정 카테고리에 특정 용도로 마지막에 저장한 임시 저장 글 조회   -->
+	<select id="selectLastTempSaveFromCategory" parameterType="TempSaveVO" resultMap="TempSaveVO">
 		SELECT *
 		FROM(
 			SELECT
@@ -23,9 +23,10 @@
 				TEMP_SAVE_BODY,
 				TEMP_SAVE_MOD_DT
 			FROM	TEMP_SAVE_TB
-			WHERE	MEM_FK = #{memNo}
-				AND
-					TEMP_SAVE_CATEGORY = #{tempSaveCategory.value}
+			WHERE
+					MEM_FK = #{memNo}
+				AND TEMP_SAVE_CATEGORY = #{tempSaveCategory.value}
+				AND TEMP_SAVE_USE = #{tempSaveUse.value}
 			ORDER BY	TEMP_SAVE_MOD_DT DESC
 		) AS T
 		LIMIT	1;
@@ -34,9 +35,9 @@
 	<!-- 게시글 임시 저장 레코드 추가하고 새로 생성된 시퀀스를 가져옵니다. -->
 	<insert id="insertTempSave" parameterType="TempSaveVO">
 		INSERT INTO TEMP_SAVE_TB(
-			MEM_FK, FILE_GRP_FK, TEMP_SAVE_CATEGORY, TEMP_SAVE_TITLE, TEMP_SAVE_BODY
+			MEM_FK, FILE_GRP_FK, TEMP_SAVE_CATEGORY, TEMP_SAVE_USE, TEMP_SAVE_MOD_DT, TEMP_SAVE_TITLE, TEMP_SAVE_BODY
 		)VALUES(
-			#{memNo}, #{fileGrpNo}, #{tempSaveCategory.value}, #{tempSaveTitle}, #{tempSaveBody}
+			#{memNo}, #{fileGroupNo}, #{tempSaveCategory.value}, #{tempSaveUse.value}, CURRENT_TIMESTAMP(), #{tempSaveTitle}, #{tempSaveBody}
 		)
 		<selectKey resultType="java.lang.Integer" keyProperty="tempSaveNo" order="AFTER">
 			SELECT LAST_INSERT_ID()

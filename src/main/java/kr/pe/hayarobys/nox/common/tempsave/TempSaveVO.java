@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.suph.security.core.enums.Authgroup;
 import com.suph.security.core.enums.TempSaveCategory;
+import com.suph.security.core.enums.TempSaveUse;
 
 
 
@@ -14,8 +15,10 @@ public class TempSaveVO{
 	private Integer memNo;
 	/** TEMP_SAVE_CATEGORY 어느 URL로부터의 임시 저장 요청인지 카테고리 번호로 관리 */
 	private TempSaveCategory tempSaveCategory;
+	/** TEMP_SAVE_USE TEMP_SAVE_CATEGORY에서도 어떤 용도의 임시 저장 글 인지 구분(WRITE, MODIFY) */
+	private TempSaveUse tempSaveUse;
 	/** FILE_GRP_FK 파일 묶음 번호 */
-	private Integer fileGrpNo;
+	private Integer fileGroupNo;
 	/** TEMP_SAVE_TITLE 임시 저장 제목 */
 	private String tempSaveTitle;
 	/** TEMP_SAVE_BODY 임시 저장 본문 */
@@ -49,12 +52,20 @@ public class TempSaveVO{
 		this.tempSaveCategory = tempSaveCategory;
 	}
 	
-	public Integer getFileGrpNo(){
-		return fileGrpNo;
+	public TempSaveUse getTempSaveUse(){
+		return tempSaveUse;
+	}
+
+	public void setTempSaveUse(TempSaveUse tempSaveUse){
+		this.tempSaveUse = tempSaveUse;
 	}
 	
-	public void setFileGrpNo(Integer fileGrpNo){
-		this.fileGrpNo = fileGrpNo;
+	public Integer getFileGroupNo(){
+		return fileGroupNo;
+	}
+	
+	public void setFileGroupNo(Integer fileGroupNo){
+		this.fileGroupNo = fileGroupNo;
 	}
 	
 	public String getTempSaveTitle(){
@@ -91,8 +102,8 @@ public class TempSaveVO{
 
 	@Override
 	public String toString(){
-		return "TempSaveVO [tempSaveNo=" + tempSaveNo + ", memNo=" + memNo + ", tempSaveCategory=" + tempSaveCategory + ", fileGrpNo=" + fileGrpNo
-				+ ", tempSaveTitle=" + tempSaveTitle + ", tempSaveBody=" + tempSaveBody + ", tempSaveModDt=" + tempSaveModDt + ", openType="
-				+ openType + "]";
+		return "TempSaveVO [tempSaveNo=" + tempSaveNo + ", memNo=" + memNo + ", tempSaveCategory=" + tempSaveCategory + ", tempSaveUse=" + tempSaveUse
+				+ ", fileGroupNo=" + fileGroupNo + ", tempSaveTitle=" + tempSaveTitle + ", tempSaveBody=" + tempSaveBody + ", tempSaveModDt="
+				+ tempSaveModDt + ", openType=" + openType + "]";
 	}
 }

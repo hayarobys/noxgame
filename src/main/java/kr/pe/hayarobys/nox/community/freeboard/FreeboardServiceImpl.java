@@ -12,6 +12,7 @@ import com.suph.security.core.dto.JsonResultVO;
 import com.suph.security.core.enums.Authgroup;
 import com.suph.security.core.enums.Flag;
 import com.suph.security.core.enums.TempSaveCategory;
+import com.suph.security.core.enums.TempSaveUse;
 import com.suph.security.core.userdetails.MemberInfo;
 import com.suph.security.core.util.ContextUtil;
 
@@ -46,38 +47,38 @@ public class FreeboardServiceImpl implements FreeboardService{
 		// 미로그인 유저여서 authentication이 null일 가능성은 security 단에서 1차적으로 차단한 상태이므로 부가 처리를 하지 않습니다.
 		Integer memNo = memberInfo.getNo();
 		
-		// 기존에 FREEBOARD로 등록된 임시 저장글이 있는가?
+		// 기존에 FREEBOARD 카테로리에 신규 작성 용도로 등록된 임시 저장글이 있는가?
 		// 있다면 가장 최근에 작성한 임시 저장글의 일련 번호를 반환
 		TempSaveVO searchTempSaveVO = new TempSaveVO();
 		searchTempSaveVO.setMemNo(memNo);
 		searchTempSaveVO.setTempSaveCategory(TempSaveCategory.FREEBOARD);
-		TempSaveVO lastTempSaveVO = tempSaveDAO.selectLastTempSaveNoFromCategory(searchTempSaveVO);
+		searchTempSaveVO.setTempSaveUse(TempSaveUse.WRITE);
+		TempSaveVO tempSaveVO = tempSaveDAO.selectLastTempSaveFromCategory(searchTempSaveVO);
 		List<FileVO> fileVOList = null;
-		if(lastTempSaveVO != null){
-			logger.debug("마지막 임시저장글 발견: {}", lastTempSaveVO);
-			fileVOList = uploadDAO.selectFileByFileGroupNo(lastTempSaveVO.getFileGrpNo());
+		if(tempSaveVO != null){
+			fileVOList = uploadDAO.selectFileByFileGroupNo(tempSaveVO.getFileGroupNo());
 		}else{
 			// 파일 묶음 레코드 생성
-			FileGroupVO fileGrpVO = new FileGroupVO();
-			fileGrpVO.setMemNo(memNo);
+			FileGroupVO fileGroupVO = new FileGroupVO();
+			fileGroupVO.setMemNo(memNo);
 			
 			// 파일 그룹의 기본 공개범위는 '비공개'. 추후 임시저장글 > 글 작성 완료시 설정한 값에 따라 공개범위 수정
-			fileGrpVO.setAuthgroup(Authgroup.SECRET);
-			freeboardDAO.insertFileGrp(fileGrpVO);
-			Integer fileGrpNo = fileGrpVO.getFileGrpNo();
+			fileGroupVO.setAuthgroup(Authgroup.SECRET);
+			freeboardDAO.insertFileGrp(fileGroupVO);
+			Integer fileGroupNo = fileGroupVO.getFileGroupNo();
 			
-			logger.debug("파일그룹넘버: {}", fileGrpNo);
-			lastTempSaveVO = new TempSaveVO();
-			lastTempSaveVO.setMemNo(memNo);
-			lastTempSaveVO.setFileGrpNo(fileGrpNo);
-			lastTempSaveVO.setTempSaveCategory(TempSaveCategory.FREEBOARD);
-			lastTempSaveVO.setTempSaveTitle("");
-			lastTempSaveVO.setTempSaveBody("");
+			tempSaveVO = new TempSaveVO();
+			tempSaveVO.setMemNo(memNo);
+			tempSaveVO.setFileGroupNo(fileGroupNo);
+			tempSaveVO.setTempSaveCategory(TempSaveCategory.FREEBOARD);
+			tempSaveVO.setTempSaveUse(TempSaveUse.WRITE);
+			tempSaveVO.setTempSaveTitle("");
+			tempSaveVO.setTempSaveBody("");
 			
-			tempSaveDAO.insertTempSave(lastTempSaveVO);
+			tempSaveDAO.insertTempSave(tempSaveVO);
 		}
 		
-		mav.addObject("lastTempSaveVO", lastTempSaveVO);
+		mav.addObject("tempSaveVO", tempSaveVO);
 		mav.addObject("fileVOList", fileVOList);
 		
 		mav.setViewName("community/freeboard/write");
@@ -101,8 +102,8 @@ public class FreeboardServiceImpl implements FreeboardService{
 		requestTempSaveVO.setMemNo(memNo);
 		
 		// 원본 임시 저장글로부터 파일 그룹 번호 조회
-		Integer fileGroupNo = originalTempSaveVO.getFileGrpNo();
-		requestTempSaveVO.setFileGrpNo(fileGroupNo);
+		Integer fileGroupNo = originalTempSaveVO.getFileGroupNo();
+		requestTempSaveVO.setFileGroupNo(fileGroupNo);
 		
 		// 공개범위 미 설정 시 기본값은 전체공개
 		Authgroup authgroup = requestTempSaveVO.getOpenType();
@@ -112,7 +113,7 @@ public class FreeboardServiceImpl implements FreeboardService{
 		
 		// 파일 그룹의 공개 범위를 작성자가 요청한 공개 범위로 수정.
 		FileGroupVO fileGroupVO = new FileGroupVO();
-		fileGroupVO.setFileGrpNo(fileGroupNo);
+		fileGroupVO.setFileGroupNo(fileGroupNo);
 		fileGroupVO.setAuthgroup(authgroup);
 		uploadDAO.updateAuthgroupOfFileGroupByFileGroupNo(fileGroupVO);
 		
@@ -125,7 +126,6 @@ public class FreeboardServiceImpl implements FreeboardService{
 		FreeboardGroupVO freeboardGroupVO = new FreeboardGroupVO();
 		freeboardGroupVO.setMemNo(memNo);
 		freeboardGroupVO.setCommentGroupNo(commentGroupVO.getCommentGroupNo());
-		freeboardGroupVO.setFileGroupNo(fileGroupNo);
 		freeboardGroupVO.setAuthgroup(authgroup);
 		freeboardGroupVO.setFreeboardGroupClassOrder(0);
 		freeboardGroupVO.setFreeboardGroupClassDepth(1);
@@ -136,6 +136,7 @@ public class FreeboardServiceImpl implements FreeboardService{
 		freeboardVO.setFreeboardGroupNo(freeboardGroupVO.getFreeboardGroupNo());
 		freeboardVO.setFreeboardTitle(requestTempSaveVO.getTempSaveTitle());
 		freeboardVO.setFreeboardBody(requestTempSaveVO.getTempSaveBody());
+		freeboardVO.setFileGroupNo(fileGroupNo);
 		freeboardDAO.insertFreeboard(freeboardVO);
 		
 		// 임시 저장 데이터 제거
@@ -165,5 +166,66 @@ public class FreeboardServiceImpl implements FreeboardService{
 		freeboardDAO.insertFreeboardGroup(freeboardGroupVO);
 		freeboardGroupVO.setFreeboardGroupClassNo(freeboardGroupVO.getFreeboardGroupNo());
 		freeboardDAO.updateFreeboardGroupClassNo(freeboardGroupVO);
+	}
+
+	@Override
+	public ModelAndView getModifyForm(Integer freeboardGroupNo, ModelAndView mav){
+		// 수정 대상글의 원본 정보 조회
+		FreeboardDetailVO freeboardDetailVO = freeboardDAO.selectFreeboardDetail(freeboardGroupNo);
+		
+		// 요청자와 수정 대상글의 계정 정보가 일치하는지 확인
+		Integer memNo = ContextUtil.getMemberInfo().getNo();
+		if(memNo != freeboardDetailVO.getMemNo()){
+			logger.debug("수정 요청자: {}, 수정 대상 글 작성자: {}", memNo, freeboardDetailVO.getMemNo());
+			throw new ForbiddenException("수정 대상 글의 작성자와 수정 요청자의 계정 정보가 불일치 합니다.");
+		}
+		
+		// FREEBOARD 카테고리에 MODIFY 용도로 생성된 요청자의 임시 저장글이 있는지 확인
+		TempSaveVO searchTempSaveVO = new TempSaveVO();
+		searchTempSaveVO.setMemNo(memNo);
+		searchTempSaveVO.setTempSaveCategory(TempSaveCategory.FREEBOARD);
+		searchTempSaveVO.setTempSaveUse(TempSaveUse.MODIFY);
+		TempSaveVO tempSaveVO = tempSaveDAO.selectLastTempSaveFromCategory(searchTempSaveVO);
+		List<FileVO> fileVOList = null;
+		
+		// 기존 임시 저장 글이 있는 경우 해당 글의 첨부파일 목록 조회
+		if(tempSaveVO != null){
+			fileVOList = uploadDAO.selectFileByFileGroupNo(tempSaveVO.getFileGroupNo());
+		}else{
+		// 기존 임시 저장 글이 없는 경우
+			// 신규 파일 그룹 생성. 파일 그룹의 기본 공개범위는 '비공개'. 추후 임시 저장글 > 글 수정 완료 시, 설정한 값에 따라 공개범위 수정
+			FileGroupVO fileGroupVO = new FileGroupVO();
+			fileGroupVO.setMemNo(memNo);
+			fileGroupVO.setAuthgroup(Authgroup.SECRET);
+			freeboardDAO.insertFileGrp(fileGroupVO);
+			Integer fileGroupNo = fileGroupVO.getFileGroupNo();
+			
+			// 수정 대상글의 파일 상세 레코드 복제. 물리적 파일은 복제 없이 그대로 유지
+			List<FileVO> originalFileVOList = uploadDAO.selectFileByFileGroupNo(freeboardDetailVO.getFileGroupNo());
+			for(FileVO vo : originalFileVOList){
+				vo.setFileGroupNo(fileGroupNo);
+			}
+			uploadDAO.insertFileList(originalFileVOList);
+			
+			// 새롭게 복제한 파일 목록 조회
+			fileVOList = uploadDAO.selectFileByFileGroupNo(fileGroupNo);
+			
+			// FREEBOARD-MODIFY로 원본 글을 복제한 임시 저장 레코드 생성
+			tempSaveVO = new TempSaveVO();
+			tempSaveVO.setMemNo(memNo);
+			tempSaveVO.setFileGroupNo(fileGroupNo);
+			tempSaveVO.setTempSaveCategory(TempSaveCategory.FREEBOARD);
+			tempSaveVO.setTempSaveUse(TempSaveUse.MODIFY);
+			tempSaveVO.setTempSaveTitle(freeboardDetailVO.getFreeboardTitle());
+			tempSaveVO.setTempSaveBody(freeboardDetailVO.getFreeboardBody());
+			tempSaveDAO.insertTempSave(tempSaveVO);
+		}
+		
+		// 생성한 레코드 정보 MODEL에 담아 VIEW로 반환
+		mav.addObject("freeboardGroupNo", freeboardGroupNo);
+		mav.addObject("tempSaveVO", tempSaveVO);
+		mav.addObject("fileVOList", fileVOList);
+		mav.setViewName("/community/freeboard/modify");
+		return mav;
 	}
 }

@@ -4,35 +4,82 @@
 
 <mapper namespace="kr.pe.hayarobys.nox.common.upload.UploadDAO">
 	<resultMap type="kr.pe.hayarobys.nox.common.upload.FileVO" id="FileVO">
-		<result column="FILE_SQ_PK" property="fileNo" />	<!-- 파일 시퀀스 기본키 -->
+		<result column="FILE_SQ_PK" property="fileNo" />	<!-- 파일 번호 -->
+		<result column="FILE_GRP_FK" property="fileGroupNo" />	<!-- 이 파일이 속해있는 파일 그룹의 번호 -->
+		<result column="MEM_FK" property="memNo" />	<!-- 계정 번호 -->
+		<result column="FILE_REG_DT" property="fileRegDt" />	<!-- 등록일 -->
+		<result column="DWN_CNT" property="downloadCount" />	<!-- 다운로드 횟수 -->
 		<result column="FILE_SIZE" property="fileSize" />	<!-- 파일 크기 -->
+		<result column="EXT_NM" property="extensionName" />	<!-- 확장자. MIME TYPE 아님 -->
 		<result column="ORGN_FILE_NM" property="originalFileName" />	<!-- 원본 파일 이름 -->
 		<result column="SAVE_FILE_NM" property="saveFileName" />	<!-- 저장 파일 이름 -->
+		<result column="FILE_SAVE_DIR" property="fileSaveDirectory" />	<!-- 물리 저장 경로 -->
 	</resultMap>
 	
 	<!-- 파일 정보를 DB에 등록하고 생성된 파일 일련 번호를 반환합니다. -->
 	<insert id="insertFile" parameterType="FileVO">
 		INSERT INTO FILE_TB(
-			FILE_GRP_FK, MEM_FK,
-			FILE_REG_DT, FILE_SIZE,
-			EXT_NM, ORGN_FILE_NM,
-			SAVE_FILE_NM, FILE_SAVE_DIR
+			FILE_GRP_FK,
+			MEM_FK,
+			FILE_REG_DT,
+			FILE_SIZE,
+			EXT_NM,
+			ORGN_FILE_NM,
+			SAVE_FILE_NM,
+			FILE_SAVE_DIR
 		)VALUES(
-			#{fileGroupNo}, #{memNo},
-			CURRENT_TIMESTAMP(), #{fileSize},
-			#{extensionName}, #{originalFileName},
-			#{saveFileName}, #{fileSaveDirectory}
+			#{fileGroupNo},
+			#{memNo},
+			CURRENT_TIMESTAMP(),
+			#{fileSize},
+			#{extensionName},
+			#{originalFileName},
+			#{saveFileName},
+			#{fileSaveDirectory}
 		)
 		<selectKey resultType="java.lang.Integer" keyProperty="fileNo" order="AFTER">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
 	</insert>
 	
+	<!-- 파일 목록을 DB에 등록합니다. -->
+	<insert id="insertFileList" parameterType="java.util.List">
+		INSERT INTO FILE_TB(
+			FILE_GRP_FK,
+			MEM_FK,
+			FILE_REG_DT,
+			DWN_CNT,
+			FILE_SIZE,
+			EXT_NM,
+			ORGN_FILE_NM,
+			SAVE_FILE_NM,
+			FILE_SAVE_DIR
+		)VALUES
+		<foreach collection="list" item="element" index="index" open="(" separator="),("  close=")">
+			#{element.fileGroupNo},
+			#{element.memNo},
+			#{element.fileRegDt},
+			#{element.downloadCount},
+			#{element.fileSize},
+			#{element.extensionName},
+			#{element.originalFileName},
+			#{element.saveFileName},
+			#{element.fileSaveDirectory}
+		</foreach>
+	</insert>
+	
 	<!-- 특정 파일 그룹 일련 번호에 속한 파일들을 조회합니다. -->
 	<select id="selectFileByFileGroupNo" parameterType="java.lang.Integer" resultMap="FileVO">
 		SELECT
-			FILE_SQ_PK, FILE_SIZE,
-			ORGN_FILE_NM, SAVE_FILE_NM
+			FILE_SQ_PK,
+			MEM_FK,
+			FILE_REG_DT,
+			DWN_CNT,
+			FILE_SIZE,
+			EXT_NM,
+			ORGN_FILE_NM,
+			SAVE_FILE_NM,
+			FILE_SAVE_DIR
 		FROM
 			FILE_TB
 		WHERE

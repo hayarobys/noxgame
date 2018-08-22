@@ -27,7 +27,7 @@
 				<table>
 					<tr>
 						<th>게시글 그룹 번호</th>
-						<td>${freeboardDetailVO.freeboardGroupNo}</td>
+						<td><span id="freeboardGroupNo">${freeboardDetailVO.freeboardGroupNo}</span></td>
 					</tr>
 					<tr>
 						<th>게시글 상세 번호</th>
@@ -52,6 +52,14 @@
 						</td>
 					</tr>
 				</table>
+				<p>
+					<button class="btn" id="delete-btn" type="button">
+						<div class="text">삭제</div>
+					</button>
+					<button class="btn" id="modify-btn" type="button">
+						<div class="text">수정</div>
+					</button>
+				</p>
 			</article>
 			
 			<article class="freeboard-comment">

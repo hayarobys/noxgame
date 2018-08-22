@@ -147,7 +147,7 @@ INSERT INTO auth_grp_tb (AUTH_GRP_SQ_PK,AUTH_GRP_NM_UNQ,AUTH_GRP_EXPLN) VALUES
 ('PUBLIC','전체공개','비회원 조회가 가능합니다.')
 ,('MEMBER','회원공개','로그인 한 계정의 조회가 가능합니다.')
 ,('SECRET','비밀글','작성자와 답글의 경우 대상글의 작성자, 매니저, 어드민만 조회 할 수 있습니다.')
-,('CLOSE','비공개','매니저, 어드민만 조회 할 수 있습니다.')
+,('CLOSE','비공개','작성자와 매니저, 어드민만 조회 할 수 있습니다.')
 ;
 
 INSERT INTO auth_grp_auth_tb (AUTH_GRP_FK_PK,AUTH_FK_PK) VALUES 

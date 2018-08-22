@@ -47,12 +47,6 @@ public class FreeboardController{
 		return freeboardService.postWrite(tempSaveVO);
 	}
 	
-	/** 자유 게시판 특정 글 수정 페이지 */
-	@RequestMapping(value="/{frbrdGrpNo}/write", method=RequestMethod.GET)
-	public void getWrite(){
-		
-	}
-	
 	/** 자유 게시판 상세 조회 */
 	@RequestMapping(value="/{freeboardGroupNo}", method=RequestMethod.GET)
 	public ModelAndView getDetail(
@@ -62,10 +56,23 @@ public class FreeboardController{
 		return freeboardService.getDetail(freeboardGroupNo, mav);
 	}
 	
+	/** 자유 게시판 특정 글 수정 페이지 */
+	@RequestMapping(value="/{freeboardGroupNo}/write", method=RequestMethod.GET)
+	public ModelAndView getModify(
+			@PathVariable(value="freeboardGroupNo", required=true) Integer freeboardGroupNo,
+			ModelAndView mav
+	){
+		return freeboardService.getModifyForm(freeboardGroupNo, mav);
+	}
+	
 	/** 자유 게시판 특정 글 수정 */
-	@RequestMapping(value="/{frbrdGrpNo}/write", method=RequestMethod.PATCH)
-	public void patchWrite(){
-		
+	@RequestMapping(value="/{freeboardGroupNo}/write", method=RequestMethod.PATCH)
+	public void patchModify(
+			@PathVariable(value="freeboardGroupNo", required=true) Integer freeboardGroupNo,
+			@RequestBody TempSaveVO tempSaveVO
+	){
+		logger.debug("수정요청: {} / {}", freeboardGroupNo, tempSaveVO);
+		//return freeboardService.patch
 	}
 	
 	/** 자유 게시판 특정 글 삭제 */

@@ -7,10 +7,16 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UploadDAO{
 	/**
-	 * 파일에 대한 정보를 DB에 입력합니다.
+	 * 하나의 파일 정보를 DB에 입력하고 생성된 파일 번호를 반환 합니다.
 	 * @param fileVO
 	 */
 	public abstract void insertFile(FileVO fileVO);
+	
+	/**
+	 * 파일 목록을 DB에 입력합니다.
+	 * @param fileVO
+	 */
+	public abstract void insertFileList(List<FileVO> fileVO);
 	
 	/**
 	 * 특정 파일 그룹에 속한 파일들의 목록 조회

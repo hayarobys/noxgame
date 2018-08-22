@@ -14,3 +14,29 @@
 #contents #mainContents .freeboard-contents{
 	/*background-color: white;*/
 }
+
+
+.freeboard-contents .btn{
+	float: right;
+	margin-right: 10px;
+	border: none;
+	background-color: #ffffff00;
+	padding: 0px;
+}
+
+.freeboard-contents .btn:HOVER .text{
+	background-image: url("../../../../image/community/freeboard/btn-hover70x22.png");
+}
+
+.freeboard-contents .btn:ACTIVE .text{
+	background-image: url("../../../../image/community/freeboard/btn-active70x22.png");
+}
+
+.freeboard-contents .btn .text{
+	width: 70px;
+	height: 22px;
+	line-height: 22px;
+	background-image: url("../../../../image/community/freeboard/btn70x22.png");
+	color: yellow;
+	font-size: 0.9em;
+}

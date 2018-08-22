@@ -5,11 +5,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TempSaveDAO{
 	/**
-	 * 특정 계정이 특정 카테고리에서 마지막으로 저장한 임시 글 조회
+	 * 특정 계정이 특정 카테고리에서 특정 용도로 마지막에 저장한 임시 글 조회
 	 * @param memNo
 	 * @return
 	 */
-	public abstract TempSaveVO selectLastTempSaveNoFromCategory(TempSaveVO tempSaveVO);
+	public abstract TempSaveVO selectLastTempSaveFromCategory(TempSaveVO tempSaveVO);
 	
 	/**
 	 * 게시글 임시 저장 레코드를 생성하고 그 일련번호를 전달받은 객체에 담습니다.

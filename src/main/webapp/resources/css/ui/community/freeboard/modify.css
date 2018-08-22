@@ -1,0 +1,48 @@
+@CHARSET "UTF-8";
+
+#contents{
+	margin: 0 auto;
+	width: 1280px;
+	min-height: 1px;
+}
+
+#contents #mainContents{
+	width: 800px;
+	margin: 0 auto;
+}
+
+#contents #mainContents .freeboard-contents{
+	/*background-color: white;*/
+}
+
+.border_white{
+	border: 1px solid white;	
+}
+
+.width_table{
+	width: 100%;
+}
+
+.align_left{
+	text-align: left;
+}
+
+.align_right{
+	text-align: right;
+}
+
+.inline_block{
+	display: inline-block;
+}
+
+.width_100percent{
+	width: 100%;
+}
+
+.width_50percent{
+	width: 50%;
+}
+
+.width_49percent{
+	width: 49%;
+}

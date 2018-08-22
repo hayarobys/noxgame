@@ -7,6 +7,8 @@ public class FreeboardVO{
 	private String freeboardTitle;
 	/** 자유게시판 상세 본문 */
 	private String freeboardBody;
+	/** 자유게시판 파일 묶음 일련 번호 */
+	private Integer fileGroupNo;
 	
 	public Integer getFreeboardGroupNo(){
 		return freeboardGroupNo;
@@ -32,8 +34,17 @@ public class FreeboardVO{
 		this.freeboardBody = freeboardBody;
 	}
 	
+	public Integer getFileGroupNo(){
+		return fileGroupNo;
+	}
+	
+	public void setFileGroupNo(Integer fileGroupNo){
+		this.fileGroupNo = fileGroupNo;
+	}
+
 	@Override
 	public String toString(){
-		return "FreeboardVO [freeboardGroupNo=" + freeboardGroupNo + ", freeboardTitle=" + freeboardTitle + ", freeboardBody=" + freeboardBody + "]";
+		return "FreeboardVO [freeboardGroupNo=" + freeboardGroupNo + ", freeboardTitle=" + freeboardTitle + ", freeboardBody=" + freeboardBody
+				+ ", fileGroupNo=" + fileGroupNo + "]";
 	}
 }

@@ -3,38 +3,48 @@ package kr.pe.hayarobys.nox.common.upload;
 import java.util.Date;
 
 public class FileVO{
-	private int fileNo;
-	private int fileGroupNo;
-	private int memNo;
+	/** 파일 번호 */
+	private Integer fileNo;
+	/** 이 파일이 속해있는 파일 그룹의 번호 */
+	private Integer fileGroupNo;
+	/** 이 파일을 등록한 계정의 계정 번호 */
+	private Integer memNo;
+	/** 등록일 */
 	private Date fileRegDt;
-	private int downloadCount;
+	/** 다운로드 횟수 */
+	private Integer downloadCount;
+	/** 파일 크기 */
 	private Long fileSize;
+	/** 확장자. MIME TYPE 아님 */
 	private String extensionName;
+	/** 원본 파일명 */
 	private String originalFileName;
+	/** 저장하기 위해 변경한 파일 명 */
 	private String saveFileName;
+	/** 물리 저장 경로 */
 	private String fileSaveDirectory;
 	
-	public int getFileNo(){
+	public Integer getFileNo(){
 		return fileNo;
 	}
 
-	public void setFileNo(int fileNo){
+	public void setFileNo(Integer fileNo){
 		this.fileNo = fileNo;
 	}
 
-	public int getFileGroupNo(){
+	public Integer getFileGroupNo(){
 		return fileGroupNo;
 	}
 
-	public void setFileGroupNo(int fileGroupNo){
+	public void setFileGroupNo(Integer fileGroupNo){
 		this.fileGroupNo = fileGroupNo;
 	}
 
-	public int getMemNo(){
+	public Integer getMemNo(){
 		return memNo;
 	}
 
-	public void setMemNo(int memNo){
+	public void setMemNo(Integer memNo){
 		this.memNo = memNo;
 	}
 
@@ -46,11 +56,11 @@ public class FileVO{
 		this.fileRegDt = fileRegDt;
 	}
 
-	public int getDownloadCount(){
+	public Integer getDownloadCount(){
 		return downloadCount;
 	}
 
-	public void setDownloadCount(int downloadCount){
+	public void setDownloadCount(Integer downloadCount){
 		this.downloadCount = downloadCount;
 	}
 

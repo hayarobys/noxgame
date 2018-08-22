@@ -7,13 +7,13 @@
 <html>
 <head>
 	<jsp:include page="/WEB-INF/views/common/common-head.jsp" flush="false"/>
-	<title>자유게시판 글쓰기</title>
+	<title>자유게시판 글 수정</title>
 	
-	<link rel="stylesheet" href="<c:url value='/resources/css/ui/community/freeboard/write.css'/>" />
+	<link rel="stylesheet" href="<c:url value='/resources/css/ui/community/freeboard/modify.css'/>" />
 	
 	<!-- Naver SmartEditor2 -->
 	<script type="text/javascript" src="<c:url value='/resources/scripts/smarteditor2-2.9.0/js/service/HuskyEZCreator.js'/>" charset="utf-8"></script>
-	<script src="<c:url value='/resources/scripts/ui/community/freeboard/write.js'/>"></script>
+	<script src="<c:url value='/resources/scripts/ui/community/freeboard/modify.js'/>"></script>
 	
 </head>
 <body>
@@ -24,12 +24,15 @@
 	<div id="contents">
 		<section id="mainContents">
 			<article class="freeboard-title">
-				자유게시판 글쓰기
+				자유게시판 글 수정
 			</article>
 			
 			<article class="freeboard-contents">
 				<form action="<c:url value='/community/freeboard/write' />" method="post">
 					<p>
+						<div>
+							자유게시판 그룹 번호 <span id="freeboardGroupNo">${freeboardGroupNo}</span>
+						</div>
 						<div>
 							임시 저장 번호 <input type="number" id="tempSaveNo" name="tempSaveNo" value="${tempSaveVO.tempSaveNo}" />
 						</div>
@@ -41,7 +44,6 @@
 					</p>
 					제목 <input type="text" id="tempSaveTitle" name="tempSaveTitle" value="${tempSaveVO.tempSaveTitle}" />
 					<textarea id="ir1" name="tempSaveBody" rows="10" cols="100" style="width: 100%; height: 400px;">${tempSaveVO.tempSaveBody}</textarea>
-					<%-- <sec:csrfInput /> --%>
 				</form>
 				
 				<%-- 첨부파일 영역 --%>
@@ -90,10 +92,7 @@
 					</ul>
 				</section>
 				<p>
-					<!-- <input type="button" onclick="pasteHTML();" value="본문에 내용 넣기" /> -->
-					<!-- <input type="button" onclick="showHTML();" value="본문 내용 가져오기" /> -->
-					<input type="button" id="writeComplete" value="작성 완료" />
-					<!-- <input type="button" onclick="setDefaultFont();" value="기본 폰트 지정하기 (궁서_24)" /> -->
+					<input type="button" id="modifyComplete" value="수정 완료" />
 				</p>
 			</article>
 		</section>

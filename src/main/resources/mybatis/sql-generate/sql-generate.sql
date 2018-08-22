@@ -81,7 +81,6 @@ CREATE TABLE FRBRD_GRP_TB
     `FRBRD_GRP_SQ_PK`     INT                                         NOT NULL    AUTO_INCREMENT COMMENT '자유게시판 묶음 시퀀스 기본키', 
     `MEM_FK`              INT                                         NOT NULL    COMMENT '계정 외래키', 
     `CMT_GRP_FK`          INT                                         NOT NULL    COMMENT '댓글 묶음 외래키', 
-    `FILE_GRP_FK`         INT                                         NOT NULL    COMMENT '파일 묶음 외래키', 
     `AUTH_GRP_FK`         ENUM('PUBLIC','MEMBER','SECRET','CLOSE')    NOT NULL    COMMENT '최소 조회 권한', 
     `FRBRD_GRP_CLS_FK`    INT                                         NULL        COMMENT 'cascade 자유게시판 묶음 계층 외래키 default 게시글 그룹 일련 번호와 동일', 
     `FRBRD_GRP_CLS_ORD`   INT                                         NOT NULL    DEFAULT 0 COMMENT '자유게시판 묶음 계층 정렬순서 default 0', 
@@ -95,8 +94,6 @@ ALTER TABLE FRBRD_GRP_TB ADD CONSTRAINT FK_FRBRD_GRP_TB_MEM_FK_MEM_TB_MEM_SQ_PK 
  REFERENCES MEM_TB (MEM_SQ_PK)  ON DELETE RESTRICT ON UPDATE RESTRICT;
 ALTER TABLE FRBRD_GRP_TB ADD CONSTRAINT FK_FRBRD_GRP_TB_CMT_GRP_FK_CMT_GRP_TB_CMT_GRP_SQ_PK FOREIGN KEY (CMT_GRP_FK)
  REFERENCES CMT_GRP_TB (CMT_GRP_SQ_PK)  ON DELETE RESTRICT ON UPDATE RESTRICT;
-ALTER TABLE FRBRD_GRP_TB ADD CONSTRAINT FK_FRBRD_GRP_TB_FILE_GRP_FK_FILE_GRP_TB_FILE_GRP_SQ_PK FOREIGN KEY (FILE_GRP_FK)
- REFERENCES FILE_GRP_TB (FILE_GRP_SQ_PK)  ON DELETE RESTRICT ON UPDATE RESTRICT;
 ALTER TABLE FRBRD_GRP_TB ADD CONSTRAINT FK_FRBRD_GRP_TB_AUTH_GRP_FK_AUTH_GRP_TB_AUTH_GRP_SQ_PK FOREIGN KEY (AUTH_GRP_FK)
  REFERENCES AUTH_GRP_TB (AUTH_GRP_SQ_PK)  ON DELETE RESTRICT ON UPDATE RESTRICT;
 ALTER TABLE FRBRD_GRP_TB ADD CONSTRAINT FK_FRBRD_GRP_TB_FRBRD_GRP_CLS_FK_FRBRD_GRP_TB_FRBRD_GRP_SQ_PK FOREIGN KEY (FRBRD_GRP_CLS_FK)
@@ -251,6 +248,7 @@ CREATE TABLE FRBRD_TB
 (
     `FRBRD_SQ_PK`   INT           NOT NULL    AUTO_INCREMENT COMMENT '자유게시판 시퀀스 기본키', 
     `FRBRD_GRP_FK`  INT           NOT NULL    COMMENT 'cascade', 
+    `FILE_GRP_FK`   INT           NOT NULL    COMMENT '파일 묶음 외래키', 
     `FRBRD_REG_DT`  TIMESTAMP     NOT NULL    COMMENT '자유게시판 등록 날짜', 
     `FRBRD_TITLE`   TINYTEXT      NOT NULL    COMMENT '자유게시판 제목', 
     `FRBRD_BODY`    MEDIUMTEXT    NOT NULL    COMMENT '자유게시판 본문', 
@@ -261,6 +259,8 @@ ALTER TABLE FRBRD_TB COMMENT '자유게시판 상세 테이블';
 
 ALTER TABLE FRBRD_TB ADD CONSTRAINT FK_FRBRD_TB_FRBRD_GRP_FK_FRBRD_GRP_TB_FRBRD_GRP_SQ_PK FOREIGN KEY (FRBRD_GRP_FK)
  REFERENCES FRBRD_GRP_TB (FRBRD_GRP_SQ_PK)  ON DELETE CASCADE ON UPDATE RESTRICT;
+ALTER TABLE FRBRD_TB ADD CONSTRAINT FK_FRBRD_TB_FILE_GRP_FK_FILE_GRP_TB_FILE_GRP_SQ_PK FOREIGN KEY (FILE_GRP_FK)
+ REFERENCES FILE_GRP_TB (FILE_GRP_SQ_PK)  ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 
 -- TEMP_SAVE_TB Table Create SQL
@@ -269,7 +269,8 @@ CREATE TABLE TEMP_SAVE_TB
     `TEMP_SAVE_SQ_PK`     INT                                                                                    NOT NULL    AUTO_INCREMENT COMMENT '임시 저장 시퀀스 기본키', 
     `MEM_FK`              INT                                                                                    NOT NULL    COMMENT '계정 외래키', 
     `FILE_GRP_FK`         INT                                                                                    NOT NULL    COMMENT '파일 묶음 외래키', 
-    `TEMP_SAVE_CATEGORY`  ENUM('MEMBER_SOFTWARE','FREEBOARD','SCREENSHOT','ART_GALLERY','RECOMMEND_STRATEGY')    NOT NULL    COMMENT '분류 어느 게시판의 데이터인지 Enum으로 관리', 
+    `TEMP_SAVE_CATEGORY`  ENUM('MEMBER_SOFTWARE','FREEBOARD','SCREENSHOT','ART_GALLERY','RECOMMEND_STRATEGY')    NOT NULL    COMMENT '어느 게시판의 데이터인지 Enum으로 관리', 
+    `TEMP_SAVE_USE`       ENUM('WRITE','MODIFY')                                                                 NOT NULL    COMMENT '어떤 용도의 임시 저장 인지 Enum으로 관리. 쓰기 임시 저장과 수정 임시 저장을 구분하는 용도의 컬럼', 
     `TEMP_SAVE_MOD_DT`    TIMESTAMP                                                                              NOT NULL    COMMENT '임시 저장 수정 날짜', 
     `TEMP_SAVE_TITLE`     TINYTEXT                                                                               NOT NULL    COMMENT '임시 저장 제목', 
     `TEMP_SAVE_BODY`      MEDIUMTEXT                                                                             NOT NULL    COMMENT '임시 저장 본문', 

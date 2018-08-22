@@ -34,13 +34,17 @@
 	<!-- 자유 게시판 그룹을 등록하고 생성된 일련 번호를 조회합니다. -->
 	<insert id="insertFreeboardGroup" parameterType="FreeboardGroupVO">		
 		INSERT INTO FRBRD_GRP_TB(
-			MEM_FK, CMT_GRP_FK,
-			FILE_GRP_FK, AUTH_GRP_FK,
-			FRBRD_GRP_CLS_ORD, FRBRD_GRP_CLS_DPTH
+			MEM_FK,
+			CMT_GRP_FK,
+			AUTH_GRP_FK,
+			FRBRD_GRP_CLS_ORD,
+			FRBRD_GRP_CLS_DPTH
 		)VALUES(
-			#{memNo}, #{commentGroupNo},
-			#{fileGroupNo}, #{authgroup.value},
-			#{freeboardGroupClassOrder}, #{freeboardGroupClassDepth}
+			#{memNo},
+			#{commentGroupNo},
+			#{authgroup.value},
+			#{freeboardGroupClassOrder},
+			#{freeboardGroupClassDepth}
 		)
 		<selectKey resultType="java.lang.Integer" keyProperty="freeboardGroupNo" order="AFTER">
 			SELECT LAST_INSERT_ID()
@@ -59,11 +63,13 @@
 		INSERT INTO FRBRD_TB(
 			FRBRD_GRP_FK,
 			FRBRD_REG_DT,
+			FILE_GRP_FK,
 			FRBRD_TITLE,
 			FRBRD_BODY
 		)VALUES(
 			#{freeboardGroupNo},
 			CURRENT_TIMESTAMP(),
+			#{fileGroupNo},
 			#{freeboardTitle},
 			#{freeboardBody}
 		)
@@ -79,12 +85,12 @@
 				M.MEM_ID,
 				
 				FG.FRBRD_GRP_SQ_PK,
-				FG.FILE_GRP_FK,
 				FG.CMT_GRP_FK,
 				FG.AUTH_GRP_FK,
 				
 				F.FRBRD_SQ_PK,
 				F.FRBRD_REG_DT,
+				F.FILE_GRP_FK,
 				F.FRBRD_TITLE,
 				F.FRBRD_BODY
 			FROM
