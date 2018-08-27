@@ -2,6 +2,8 @@ package com.suph.security.core.controller;
 
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,8 +18,11 @@ import com.suph.security.core.dto.PaginationRequest;
 import com.suph.security.core.enums.Authgroup;
 import com.suph.security.core.service.AuthgroupService;
 
+
 @Controller
 public class AuthgroupController{
+	protected Logger logger = LoggerFactory.getLogger(this.getClass());
+	
 	@Autowired
 	private AuthgroupService authgroupService;
 	
@@ -57,16 +62,18 @@ public class AuthgroupController{
 	*/
 	/**
 	 * 특정 권한 그룹을 수정합니다.
-	 * @param authgroupNo
-	 * @param authgroupDTO
+	 * @param authgroup
+	 * @param authgroupExplanation
 	 * @return
 	 */
 	@RequestMapping(value="/authgroup/{authgroup}", method=RequestMethod.PATCH)
-	public @ResponseBody Map<String, Object> patchAuthgroupByAuthgroupNo(
+	public @ResponseBody Map<String, Object> patchAuthgroupByAuthgroup(
 			@PathVariable(required=true) Authgroup authgroup,
 			@RequestBody AuthgroupDTO authgroupDTO
 	){
-		return authgroupService.patchAuthgroupByAuthgroupNo(authgroup, authgroupDTO);
+		authgroupDTO.setAuthgroup(authgroup);
+		logger.debug("전달받은 문자열: {}", authgroupDTO);
+		return authgroupService.patchAuthgroupByAuthgroup(authgroupDTO);
 	}
 	
 	/**

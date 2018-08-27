@@ -10,21 +10,17 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.suph.security.core.dto.JsonResultVO;
 import com.suph.security.core.enums.Authgroup;
-import com.suph.security.core.enums.Flag;
 import com.suph.security.core.enums.TempSaveCategory;
 import com.suph.security.core.enums.TempSaveUse;
 import com.suph.security.core.userdetails.MemberInfo;
 import com.suph.security.core.util.ContextUtil;
 
-import kr.pe.hayarobys.nox.common.comment.CommentDAO;
-import kr.pe.hayarobys.nox.common.comment.CommentGroupVO;
+import kr.pe.hayarobys.nox.common.comment.CommentService;
 import kr.pe.hayarobys.nox.common.exception.ForbiddenException;
-import kr.pe.hayarobys.nox.common.tempsave.TempSaveDAO;
 import kr.pe.hayarobys.nox.common.tempsave.TempSaveService;
 import kr.pe.hayarobys.nox.common.tempsave.TempSaveVO;
-import kr.pe.hayarobys.nox.common.upload.FileGroupVO;
 import kr.pe.hayarobys.nox.common.upload.FileVO;
-import kr.pe.hayarobys.nox.common.upload.UploadDAO;
+import kr.pe.hayarobys.nox.common.upload.UploadService;
 
 @Service
 public class FreeboardServiceImpl implements FreeboardService{
@@ -37,13 +33,10 @@ public class FreeboardServiceImpl implements FreeboardService{
 	private TempSaveService tempSaveService;
 	
 	@Autowired
-	private TempSaveDAO tempSaveDAO;
+	private UploadService uploadService;
 	
 	@Autowired
-	private UploadDAO uploadDAO;
-	
-	@Autowired
-	private CommentDAO commentDAO;
+	private CommentService commentService;
 	
 	@Override
 	public ModelAndView getFreeboardTempSaveNo(ModelAndView mav){
@@ -53,24 +46,19 @@ public class FreeboardServiceImpl implements FreeboardService{
 		
 		// 기존에 FREEBOARD 카테로리에 신규 작성 용도로 등록된 임시 저장글이 있는가?
 		// 있다면 가장 최근에 작성한 임시 저장글의 일련 번호를 반환
-		TempSaveVO searchTempSaveVO = new TempSaveVO();
-		searchTempSaveVO.setMemNo(memNo);
-		searchTempSaveVO.setTempSaveCategory(TempSaveCategory.FREEBOARD);
-		searchTempSaveVO.setTempSaveUse(TempSaveUse.WRITE);
-		TempSaveVO tempSaveVO = tempSaveDAO.selectLastTempSaveFromCategory(searchTempSaveVO);
+		TempSaveVO tempSaveVO = tempSaveService.selectLastTempSaveFromMemNoAndCategoryAndUse(memNo, TempSaveCategory.FREEBOARD, TempSaveUse.WRITE);
+		
 		List<FileVO> fileVOList = null;
 		if(tempSaveVO != null){
-			fileVOList = uploadDAO.selectFileByFileGroupNo(tempSaveVO.getFileGroupNo());
+			mav.addObject("isNew", false);
+			fileVOList = uploadService.selectFileByFileGroupNo(tempSaveVO.getFileGroupNo());
 		}else{
-			// 파일 묶음 레코드 생성
-			FileGroupVO fileGroupVO = new FileGroupVO();
-			fileGroupVO.setMemNo(memNo);
+			mav.addObject("isNew", true);	// 과거 저장 글을 불러온것인지 여부. true면 새로 작성한 것.
 			
-			// 파일 그룹의 기본 공개범위는 '비공개'. 추후 임시저장글 > 글 작성 완료시 설정한 값에 따라 공개범위 수정
-			fileGroupVO.setAuthgroup(Authgroup.SECRET);
-			freeboardDAO.insertFileGrp(fileGroupVO);
-			Integer fileGroupNo = fileGroupVO.getFileGroupNo();
+			// 파일 그룹 생성. 기본 공개범위는 '비공개'. 추후 임시저장글 > 글 작성 완료시 설정한 값에 따라 공개범위 수정
+			Integer fileGroupNo = uploadService.insertFileGroup(memNo, Authgroup.SECRET);
 			
+			// 임시 저장 생성
 			tempSaveVO = new TempSaveVO();
 			tempSaveVO.setMemNo(memNo);
 			tempSaveVO.setFileGroupNo(fileGroupNo);
@@ -79,9 +67,9 @@ public class FreeboardServiceImpl implements FreeboardService{
 			tempSaveVO.setTempSaveTitle("");
 			tempSaveVO.setTempSaveBody("");
 			
-			tempSaveDAO.insertTempSave(tempSaveVO);
+			tempSaveService.insertTempSave(tempSaveVO);
 		}
-		
+				
 		mav.addObject("tempSaveVO", tempSaveVO);
 		mav.addObject("fileVOList", fileVOList);
 		
@@ -95,7 +83,7 @@ public class FreeboardServiceImpl implements FreeboardService{
 		
 		// 요청 들어온 임시 저장 번호로 원본 임시 저장 글 조회
 		Integer tempSaveNo = requestTempSaveVO.getTempSaveNo();
-		TempSaveVO originalTempSaveVO = tempSaveDAO.selectTempSaveByTempSaveNo(tempSaveNo);
+		TempSaveVO originalTempSaveVO = tempSaveService.selectTempSaveByTempSaveNo(tempSaveNo);
 		
 		// 원본 임시 저장글과 요청자의 계정 일치 여부 확인
 		Integer memNo = ContextUtil.getMemberInfo().getNo();
@@ -116,20 +104,15 @@ public class FreeboardServiceImpl implements FreeboardService{
 		}
 		
 		// 파일 그룹의 공개 범위를 작성자가 요청한 공개 범위로 수정.
-		FileGroupVO fileGroupVO = new FileGroupVO();
-		fileGroupVO.setFileGroupNo(fileGroupNo);
-		fileGroupVO.setAuthgroup(authgroup);
-		uploadDAO.updateAuthgroupOfFileGroupByFileGroupNo(fileGroupVO);
+		uploadService.updateAuthgroupOfFileGroupByFileGroupNo(fileGroupNo, authgroup);
 		
 		// 댓글 그룹 생성
-		CommentGroupVO commentGroupVO = new CommentGroupVO();
-		commentGroupVO.setCommentGroupNewWriteFlag(Flag.Y);
-		commentDAO.insertCommentGroup(commentGroupVO);
+		Integer commentGroupNo = commentService.insertCommentGroup(true);
 		
 		// 자유 게시판 그룹 생성
 		FreeboardGroupVO freeboardGroupVO = new FreeboardGroupVO();
 		freeboardGroupVO.setMemNo(memNo);
-		freeboardGroupVO.setCommentGroupNo(commentGroupVO.getCommentGroupNo());
+		freeboardGroupVO.setCommentGroupNo(commentGroupNo);
 		freeboardGroupVO.setAuthgroup(authgroup);
 		freeboardGroupVO.setFreeboardGroupClassOrder(0);
 		freeboardGroupVO.setFreeboardGroupClassDepth(1);
@@ -144,7 +127,7 @@ public class FreeboardServiceImpl implements FreeboardService{
 		freeboardDAO.insertFreeboard(freeboardVO);
 		
 		// 임시 저장 데이터 제거
-		tempSaveDAO.deleteTempSaveByTempSaveNo(tempSaveNo);
+		tempSaveService.deleteTempSaveByTempSaveNo(tempSaveNo);
 		
 		// 생성된 게시글 그룹 번호 반환
 		JsonResultVO<Integer> jsonResultVO = new JsonResultVO<Integer>(freeboardGroupVO.getFreeboardGroupNo());
@@ -185,34 +168,26 @@ public class FreeboardServiceImpl implements FreeboardService{
 		}
 		
 		// FREEBOARD 카테고리에 MODIFY 용도로 생성된 요청자의 임시 저장글이 있는지 확인
-		TempSaveVO searchTempSaveVO = new TempSaveVO();
-		searchTempSaveVO.setMemNo(memNo);
-		searchTempSaveVO.setTempSaveCategory(TempSaveCategory.FREEBOARD);
-		searchTempSaveVO.setTempSaveUse(TempSaveUse.MODIFY);
-		TempSaveVO tempSaveVO = tempSaveDAO.selectLastTempSaveFromCategory(searchTempSaveVO);
-		List<FileVO> fileVOList = null;
+		TempSaveVO tempSaveVO = tempSaveService.selectLastTempSaveFromMemNoAndCategoryAndUse(memNo, TempSaveCategory.FREEBOARD, TempSaveUse.MODIFY);
 		
+		List<FileVO> fileVOList = null;
 		// 기존 임시 저장 글이 있는 경우 해당 글의 첨부파일 목록 조회
 		if(tempSaveVO != null){
-			fileVOList = uploadDAO.selectFileByFileGroupNo(tempSaveVO.getFileGroupNo());
+			fileVOList = uploadService.selectFileByFileGroupNo(tempSaveVO.getFileGroupNo());
 		}else{
 		// 기존 임시 저장 글이 없는 경우
 			// 신규 파일 그룹 생성. 파일 그룹의 기본 공개범위는 '비공개'. 추후 임시 저장글 > 글 수정 완료 시, 설정한 값에 따라 공개범위 수정
-			FileGroupVO fileGroupVO = new FileGroupVO();
-			fileGroupVO.setMemNo(memNo);
-			fileGroupVO.setAuthgroup(Authgroup.SECRET);
-			freeboardDAO.insertFileGrp(fileGroupVO);
-			Integer fileGroupNo = fileGroupVO.getFileGroupNo();
+			Integer fileGroupNo = uploadService.insertFileGroup(memNo, Authgroup.SECRET);
 			
 			// 수정 대상글의 파일 상세 레코드 복제. 물리적 파일은 복제 없이 그대로 유지
-			List<FileVO> originalFileVOList = uploadDAO.selectFileByFileGroupNo(freeboardDetailVO.getFileGroupNo());
+			List<FileVO> originalFileVOList = uploadService.selectFileByFileGroupNo(freeboardDetailVO.getFileGroupNo());
 			for(FileVO vo : originalFileVOList){
 				vo.setFileGroupNo(fileGroupNo);
 			}
-			uploadDAO.insertFileList(originalFileVOList);
+			uploadService.insertFileList(originalFileVOList);
 			
 			// 새롭게 복제한 파일 목록 조회
-			fileVOList = uploadDAO.selectFileByFileGroupNo(fileGroupNo);
+			fileVOList = uploadService.selectFileByFileGroupNo(fileGroupNo);
 			
 			// FREEBOARD-MODIFY로 원본 글을 복제한 임시 저장 레코드 생성
 			tempSaveVO = new TempSaveVO();
@@ -222,7 +197,7 @@ public class FreeboardServiceImpl implements FreeboardService{
 			tempSaveVO.setTempSaveUse(TempSaveUse.MODIFY);
 			tempSaveVO.setTempSaveTitle(freeboardDetailVO.getFreeboardTitle());
 			tempSaveVO.setTempSaveBody(freeboardDetailVO.getFreeboardBody());
-			tempSaveDAO.insertTempSave(tempSaveVO);
+			tempSaveService.insertTempSave(tempSaveVO);
 		}
 		
 		// 생성한 레코드 정보 MODEL에 담아 VIEW로 반환
@@ -234,8 +209,7 @@ public class FreeboardServiceImpl implements FreeboardService{
 	}
 
 	@Override
-	public void editCancel(Integer memNo){
-		tempSaveService.deleteTempSave(memNo, TempSaveCategory.FREEBOARD, TempSaveUse.MODIFY);
-		
+	public void freeboardModifyCancel(Integer memNo){
+		tempSaveService.deleteTempSaveByMemNoAndCategoryAndUse(memNo, TempSaveCategory.FREEBOARD, TempSaveUse.MODIFY);
 	}
 }

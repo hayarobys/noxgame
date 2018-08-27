@@ -7,6 +7,7 @@ public class SmartEditorImageFileVO{
 	private String callback;
 	private String callback_func;
 	private MultipartFile filedata;
+	private Boolean tempFlag;
 	
 	public int getFileGroupNo(){
 		return fileGroupNo;
@@ -40,9 +41,17 @@ public class SmartEditorImageFileVO{
 		this.filedata = filedata;
 	}
 
+	public Boolean getTempFlag(){
+		return tempFlag;
+	}
+
+	public void setTempFlag(Boolean tempFlag){
+		this.tempFlag = tempFlag;
+	}
+
 	@Override
 	public String toString(){
-		return "ImageFileVO [fileGroupNo=" + fileGroupNo + ", callback=" + callback + ", callback_func=" + callback_func
-				+ ", filedata=" + filedata + "]";
+		return "SmartEditorImageFileVO [fileGroupNo=" + fileGroupNo + ", callback=" + callback + ", callback_func=" + callback_func + ", filedata="
+				+ filedata + ", tempFlag=" + tempFlag + "]";
 	}
 }

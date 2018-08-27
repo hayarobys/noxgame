@@ -8,26 +8,5 @@ public enum Authgroup{
 	 * 3비밀글(SECRET)
 	 * 4비공개(CLOSE)
 	 */
-	PUBLIC(1), MEMBER(2), SECRET(3), CLOSE(4);	
-	private final int value;
-	
-	private Authgroup(int value){
-		this.value = value;
-	}
-	
-	public int getValue(){
-		return value;
-	}
-	
-	public static Authgroup valueOf(int value){
-		switch(value){
-		case 1: return Authgroup.PUBLIC;
-		case 2: return Authgroup.MEMBER;
-		case 3: return Authgroup.SECRET;
-		case 4: return Authgroup.CLOSE;
-		default: throw new AssertionError("Unknown flag: " + value);
-		}
-	}
-	
-	
+	PUBLIC, MEMBER, SECRET, CLOSE
 }

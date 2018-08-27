@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.suph.security.core.dao.TestDAO">
+	<resultMap type="com.suph.security.core.dto.TestVO" id="TestVO">
+		<result column="FILE_GRP_SQ_PK" property="fileGroupNo"/>
+		<result column="MEM_FK" property="memNo"/>
+		<result column="AUTH_GRP_FK" property="authgroup"/>
+		<result column="FILE_GRP_REG_DT" property="fileGroupRegDate"/>
+	</resultMap>
+	
+	<!-- 파일 정보를 DB에 등록하고 생성된 파일 일련 번호를 반환합니다. -->
+	<insert id="insertTestFile" parameterType="com.suph.security.core.dto.TestVO">
+		INSERT INTO FILE_GRP_TB(
+			MEM_FK,
+			AUTH_GRP_FK,
+			FILE_GRP_REG_DT
+		)VALUES(
+			1,
+			#{authgroup},
+			CURRENT_TIMESTAMP()
+		)
+	</insert>
+	
+	<select id="selectTestFile" resultMap="TestVO">
+		SELECT *
+		FROM FILE_GRP_TB
+	</select>
+</mapper>

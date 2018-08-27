@@ -4,25 +4,7 @@ package com.suph.security.core.enums;
 	2수정
  */
 public enum TempSaveUse{
-	WRITE(1), MODIFY(2);
-	
-	private final int value;
-	
-	private TempSaveUse(int value){
-		this.value = value;
-	}
-	
-	public int getValue(){
-		return value;
-	}
-	
-	public static TempSaveUse valueOf(int value){
-		switch(value){
-		case 1: return TempSaveUse.WRITE;
-		case 2: return TempSaveUse.MODIFY;
-		default: throw new AssertionError("Unknown temp save use: " + value);
-		}
-	}
+	WRITE, MODIFY;
 }
 
 

@@ -34,12 +34,12 @@ public class AuthgroupAuthController{
 	
 	/**
 	 * 특정 권한 그룹 접근에 필요한 권한 목록을 조회합니다.
-	 * @param authgroupNo
+	 * @param authgroup
 	 * @return
 	 */
 	@RequestMapping(value="/authgroup/{authgroup}/auth", method=RequestMethod.GET)
 	public @ResponseBody Map<String, Object> authList(@PathVariable(required=true) Authgroup authgroup){
-		return authgroupService.getAuthListByAuthgroupNo(authgroup);
+		return authgroupService.getAuthListByAuthgroup(authgroup);
 	}
 	
 	/**

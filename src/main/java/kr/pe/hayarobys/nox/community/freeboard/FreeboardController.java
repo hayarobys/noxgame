@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.suph.security.core.dto.JsonResultVO;
-import com.suph.security.core.enums.TempSaveCategory;
-import com.suph.security.core.enums.TempSaveUse;
 import com.suph.security.core.util.ContextUtil;
 
 import kr.pe.hayarobys.nox.common.tempsave.TempSaveVO;
@@ -82,17 +80,14 @@ public class FreeboardController{
 	
 	/** 자유 게시판 모든 수정 취소 */
 	@RequestMapping(value="/edit-cancel", method=RequestMethod.PUT)
-	public @ResponseBody JsonResultVO<Boolean> editCancel(){
+	public void editCancel(){
 		Integer memberNo = ContextUtil.getMemberInfo().getNo();
-		freeboardService.editCancel(memberNo);
-		return new JsonResultVO<Boolean>(true);
+		freeboardService.freeboardModifyCancel(memberNo);
 	}
 	
 	/** 자유 게시판 특정 글 삭제 */
-	@RequestMapping(value="/{frbrdGrpNo}", method=RequestMethod.DELETE)
+	@RequestMapping(value="/{frbrdGroupNo}", method=RequestMethod.DELETE)
 	public void deleteDetail(){
 		
 	}
-	
-	
 }

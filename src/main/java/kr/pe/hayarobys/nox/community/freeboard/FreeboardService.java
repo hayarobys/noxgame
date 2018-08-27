@@ -3,8 +3,6 @@ package kr.pe.hayarobys.nox.community.freeboard;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.suph.security.core.dto.JsonResultVO;
-import com.suph.security.core.enums.TempSaveCategory;
-import com.suph.security.core.enums.TempSaveUse;
 
 import kr.pe.hayarobys.nox.common.tempsave.TempSaveVO;
 
@@ -45,7 +43,7 @@ public interface FreeboardService{
 	 * @param tempSaveCategory
 	 * @param tempSaveUse
 	 */
-	public abstract void editCancel(Integer memberNo);
+	public abstract void freeboardModifyCancel(Integer memberNo);
 	
 	
 	

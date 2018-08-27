@@ -2,15 +2,8 @@ package kr.pe.hayarobys.nox.community.freeboard;
 
 import org.springframework.stereotype.Repository;
 
-import kr.pe.hayarobys.nox.common.upload.FileGroupVO;
-
 @Repository
 public interface FreeboardDAO{
-	/**
-	 * 파일 그룹을 생성하고 그 일련번호를 전달받은 객체에 담습니다.
-	 * @param fileGrpVO
-	 */
-	public abstract void insertFileGrp(FileGroupVO fileGrpVO);
 	
 	/**
 	 * 자유게시판 그룹을 등록하고 생성된 일련 번호를 조회 합니다.

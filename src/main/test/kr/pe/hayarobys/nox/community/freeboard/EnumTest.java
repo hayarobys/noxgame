@@ -24,9 +24,9 @@ public class EnumTest{
 		LOGGER.debug("프리보드.투스트링: {}", TempSaveCategory.FREEBOARD.toString());
 		
 		// 결과: 2
-		LOGGER.debug("프리보드.겟밸류: {}", TempSaveCategory.FREEBOARD.getValue());
+		//LOGGER.debug("프리보드.겟밸류: {}", TempSaveCategory.FREEBOARD.getValue());
 		// 결과: FREEBOARD
-		LOGGER.debug("밸류오브(2): {}", TempSaveCategory.valueOf(2));
+		//LOGGER.debug("밸류오브(2): {}", TempSaveCategory.valueOf(2));
 	}
 
 }

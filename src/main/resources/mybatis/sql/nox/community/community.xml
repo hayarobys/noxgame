@@ -19,18 +19,6 @@
 		<result column="FRBRD_BODY" property="freeboardBody"/>
 	</resultMap>
 	
-	<!-- 파일 묶음을 추가하고 새로 생성된 시퀀스를 가져옵니다. -->
-	<insert id="insertFileGrp" parameterType="FileGroupVO">
-		INSERT INTO FILE_GRP_TB(
-			MEM_FK, AUTH_GRP_FK, FILE_GRP_REG_DT
-		)VALUES(
-			#{memNo}, #{authgroup.value}, CURRENT_TIMESTAMP()
-		)
-		<selectKey resultType="java.lang.Integer" keyProperty="fileGroupNo" order="AFTER">
-			SELECT LAST_INSERT_ID()
-		</selectKey>
-	</insert>
-		
 	<!-- 자유 게시판 그룹을 등록하고 생성된 일련 번호를 조회합니다. -->
 	<insert id="insertFreeboardGroup" parameterType="FreeboardGroupVO">		
 		INSERT INTO FRBRD_GRP_TB(
@@ -42,7 +30,7 @@
 		)VALUES(
 			#{memNo},
 			#{commentGroupNo},
-			#{authgroup.value},
+			#{authgroup},
 			#{freeboardGroupClassOrder},
 			#{freeboardGroupClassDepth}
 		)

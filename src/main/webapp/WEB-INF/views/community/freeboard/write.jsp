@@ -34,7 +34,7 @@
 							임시 저장 번호 <input type="number" id="tempSaveNo" name="tempSaveNo" value="${tempSaveVO.tempSaveNo}" />
 						</div>
 						<div>
-							<c:if test="${tempSaveVO.tempSaveBody ne null}">
+							<c:if test="${isNew eq false}">
 								"${tempSaveVO.tempSaveModDt}"에 임시 저장된 글입니다.
 							</c:if>
 						</div>
@@ -48,7 +48,12 @@
 				<section class="width_100percent border_white">
 					<header class="inline_block width_100percent">
 						<article class="inline_block width_49percent align_left">
-							<b>첨부파일</b> <input type="number" id="fileGroupNo" value="${tempSaveVO.fileGroupNo}" />
+							<div>
+								<b>첨부파일</b> <input type="number" id="fileGroupNo" value="${tempSaveVO.fileGroupNo}" />
+							</div>
+							<div>
+								<b>임시 저장 할까요?</b> <input type="text" id="tempFlag" value="false" />
+							</div>
 						</article>
 						<article class="inline_block width_50percent align_right">
 							<button>전체삭제</button>
@@ -58,8 +63,11 @@
 					</header>
 					<article id="attachmentPhoto">
 						<c:forEach var="fileVO" items="${fileVOList}">
-							<fmt:formatDate value="${fileVO.fileRegDt}" pattern="yyyy/MM/dd" var="datePath"/>
-							<img data-file-no="${fileVO.fileNo}" data-type="attachment" id="${fileVO.saveFileName}" title="${fileVO.originalFileName}" src="<c:url value='/resources/upload/${datePath}/${fileVO.saveFileName}' />" style="width:90px; height: 90px;" />
+							<div>
+								<fmt:formatDate value="${fileVO.fileRegDt}" pattern="yyyy/MM/dd" var="datePath"/>
+								<img data-file-no="${fileVO.fileNo}" data-type="attachment" id="${fileVO.saveFileName}" title="${fileVO.originalFileName}" src="<c:url value='/resources/upload/${datePath}/${fileVO.saveFileName}' />" style="width:90px; height: 90px;" />
+								<b>임시 여부</b> <input type="text" value="${fileVO.tempFlag}" />
+							</div>
 						</c:forEach>
 					</article>
 				</section>

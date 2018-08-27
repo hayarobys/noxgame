@@ -12,8 +12,6 @@ import com.suph.security.core.enums.Authgroup;
 public class AuthgroupAuthDTO{
 	/** 권한 그룹 일련 번호 */
 	private Authgroup authgroup;
-	/** 권한 그룹 이름 */
-	private String authgroupName;
 	/** 권한 일련 번호 */
 	private Integer authFkPk;
 	/** 접근 가능한 권한(필요권한) */
@@ -27,14 +25,6 @@ public class AuthgroupAuthDTO{
 
 	public void setAuthgroup(Authgroup authgroup){
 		this.authgroup = authgroup;
-	}
-
-	public String getAuthgroupName(){
-		return authgroupName;
-	}
-
-	public void setAuthgroupName(String authgroupName){
-		this.authgroupName = authgroupName;
 	}
 
 	public Integer getAuthFkPk(){
@@ -63,7 +53,7 @@ public class AuthgroupAuthDTO{
 
 	@Override
 	public String toString(){
-		return "AuthgroupAuthDTO [authgroup=" + authgroup + ", authgroupName=" + authgroupName + ", authFkPk=" + authFkPk + ", authNmUnq="
-				+ authNmUnq + ", authSqPkList=" + authSqPkList + "]";
+		return "AuthgroupAuthDTO [authgroup=" + authgroup + ", authFkPk=" + authFkPk + ", authNmUnq=" + authNmUnq + ", authSqPkList=" + authSqPkList
+				+ "]";
 	}
 }

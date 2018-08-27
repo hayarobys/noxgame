@@ -7,6 +7,7 @@
 		<result column="FILE_SQ_PK" property="fileNo" />	<!-- 파일 번호 -->
 		<result column="FILE_GRP_FK" property="fileGroupNo" />	<!-- 이 파일이 속해있는 파일 그룹의 번호 -->
 		<result column="MEM_FK" property="memNo" />	<!-- 계정 번호 -->
+		<result column="TEMP_FL" property="tempFlag" />	<!-- 임시 플래그 -->
 		<result column="FILE_REG_DT" property="fileRegDt" />	<!-- 등록일 -->
 		<result column="DWN_CNT" property="downloadCount" />	<!-- 다운로드 횟수 -->
 		<result column="FILE_SIZE" property="fileSize" />	<!-- 파일 크기 -->
@@ -16,11 +17,24 @@
 		<result column="FILE_SAVE_DIR" property="fileSaveDirectory" />	<!-- 물리 저장 경로 -->
 	</resultMap>
 	
+	<!-- 파일 그룹을 추가하고 새로 생성된 파일 그룹 일련 번호를 반환합니다. -->
+	<insert id="insertFileGroup" parameterType="FileGroupVO">
+		INSERT INTO FILE_GRP_TB(
+			MEM_FK, AUTH_GRP_FK, FILE_GRP_REG_DT
+		)VALUES(
+			#{memNo}, #{authgroup}, CURRENT_TIMESTAMP()
+		)
+		<selectKey resultType="java.lang.Integer" keyProperty="fileGroupNo" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
 	<!-- 파일 정보를 DB에 등록하고 생성된 파일 일련 번호를 반환합니다. -->
 	<insert id="insertFile" parameterType="FileVO">
 		INSERT INTO FILE_TB(
 			FILE_GRP_FK,
 			MEM_FK,
+			TEMP_FL,
 			FILE_REG_DT,
 			FILE_SIZE,
 			EXT_NM,
@@ -30,6 +44,7 @@
 		)VALUES(
 			#{fileGroupNo},
 			#{memNo},
+			#{tempFlag},
 			CURRENT_TIMESTAMP(),
 			#{fileSize},
 			#{extensionName},
@@ -47,6 +62,7 @@
 		INSERT INTO FILE_TB(
 			FILE_GRP_FK,
 			MEM_FK,
+			TEMP_FL
 			FILE_REG_DT,
 			DWN_CNT,
 			FILE_SIZE,
@@ -58,6 +74,7 @@
 		<foreach collection="list" item="element" index="index" open="(" separator="),("  close=")">
 			#{element.fileGroupNo},
 			#{element.memNo},
+			#{element.tempFlag},
 			#{element.fileRegDt},
 			#{element.downloadCount},
 			#{element.fileSize},
@@ -73,6 +90,7 @@
 		SELECT
 			FILE_SQ_PK,
 			MEM_FK,
+			TEMP_FL,
 			FILE_REG_DT,
 			DWN_CNT,
 			FILE_SIZE,
@@ -97,7 +115,19 @@
 	
 	<update id="updateAuthgroupOfFileGroupByFileGroupNo" parameterType="FileGroupVO">
 		UPDATE FILE_GRP_TB
-		SET AUTH_GRP_FK = #{authgroup.value}
+		SET AUTH_GRP_FK = #{authgroup}
 		WHERE FILE_GRP_SQ_PK = #{fileGroupNo}
 	</update>
+	
+	<!-- 특정 파일 그룹에 속한 모든 파일을 DB상에서 제거합니다. -->
+	<delete id="deleteFileByFileGroupNo" parameterType="java.lang.Integer">
+		DELETE FROM FILE_TB
+		WHERE FILE_GRP_FK = #{fileGroupNo}
+	</delete>
+	
+	<!-- 특정 파일 그룹을 DB상에서 제거합니다. -->
+	<delete id="deleteFileGroupByFileGroupNo" parameterType="java.lang.Integer">
+		DELETE FROM FILE_GRP_TB
+		WHERE FILE_GRP_SQ_PK = #{fileGroupNo}
+	</delete>
 </mapper>

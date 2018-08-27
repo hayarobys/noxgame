@@ -22,8 +22,7 @@ function initAuthgroupGrid(){
 	var source = {
 		datatype: "json",
 		datafields: [
-			{name: 'authgroup', type: 'string'},
-			{name: 'authgroupName', type: 'string'}
+			{name: 'authgroup', type: 'string'}
 		],
 		url: CONTEXT_PATH + '/authgroup',
 		root: 'rows',
@@ -63,8 +62,7 @@ function initAuthgroupGrid(){
 			}
 		},
 		columns: [
-			{text: 'ENUM', dataField: 'authgroup', cellsalign: 'center', align: 'center', editable: false, width: '30%'},
-			{text: '이름', dataField: 'authgroupName', cellsalign: 'center', align: 'center', editable: false, width: '70%'}
+			{text: '권한 그룹', dataField: 'authgroup', cellsalign: 'center', align: 'center', editable: false, width: '100%'}
 		]
 	});
 	

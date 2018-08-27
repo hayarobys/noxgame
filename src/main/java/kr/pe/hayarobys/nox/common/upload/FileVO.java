@@ -9,6 +9,8 @@ public class FileVO{
 	private Integer fileGroupNo;
 	/** 이 파일을 등록한 계정의 계정 번호 */
 	private Integer memNo;
+	/** 임시로 등록된 파일인지의 여부. 게시글 수정 취소 시 임시 플래그가 true인 파일들을 물리적 경로에서 제거하는 용도로 사용. */
+	private Boolean tempFlag;
 	/** 등록일 */
 	private Date fileRegDt;
 	/** 다운로드 횟수 */
@@ -23,7 +25,7 @@ public class FileVO{
 	private String saveFileName;
 	/** 물리 저장 경로 */
 	private String fileSaveDirectory;
-	
+
 	public Integer getFileNo(){
 		return fileNo;
 	}
@@ -46,6 +48,14 @@ public class FileVO{
 
 	public void setMemNo(Integer memNo){
 		this.memNo = memNo;
+	}
+
+	public Boolean getTempFlag(){
+		return tempFlag;
+	}
+
+	public void setTempFlag(Boolean tempFlag){
+		this.tempFlag = tempFlag;
 	}
 
 	public Date getFileRegDt(){
@@ -106,8 +116,8 @@ public class FileVO{
 
 	@Override
 	public String toString(){
-		return "FileVO [fileNo=" + fileNo + ", fileGroupNo=" + fileGroupNo + ", memNo=" + memNo + ", fileRegDt=" + fileRegDt + ", downloadCount="
-				+ downloadCount + ", fileSize=" + fileSize + ", extensionName=" + extensionName + ", originalFileName=" + originalFileName
-				+ ", saveFileName=" + saveFileName + ", fileSaveDirectory=" + fileSaveDirectory + "]";
+		return "FileVO [fileNo=" + fileNo + ", fileGroupNo=" + fileGroupNo + ", memNo=" + memNo + ", tempFlag=" + tempFlag + ", fileRegDt="
+				+ fileRegDt + ", downloadCount=" + downloadCount + ", fileSize=" + fileSize + ", extensionName=" + extensionName
+				+ ", originalFileName=" + originalFileName + ", saveFileName=" + saveFileName + ", fileSaveDirectory=" + fileSaveDirectory + "]";
 	}
 }

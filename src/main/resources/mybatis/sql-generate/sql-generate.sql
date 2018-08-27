@@ -19,34 +19,30 @@ ALTER TABLE MEM_TB COMMENT '계정 테이블';
 -- AUTH_GRP_TB Table Create SQL
 CREATE TABLE AUTH_GRP_TB
 (
-    `AUTH_GRP_SQ_PK`   ENUM('PUBLIC','MEMBER','SECRET','CLOSE')    NOT NULL    COMMENT '권한 묶음 시퀀스 기본키', 
-    `AUTH_GRP_NM_UNQ`  VARCHAR(45)                                 NOT NULL    COMMENT '권한 묶음 이름 유니크', 
-    `AUTH_GRP_EXPLN`   VARCHAR(50)                                 NOT NULL    COMMENT '권한 묶음 설명', 
-    PRIMARY KEY (AUTH_GRP_SQ_PK)
+    `AUTH_GRP_PK`     VARCHAR(45)    NOT NULL    COMMENT 'PUBLIC, MEMBER, SECRET, CLOSE', 
+    `AUTH_GRP_EXPLN`  VARCHAR(50)    NOT NULL    COMMENT '권한 묶음 설명', 
+    PRIMARY KEY (AUTH_GRP_PK)
 );
 
 ALTER TABLE AUTH_GRP_TB COMMENT '최소 조회 권한 그룹 테이블';
-
-ALTER TABLE AUTH_GRP_TB
-    ADD CONSTRAINT UC_AUTH_GRP_NM_UNQ UNIQUE (AUTH_GRP_NM_UNQ);
 
 
 -- FILE_GRP_TB Table Create SQL
 CREATE TABLE FILE_GRP_TB
 (
-    `FILE_GRP_SQ_PK`   INT                                         NOT NULL    AUTO_INCREMENT COMMENT '파일 묶음 시퀀스 기본키', 
-    `MEM_FK`           INT                                         NOT NULL    COMMENT '계정 외래키', 
-    `AUTH_GRP_FK`      ENUM('PUBLIC','MEMBER','SECRET','CLOSE')    NOT NULL    COMMENT '최소 조회 권한', 
-    `FILE_GRP_REG_DT`  TIMESTAMP                                   NOT NULL    COMMENT '파일 묶음 등록 날짜', 
+    `FILE_GRP_SQ_PK`   INT            NOT NULL    AUTO_INCREMENT COMMENT '파일 묶음 시퀀스 기본키', 
+    `MEM_FK`           INT            NOT NULL    COMMENT '계정 외래키', 
+    `AUTH_GRP_FK`      VARCHAR(45)    NOT NULL    COMMENT '최소 조회 권한', 
+    `FILE_GRP_REG_DT`  TIMESTAMP      NOT NULL    COMMENT '파일 묶음 등록 날짜', 
     PRIMARY KEY (FILE_GRP_SQ_PK)
 );
 
 ALTER TABLE FILE_GRP_TB COMMENT '파일 묶음 테이블';
 
-ALTER TABLE FILE_GRP_TB ADD CONSTRAINT FK_FILE_GRP_TB_AUTH_GRP_FK_AUTH_GRP_TB_AUTH_GRP_SQ_PK FOREIGN KEY (AUTH_GRP_FK)
- REFERENCES AUTH_GRP_TB (AUTH_GRP_SQ_PK)  ON DELETE RESTRICT ON UPDATE RESTRICT;
 ALTER TABLE FILE_GRP_TB ADD CONSTRAINT FK_FILE_GRP_TB_MEM_FK_MEM_TB_MEM_SQ_PK FOREIGN KEY (MEM_FK)
  REFERENCES MEM_TB (MEM_SQ_PK)  ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE FILE_GRP_TB ADD CONSTRAINT FK_FILE_GRP_TB_AUTH_GRP_FK_AUTH_GRP_TB_AUTH_GRP_PK FOREIGN KEY (AUTH_GRP_FK)
+ REFERENCES AUTH_GRP_TB (AUTH_GRP_PK)  ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 
 -- AUTH_TB Table Create SQL
@@ -67,8 +63,8 @@ ALTER TABLE AUTH_TB
 -- CMT_GRP_TB Table Create SQL
 CREATE TABLE CMT_GRP_TB
 (
-    `CMT_GRP_SQ_PK`       INT              NOT NULL    AUTO_INCREMENT COMMENT '댓글 묶음 시퀀스 기본키', 
-    `CMT_GRP_NEW_WRT_FL`  ENUM('Y','N')    NOT NULL    COMMENT '댓글 묶음 신규 작성 플래그 Y면 신규 작성 가능', 
+    `CMT_GRP_SQ_PK`       INT        NOT NULL    AUTO_INCREMENT COMMENT '댓글 묶음 시퀀스 기본키', 
+    `CMT_GRP_NEW_WRT_FL`  TINYINT    NOT NULL    DEFAULT true COMMENT '댓글 묶음 신규 작성 플래그 Y면 신규 작성 가능', 
     PRIMARY KEY (CMT_GRP_SQ_PK)
 );
 
@@ -78,13 +74,13 @@ ALTER TABLE CMT_GRP_TB COMMENT '댓글 그룹 테이블';
 -- FRBRD_GRP_TB Table Create SQL
 CREATE TABLE FRBRD_GRP_TB
 (
-    `FRBRD_GRP_SQ_PK`     INT                                         NOT NULL    AUTO_INCREMENT COMMENT '자유게시판 묶음 시퀀스 기본키', 
-    `MEM_FK`              INT                                         NOT NULL    COMMENT '계정 외래키', 
-    `CMT_GRP_FK`          INT                                         NOT NULL    COMMENT '댓글 묶음 외래키', 
-    `AUTH_GRP_FK`         ENUM('PUBLIC','MEMBER','SECRET','CLOSE')    NOT NULL    COMMENT '최소 조회 권한', 
-    `FRBRD_GRP_CLS_FK`    INT                                         NULL        COMMENT 'cascade 자유게시판 묶음 계층 외래키 default 게시글 그룹 일련 번호와 동일', 
-    `FRBRD_GRP_CLS_ORD`   INT                                         NOT NULL    DEFAULT 0 COMMENT '자유게시판 묶음 계층 정렬순서 default 0', 
-    `FRBRD_GRP_CLS_DPTH`  INT                                         NOT NULL    DEFAULT 1 COMMENT '자유게시판 묶음 계층 깊이 default 1', 
+    `FRBRD_GRP_SQ_PK`     INT            NOT NULL    AUTO_INCREMENT COMMENT '자유게시판 묶음 시퀀스 기본키', 
+    `MEM_FK`              INT            NOT NULL    COMMENT '계정 외래키', 
+    `CMT_GRP_FK`          INT            NOT NULL    COMMENT '댓글 묶음 외래키', 
+    `AUTH_GRP_FK`         VARCHAR(45)    NOT NULL    COMMENT '최소 조회 권한', 
+    `FRBRD_GRP_CLS_FK`    INT            NULL        COMMENT 'DELETE CASCADE 계층의 부모 키 default는 자기 자신의 게시글 그룹 일련 번호와 동일', 
+    `FRBRD_GRP_CLS_ORD`   INT            NOT NULL    DEFAULT 0 COMMENT '계층 내 정렬순서 default 0', 
+    `FRBRD_GRP_CLS_DPTH`  INT            NOT NULL    DEFAULT 1 COMMENT '계층 내 깊이 default 1', 
     PRIMARY KEY (FRBRD_GRP_SQ_PK)
 );
 
@@ -94,10 +90,10 @@ ALTER TABLE FRBRD_GRP_TB ADD CONSTRAINT FK_FRBRD_GRP_TB_MEM_FK_MEM_TB_MEM_SQ_PK 
  REFERENCES MEM_TB (MEM_SQ_PK)  ON DELETE RESTRICT ON UPDATE RESTRICT;
 ALTER TABLE FRBRD_GRP_TB ADD CONSTRAINT FK_FRBRD_GRP_TB_CMT_GRP_FK_CMT_GRP_TB_CMT_GRP_SQ_PK FOREIGN KEY (CMT_GRP_FK)
  REFERENCES CMT_GRP_TB (CMT_GRP_SQ_PK)  ON DELETE RESTRICT ON UPDATE RESTRICT;
-ALTER TABLE FRBRD_GRP_TB ADD CONSTRAINT FK_FRBRD_GRP_TB_AUTH_GRP_FK_AUTH_GRP_TB_AUTH_GRP_SQ_PK FOREIGN KEY (AUTH_GRP_FK)
- REFERENCES AUTH_GRP_TB (AUTH_GRP_SQ_PK)  ON DELETE RESTRICT ON UPDATE RESTRICT;
 ALTER TABLE FRBRD_GRP_TB ADD CONSTRAINT FK_FRBRD_GRP_TB_FRBRD_GRP_CLS_FK_FRBRD_GRP_TB_FRBRD_GRP_SQ_PK FOREIGN KEY (FRBRD_GRP_CLS_FK)
- REFERENCES FRBRD_GRP_TB (FRBRD_GRP_SQ_PK)  ON DELETE CASCADE ON UPDATE RESTRICT;
+ REFERENCES FRBRD_GRP_TB (FRBRD_GRP_SQ_PK)  ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE FRBRD_GRP_TB ADD CONSTRAINT FK_FRBRD_GRP_TB_AUTH_GRP_FK_AUTH_GRP_TB_AUTH_GRP_PK FOREIGN KEY (AUTH_GRP_FK)
+ REFERENCES AUTH_GRP_TB (AUTH_GRP_PK)  ON DELETE CASCADE ON UPDATE RESTRICT;
 
 
 -- RES_TB Table Create SQL
@@ -121,18 +117,18 @@ ALTER TABLE RES_TB
 -- CMT_TB Table Create SQL
 CREATE TABLE CMT_TB
 (
-    `CMT_SQ_PK`     INT                                         NOT NULL    AUTO_INCREMENT COMMENT '댓글 시퀀스 기본키', 
-    `CMT_GRP_FK`    INT                                         NOT NULL    COMMENT '댓글 묶음 외래키', 
-    `MEM_FK`        INT                                         NOT NULL    COMMENT '계정 외래키', 
-    `FILE_GRP_FK`   INT                                         NOT NULL    COMMENT '파일 묶음 외래키', 
-    `AUTH_GRP_FK`   ENUM('PUBLIC','MEMBER','SECRET','CLOSE')    NOT NULL    COMMENT '최소 조회 권한', 
-    `CMT_CLS_FK`    INT                                         NOT NULL    COMMENT '댓글 계층 외래키 default 댓글 일련 번호와 동일', 
-    `CMT_CLS_ORD`   INT                                         NOT NULL    DEFAULT 0 COMMENT '댓글 계층 정렬순서 default 0', 
-    `CMT_CLS_DPTH`  INT                                         NOT NULL    DEFAULT 1 COMMENT '댓글 계층 깊이 default 1', 
-    `CMT_REG_DT`    TIMESTAMP                                   NOT NULL    COMMENT '댓글 등록 날짜', 
-    `CMT_MOD_DT`    TIMESTAMP                                   NOT NULL    COMMENT '댓글 수정 날짜', 
-    `CMT_SCRT_FL`   ENUM('Y','N')                               NOT NULL    COMMENT '댓글 비밀 플래그 Y면 작성자, 부모댓글 작성자, 게시글 작성자, 관리자만 볼 수 있음', 
-    `CMT_BODY`      TINYTEXT                                    NOT NULL    COMMENT '댓글 본문 255글자', 
+    `CMT_SQ_PK`     INT            NOT NULL    AUTO_INCREMENT COMMENT '댓글 시퀀스 기본키', 
+    `CMT_GRP_FK`    INT            NOT NULL    COMMENT '댓글 묶음 외래키', 
+    `MEM_FK`        INT            NOT NULL    COMMENT '계정 외래키', 
+    `FILE_GRP_FK`   INT            NOT NULL    COMMENT '파일 묶음 외래키', 
+    `AUTH_GRP_FK`   VARCHAR(45)    NOT NULL    COMMENT '최소 조회 권한', 
+    `CMT_CLS_FK`    INT            NOT NULL    COMMENT '댓글 계층 외래키 default 댓글 일련 번호와 동일', 
+    `CMT_CLS_ORD`   INT            NOT NULL    DEFAULT 0 COMMENT '댓글 계층 정렬순서 default 0', 
+    `CMT_CLS_DPTH`  INT            NOT NULL    DEFAULT 1 COMMENT '댓글 계층 깊이 default 1', 
+    `CMT_REG_DT`    TIMESTAMP      NOT NULL    COMMENT '댓글 등록 날짜', 
+    `CMT_MOD_DT`    TIMESTAMP      NOT NULL    COMMENT '댓글 수정 날짜', 
+    `CMT_SCRT_FL`   TINYINT        NOT NULL    DEFAULT false COMMENT '댓글 비밀 플래그 Y면 작성자, 부모댓글 작성자, 게시글 작성자, 관리자만 볼 수 있음', 
+    `CMT_BODY`      TINYTEXT       NOT NULL    COMMENT '댓글 본문 255글자', 
     PRIMARY KEY (CMT_SQ_PK)
 );
 
@@ -144,10 +140,10 @@ ALTER TABLE CMT_TB ADD CONSTRAINT FK_CMT_TB_MEM_FK_MEM_TB_MEM_SQ_PK FOREIGN KEY 
  REFERENCES MEM_TB (MEM_SQ_PK)  ON DELETE RESTRICT ON UPDATE RESTRICT;
 ALTER TABLE CMT_TB ADD CONSTRAINT FK_CMT_TB_FILE_GRP_FK_FILE_GRP_TB_FILE_GRP_SQ_PK FOREIGN KEY (FILE_GRP_FK)
  REFERENCES FILE_GRP_TB (FILE_GRP_SQ_PK)  ON DELETE RESTRICT ON UPDATE RESTRICT;
-ALTER TABLE CMT_TB ADD CONSTRAINT FK_CMT_TB_AUTH_GRP_FK_AUTH_GRP_TB_AUTH_GRP_SQ_PK FOREIGN KEY (AUTH_GRP_FK)
- REFERENCES AUTH_GRP_TB (AUTH_GRP_SQ_PK)  ON DELETE RESTRICT ON UPDATE RESTRICT;
 ALTER TABLE CMT_TB ADD CONSTRAINT FK_CMT_TB_CMT_CLS_FK_CMT_TB_CMT_SQ_PK FOREIGN KEY (CMT_CLS_FK)
  REFERENCES CMT_TB (CMT_SQ_PK)  ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE CMT_TB ADD CONSTRAINT FK_CMT_TB_AUTH_GRP_FK_AUTH_GRP_TB_AUTH_GRP_PK FOREIGN KEY (AUTH_GRP_FK)
+ REFERENCES AUTH_GRP_TB (AUTH_GRP_PK)  ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 
 -- MEM_AUTH_TB Table Create SQL
@@ -185,17 +181,17 @@ ALTER TABLE RES_AUTH_TB ADD CONSTRAINT FK_RES_AUTH_TB_AUTH_FK_PK_AUTH_TB_AUTH_SQ
 -- AUTH_GRP_AUTH_TB Table Create SQL
 CREATE TABLE AUTH_GRP_AUTH_TB
 (
-    `AUTH_GRP_FK_PK`  ENUM('PUBLIC','MEMBER','SECRET','CLOSE')    NOT NULL    COMMENT '권한 묶음 외래키 기본키', 
-    `AUTH_FK_PK`      INT                                         NOT NULL    COMMENT '권한 외래키 기본키', 
+    `AUTH_GRP_FK_PK`  VARCHAR(45)    NOT NULL    COMMENT '권한 묶음 외래키 기본키', 
+    `AUTH_FK_PK`      INT            NOT NULL    COMMENT '권한 외래키 기본키', 
     PRIMARY KEY (AUTH_GRP_FK_PK, AUTH_FK_PK)
 );
 
 ALTER TABLE AUTH_GRP_AUTH_TB COMMENT '권한 그룹-권한 테이블(복합키)';
 
-ALTER TABLE AUTH_GRP_AUTH_TB ADD CONSTRAINT FK_AUTH_GRP_AUTH_TB_AUTH_GRP_FK_PK_AUTH_GRP_TB_AUTH_GRP_SQ_PK FOREIGN KEY (AUTH_GRP_FK_PK)
- REFERENCES AUTH_GRP_TB (AUTH_GRP_SQ_PK)  ON DELETE RESTRICT ON UPDATE RESTRICT;
 ALTER TABLE AUTH_GRP_AUTH_TB ADD CONSTRAINT FK_AUTH_GRP_AUTH_TB_AUTH_FK_PK_AUTH_TB_AUTH_SQ_PK FOREIGN KEY (AUTH_FK_PK)
  REFERENCES AUTH_TB (AUTH_SQ_PK)  ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE AUTH_GRP_AUTH_TB ADD CONSTRAINT FK_AUTH_GRP_AUTH_TB_AUTH_GRP_FK_PK_AUTH_GRP_TB_AUTH_GRP_PK FOREIGN KEY (AUTH_GRP_FK_PK)
+ REFERENCES AUTH_GRP_TB (AUTH_GRP_PK)  ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 
 -- BLOCK_TB Table Create SQL
@@ -225,6 +221,7 @@ CREATE TABLE FILE_TB
     `FILE_SQ_PK`     INT             NOT NULL    AUTO_INCREMENT COMMENT '파일 시퀀스 기본키', 
     `FILE_GRP_FK`    INT             NOT NULL    COMMENT '파일 묶음 외래키', 
     `MEM_FK`         INT             NOT NULL    COMMENT '계정 외래키', 
+    `TEMP_FL`        TINYINT         NOT NULL    DEFAULT true COMMENT '임시로 등록된 파일인지의 여부. 게시글 수정 취소 시 임시 플래그가 Y인 데이터들을 물리적 경로에서도 제거하기 위해 사용.', 
     `FILE_REG_DT`    TIMESTAMP       NOT NULL    COMMENT '파일 등록 날짜', 
     `DWN_CNT`        INT             NOT NULL    DEFAULT 0 COMMENT '다운로드 수', 
     `FILE_SIZE`      INT(11)         NOT NULL    COMMENT '파일 크기', 
@@ -247,7 +244,7 @@ ALTER TABLE FILE_TB ADD CONSTRAINT FK_FILE_TB_MEM_FK_MEM_TB_MEM_SQ_PK FOREIGN KE
 CREATE TABLE FRBRD_TB
 (
     `FRBRD_SQ_PK`   INT           NOT NULL    AUTO_INCREMENT COMMENT '자유게시판 시퀀스 기본키', 
-    `FRBRD_GRP_FK`  INT           NOT NULL    COMMENT 'cascade', 
+    `FRBRD_GRP_FK`  INT           NOT NULL    COMMENT 'DELETE CASCADE', 
     `FILE_GRP_FK`   INT           NOT NULL    COMMENT '파일 묶음 외래키', 
     `FRBRD_REG_DT`  TIMESTAMP     NOT NULL    COMMENT '자유게시판 등록 날짜', 
     `FRBRD_TITLE`   TINYTEXT      NOT NULL    COMMENT '자유게시판 제목', 

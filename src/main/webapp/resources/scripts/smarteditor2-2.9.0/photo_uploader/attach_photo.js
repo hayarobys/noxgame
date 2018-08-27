@@ -1,5 +1,6 @@
 	//변수 선언 및 초기화
 	var fileGroupNo = -1;		// 업로드 할 파일 묶음 일련 번호
+	var tempFalg = false;		// 수정 취소 시 업로드 할 파일이 제거해도 되는 임시 파일임을 표시하는 용도
 	var nImageInfoCnt = 0;
 	var htImageInfo = [];		//image file정보 저장
 	var aResult = [];
@@ -382,6 +383,7 @@
 		oAjax.header("file-name",encodeURIComponent(tempFile.name));
 		oAjax.header("file-size",tempFile.size);
 		oAjax.header("file-Type",tempFile.type);
+		oAjax.header("file-temp",tempFlag);
 		oAjax.request(tempFile);
     }
     
@@ -551,6 +553,7 @@
     
 	window.onload = function(){
 		fileGroupNo = document.getElementById("fileGroupNo").value;
+		tempFlag = document.getElementById("tempFlag").value;
   		checkDragAndDropAPI();
   		
   		if(bSupportDragAndDropAPI){

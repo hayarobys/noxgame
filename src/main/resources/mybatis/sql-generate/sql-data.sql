@@ -59,7 +59,14 @@ INSERT INTO res_tb (HTTP_METHOD_PK,RES_ORD,RES_TYPE,RES_NM_UNQ,RES_PATTERN) VALU
 ,('POST',110200,'url','차단 계정 추가','/block-member')
 ,('PATCH',110300,'url','차단 계정 정보 수정','/block-member/*')
 ,('DELETE',110400,'url','차단 계정 정보 삭제','/block-member/*')
-,('GET',120000,'url','자유게시판 글쓰기 페이지','/community/freeboard/write')
+,('GET',120000,'url','자유게시판 신규 글 작성 페이지','/community/freeboard/write')
+,('POST',120100,'url','자유게시판 신규 글 등록','/community/freeboard/write')
+;
+INSERT INTO res_tb (HTTP_METHOD_PK,RES_ORD,RES_TYPE,RES_NM_UNQ,RES_PATTERN) VALUES 
+('GET',120200,'url','자유게시판 상세 조회','/community/freeboard/*')
+,('GET',120300,'url','자유게시판 특정 글 수정 페이지','/community/freeboard/*/edit')
+,('PATCH',120400,'url','자유게시판 특정 글 수정','/community/freeboard/*')
+,('GET',120500,'url','자유 게시판 수정 취소','/community/freeboard/edit-cancel')
 ;
 
 INSERT INTO mem_auth_tb (MEM_FK_PK,AUTH_FK_PK) VALUES 
@@ -83,19 +90,33 @@ INSERT INTO res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES
 ,(38,1)
 ;
 INSERT INTO res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES 
-(2,2)
+(39,1)
+,(40,1)
+,(41,1)
+,(42,1)
+,(43,1)
+,(44,1)
+,(2,2)
 ,(3,2)
 ,(31,2)
+,(39,2)
+;
+INSERT INTO res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES 
+(40,2)
+,(41,2)
+,(42,2)
+,(43,2)
+,(44,2)
 ,(1,3)
 ,(2,3)
 ,(3,3)
 ,(4,3)
 ,(5,3)
-,(6,3)
-,(7,3)
 ;
 INSERT INTO res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES 
-(8,3)
+(6,3)
+,(7,3)
+,(8,3)
 ,(9,3)
 ,(10,3)
 ,(11,3)
@@ -103,11 +124,11 @@ INSERT INTO res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES
 ,(13,3)
 ,(14,3)
 ,(15,3)
-,(16,3)
-,(17,3)
 ;
 INSERT INTO res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES 
-(18,3)
+(16,3)
+,(17,3)
+,(18,3)
 ,(19,3)
 ,(20,3)
 ,(25,3)
@@ -115,39 +136,45 @@ INSERT INTO res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES
 ,(27,3)
 ,(28,3)
 ,(29,3)
-,(31,3)
-,(32,3)
 ;
 INSERT INTO res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES 
-(33,3)
+(31,3)
+,(32,3)
+,(33,3)
 ,(34,3)
 ,(35,3)
 ,(36,3)
 ,(37,3)
 ,(38,3)
+,(39,3)
+,(40,3)
+;
+INSERT INTO res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES 
+(41,3)
+,(42,3)
+,(43,3)
+,(44,3)
 ,(2,4)
 ,(3,4)
 ,(21,4)
 ,(22,4)
+,(23,4)
+,(24,4)
 ;
 INSERT INTO res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES 
-(23,4)
-,(24,4)
-,(30,4)
+(30,4)
 ,(31,4)
+,(41,4)
 ,(2,5)
 ,(3,5)
 ,(31,5)
-,(39,1)
-,(39,2)
-,(39,3)
 ;
 
-INSERT INTO auth_grp_tb (AUTH_GRP_SQ_PK,AUTH_GRP_NM_UNQ,AUTH_GRP_EXPLN) VALUES 
-('PUBLIC','전체공개','비회원 조회가 가능합니다.')
-,('MEMBER','회원공개','로그인 한 계정의 조회가 가능합니다.')
-,('SECRET','비밀글','작성자와 답글의 경우 대상글의 작성자, 매니저, 어드민만 조회 할 수 있습니다.')
-,('CLOSE','비공개','작성자와 매니저, 어드민만 조회 할 수 있습니다.')
+INSERT INTO auth_grp_tb (AUTH_GRP_PK,AUTH_GRP_EXPLN) VALUES 
+('PUBLIC','전체공개-비회원 조회가 가능합니다.')
+,('MEMBER','회원공개-로그인 한 계정의 조회가 가능합니다.')
+,('SECRET','비밀글-작성자와 답글의 경우 대상글의 작성자, 매니저, 어드민만 조회 할 수 있습니다.')
+,('CLOSE','비공개-작성자와 매니저, 어드민만 조회 할 수 있습니다.')
 ;
 
 INSERT INTO auth_grp_auth_tb (AUTH_GRP_FK_PK,AUTH_FK_PK) VALUES 

@@ -32,6 +32,10 @@
 	/* margin-bottom: 10px; */
 }
 
+.pop-layer .pop-container label{
+	color: black;
+}
+
 .pop-layer .pop-container .title_font{
 	color: white;
 	font-size: 1.4em;

@@ -25,8 +25,8 @@
 			FROM	TEMP_SAVE_TB
 			WHERE
 					MEM_FK = #{memNo}
-				AND TEMP_SAVE_CATEGORY = #{tempSaveCategory.value}
-				AND TEMP_SAVE_USE = #{tempSaveUse.value}
+				AND TEMP_SAVE_CATEGORY = #{tempSaveCategory}
+				AND TEMP_SAVE_USE = #{tempSaveUse}
 			ORDER BY	TEMP_SAVE_MOD_DT DESC
 		) AS T
 		LIMIT	1;
@@ -37,7 +37,7 @@
 		INSERT INTO TEMP_SAVE_TB(
 			MEM_FK, FILE_GRP_FK, TEMP_SAVE_CATEGORY, TEMP_SAVE_USE, TEMP_SAVE_MOD_DT, TEMP_SAVE_TITLE, TEMP_SAVE_BODY
 		)VALUES(
-			#{memNo}, #{fileGroupNo}, #{tempSaveCategory.value}, #{tempSaveUse.value}, CURRENT_TIMESTAMP(), #{tempSaveTitle}, #{tempSaveBody}
+			#{memNo}, #{fileGroupNo}, #{tempSaveCategory}, #{tempSaveUse}, CURRENT_TIMESTAMP(), #{tempSaveTitle}, #{tempSaveBody}
 		)
 		<selectKey resultType="java.lang.Integer" keyProperty="tempSaveNo" order="AFTER">
 			SELECT LAST_INSERT_ID()
@@ -62,8 +62,8 @@
 		DELETE FROM TEMP_SAVE_TB
 		WHERE
 			MEM_FK = #{memNo}
-			AND TEMP_SAVE_CATEGORY = #{tempSaveCategory.value}
-			AND TEMP_SAVE_USE = #{tempSaveUse.value}
+			AND TEMP_SAVE_CATEGORY = #{tempSaveCategory}
+			AND TEMP_SAVE_USE = #{tempSaveUse}
 	</delete>
 	
 </mapper>

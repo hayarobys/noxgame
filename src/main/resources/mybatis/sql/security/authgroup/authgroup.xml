@@ -4,8 +4,7 @@
 
 <mapper namespace="com.suph.security.core.dao.AuthgroupDAO">
 	<resultMap type="com.suph.security.core.dto.AuthgroupDTO" id="AuthgroupDTO">
-		<result column="AUTH_GRP_SQ_PK" property="authgroup"/>	<!-- 권한 그룹 일련 번호 -->
-		<result column="AUTH_GRP_NM_UNQ" property="authgroupName"/>	<!-- 권한 그룹 명 -->
+		<result column="AUTH_GRP_PK" property="authgroup"/>	<!-- 권한 그룹 일련 번호 -->
 		<result column="AUTH_GRP_EXPLN" property="authgroupExplanation"/>	<!-- 권한 그룹 설명 -->
 	</resultMap>
 	
@@ -24,36 +23,30 @@
 	<insert id="insertAuthgroup" parameterType="AuthgroupDTO">
 		INSERT INTO
 			AUTH_GRP_TB(
-				AUTH_GRP_NM_UNQ,
+				AUTH_GRP_PK,
 				AUTH_GRP_EXPLN
 			)
 			VALUES(
-				#{authgroupName},
+				#{authgroup},
 				#{authgroupExplanation}
 			)
 	</insert>
 	
 	<!-- 특정 권한 그룹 수정 -->
-	<update id="updateAuthgroupByAuthgroupNo" parameterType="AuthgroupDTO">
+	<update id="updateAuthgroupByAuthgroup" parameterType="AuthgroupDTO">
 		UPDATE
 			AUTH_GRP_TB
-		<set>
-			<if test="authgroupName != null and !''.equals(authgroupName)">
-				AUTH_GRP_NM_UNQ = #{authgroupName},
-			</if>
-			<if test="authgroupExplanation != null and !''.equals(authgroupExplanation)">
-				AUTH_GRP_EXPLN = #{authgroupExplanation},
-			</if>
-		</set>
+		SET
+			AUTH_GRP_EXPLN = #{authgroupExplanation}
 		WHERE
-			AUTH_GRP_SQ_PK = #{authgroup.value}
+			AUTH_GRP_PK = #{authgroup}
 	</update>
 	
 	<!-- 특정 권한 그룹 삭제 -->
-	<delete id="deleteAuthgroupByAuthgroupNo" parameterType="com.suph.security.core.enums.Authgroup">
+	<delete id="deleteAuthgroupByAuthgroup" parameterType="com.suph.security.core.enums.Authgroup">
 		DELETE FROM
 			AUTH_GRP_TB
 		WHERE
-			AUTH_GRP_SQ_PK = #{authgroup.value}
+			AUTH_GRP_PK = #{authgroup}
 	</delete>
 </mapper>

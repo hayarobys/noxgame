@@ -34,11 +34,11 @@ public interface AuthgroupDAO{
 	 * 특정 권한 그룹을 수정합니다.
 	 * @param authgroupDTO
 	 */
-	public abstract void updateAuthgroupByAuthgroupNo(AuthgroupDTO authgroupDTO);
+	public abstract void updateAuthgroupByAuthgroup(AuthgroupDTO authgroupDTO);
 	
 	/**
 	 * 특정 권한 그룹을 제거합니다.
 	 * @param authgroup	제거할 권한 그룹의 일련 번호
 	 */
-	public abstract void deleteAuthgroupByAuthgroupNo(Authgroup authgroup);
+	public abstract void deleteAuthgroupByAuthgroup(Authgroup authgroup);
 }

@@ -42,6 +42,8 @@
 						(JPG, GIF, PNG, BMP)
 					</p>
 				</div>
+				<!-- 업로드할 파일의 임시 저장 여부 저장 -->
+				<input type="hidden" id="tempFlag" name="tempFlag" value="${tempFlag}" />
 				<sec:csrfInput/>
 			</form>
 			<!-- //content -->

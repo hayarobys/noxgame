@@ -19,7 +19,7 @@ public interface AuthgroupService{
 	 * @param authgroup
 	 * @return
 	 */
-	public abstract Map<String, Object> getAuthListByAuthgroupNo(Authgroup authgroup);
+	public abstract Map<String, Object> getAuthListByAuthgroup(Authgroup authgroup);
 	
 	/**
 	 * 권한 그룹을 등록합니다.
@@ -30,15 +30,14 @@ public interface AuthgroupService{
 	
 	/**
 	 * 특정 권한 그룹을 수정합니다.
-	 * @param authgroup
 	 * @param authgroupDTO
 	 * @return
 	 */
-	public abstract Map<String, Object> patchAuthgroupByAuthgroupNo(Authgroup authgroup, AuthgroupDTO authgroupDTO);
+	public abstract Map<String, Object> patchAuthgroupByAuthgroup(AuthgroupDTO authgroupDTO);
 	
 	/**
 	 * 특정 권한 그룹을 삭제합니다.
 	 * @return
 	 */
-	public abstract Map<String, Object> deleteAuthgroupByAuthgroupNo(Authgroup authgroup);
+	public abstract Map<String, Object> deleteAuthgroupByAuthgroup(Authgroup authgroup);
 }

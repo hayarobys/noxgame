@@ -13,7 +13,7 @@
 		INSERT INTO CMT_GRP_TB(
 			CMT_GRP_NEW_WRT_FL
 		)VALUES(
-			CMT_GRP_NEW_WRT_FL = #{commentGroupNewWriteFlag.value}
+			CMT_GRP_NEW_WRT_FL = #{commentGroupNewWriteFlag}
 		)
 		<selectKey resultType="java.lang.Integer" keyProperty="commentGroupNo" order="AFTER">
 			SELECT LAST_INSERT_ID()

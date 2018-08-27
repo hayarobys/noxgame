@@ -24,33 +24,23 @@
 			
 			<article class="freeboard-contents">
 				<section>
-					<ul>
-						<li>
-							<label>설정정보</label>
-							<div>
-								<p>
-									<input type="radio" id="setPublic" value="PUBLIC" name="openType">
-									<label for="setPublic" title="비회원에게도 공개 합니다.">전체공개</label>
-									<input type="radio" id="setMember" value="MEMBER" name="openType">
-									<label for="setMember" title="로그인 한 계정에게 공개합니다.">회원공개</label>
-									<input type="radio" id="setSecret" value="SECRET" name="openType">
-									<label for="setSecret" title="작성자, 관리자, 답글의 경우 대상글의 작성자만 볼 수 있습니다.">비밀글</label>
-									<sec:authorize access="hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')">
-										<input type="radio" id="setCLOSE" value="CLOSE" name="openType">
-										<label for="setClose" title="매니저, 어드민만 조회 할 수 있습니다.">비공개</label><!-- 이 항목은 관리자만 볼 수 있습니다. -->
-									</sec:authorize>
-								</p>
-								<p>
-									<input type="checkbox" id="allowComment">
-									<label for="allowComment">댓글허용</label>
-								</p>
-							</div>
-						</li>
-					</ul>
+					<label>설정정보</label>
+					<p>
+						<input type="radio" id="setPublic" value="PUBLIC" name="openType">
+						<label for="setPublic" title="비회원에게도 공개 합니다.">전체공개</label>
+						<input type="radio" id="setMember" value="MEMBER" name="openType">
+						<label for="setMember" title="로그인 한 계정에게 공개합니다.">회원공개</label>
+						<input type="radio" id="setSecret" value="SECRET" name="openType">
+						<label for="setSecret" title="작성자, 관리자, 답글의 경우 대상글의 작성자만 볼 수 있습니다.">비밀글</label>
+						<sec:authorize access="hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')">
+							<input type="radio" id="setCLOSE" value="CLOSE" name="openType">
+							<label for="setClose" title="매니저, 어드민만 조회 할 수 있습니다.">비공개</label><!-- 이 항목은 관리자만 볼 수 있습니다. -->
+						</sec:authorize>
+					</p>
+					<p>
+						<input type="button" id="writeComplete" value="작성 완료" />
+					</p>
 				</section>
-				<p>
-					<input type="button" id="writeComplete" value="작성 완료" />
-				</p>
 			</article>
 		</section>
 	</div>
@@ -65,10 +55,8 @@
 				event.preventDefault();
 				
 				var formData = {
-						openType: jQuery("input[name='openType']:checked").val()
+						authgroup: jQuery("input[name='openType']:checked").val()
 				};
-				
-				console.log("전송데이타: ", JSON.stringify(formData));
 				
 				// 등록 요청 전송
 				var token = jQuery("meta[name='_csrf']").attr("content");
@@ -76,7 +64,7 @@
 				
 				jQuery.ajax({
 					type: "POST",
-					url: CONTEXT_PATH + "/test/community/freeboard/write",
+					url: CONTEXT_PATH + "/test/enum",
 					data: JSON.stringify(formData),
 					contentType: 'application/json',
 					dataType: "json",	// 서버에서 응답한 데이터를 클라이언트에서 읽는 방식

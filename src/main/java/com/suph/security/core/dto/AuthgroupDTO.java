@@ -4,11 +4,9 @@ import com.suph.security.core.enums.Authgroup;
 
 /** 권한 그룹을 옮기는데 사용합니다 */
 //AUTH_GRP_TB 권한 그룹 테이블
-public class AuthgroupDTO{
-	/** 권한 그룹 일련 번호 */
-	private Authgroup authgroup;		
-	/** 권한 그룹 명 */
-	private String authgroupName;
+public class AuthgroupDTO{	
+	/** 권한 그룹 */
+	private Authgroup authgroup;
 	/** 권한 그룹 설명 */
 	private String authgroupExplanation;
 
@@ -18,14 +16,6 @@ public class AuthgroupDTO{
 
 	public void setAuthgroup(Authgroup authgroup){
 		this.authgroup = authgroup;
-	}
-
-	public String getAuthgroupName(){
-		return authgroupName;
-	}
-
-	public void setAuthgroupName(String authgroupName){
-		this.authgroupName = authgroupName;
 	}
 
 	public String getAuthgroupExplanation(){
@@ -38,7 +28,6 @@ public class AuthgroupDTO{
 
 	@Override
 	public String toString(){
-		return "AuthgroupDTO [authgroup=" + authgroup + ", authgroupName=" + authgroupName + ", authgroupExplanation=" + authgroupExplanation
-				+ "]";
+		return "AuthgroupDTO [authgroup=" + authgroup + ", authgroupExplanation=" + authgroupExplanation + "]";
 	}
 }

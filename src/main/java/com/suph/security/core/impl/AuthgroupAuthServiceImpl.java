@@ -26,11 +26,11 @@ public class AuthgroupAuthServiceImpl implements AuthgroupAuthService{
 		Map<String, Object> returnMap = new HashMap<String, Object>();
 		
 		try{
-			authgroupAuthDAO.deleteAuthListByAuthgroupNo(authgroupAuthDTO.getAuthgroup());
+			authgroupAuthDAO.deleteAuthListByAuthgroup(authgroupAuthDTO.getAuthgroup());
 			if(		authgroupAuthDTO.getAuthSqPkList() != null
 				&&	authgroupAuthDTO.getAuthSqPkList().size() > 0
 			){
-				authgroupAuthDAO.insertAuthListByAuthgroupNo(authgroupAuthDTO);
+				authgroupAuthDAO.insertAuthListByAuthgroup(authgroupAuthDTO);
 			}
 			returnMap.put("result", "success");
 		}catch(DataAccessException e){

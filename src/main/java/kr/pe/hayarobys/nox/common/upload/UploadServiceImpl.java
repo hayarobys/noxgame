@@ -10,6 +10,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.suph.security.core.enums.Authgroup;
 import com.suph.security.core.util.ContextUtil;
 
 import kr.pe.hayarobys.nox.common.exception.ForbiddenException;
@@ -33,6 +35,67 @@ public class UploadServiceImpl implements UploadService{
 	@Autowired
 	private UploadDAO uploadDAO;
 	
+	@Override
+	public List<FileVO> selectFileByFileGroupNo(Integer fileGroupNo){
+		return uploadDAO.selectFileByFileGroupNo(fileGroupNo);
+	}
+	
+	@Override
+	public void updateAuthgroupOfFileGroupByFileGroupNo(Integer fileGroupNo, Authgroup authgroup){
+		FileGroupVO fileGroupVO = new FileGroupVO();
+		fileGroupVO.setFileGroupNo(fileGroupNo);
+		fileGroupVO.setAuthgroup(authgroup);
+		uploadDAO.updateAuthgroupOfFileGroupByFileGroupNo(fileGroupVO);
+	}
+	
+	@Override
+	public void deleteFileByFileGroupNo(Integer fileGroupNo, Boolean deleteTempOnly){
+		// 파일 그룹 번호와 연결된 파일 목록 조회
+		List<FileVO> fileList = selectFileByFileGroupNo(fileGroupNo);
+		
+		// 파일 목록을 순회하며 물리 파일 제거
+		for(FileVO fileVO : fileList){
+			if(deleteTempOnly == true){
+				if(fileVO.getTempFlag() == true){
+					String fileDir = fileVO.getFileSaveDirectory();
+					try{
+						// TODO: 임시 물리 파일만 제거
+					}catch(RuntimeException re){
+						
+					}
+				}
+			}else{
+				String fileDir = fileVO.getFileSaveDirectory();
+				try{
+					// TODO: 물리파일 몽땅 제거
+				}catch(RuntimeException re){
+					
+				}
+			}
+		}
+		
+		// DB상에서 파일 몽땅 제거
+		uploadDAO.deleteFileByFileGroupNo(fileGroupNo);
+		
+		// DB상에서 파일 그룹 제거
+		uploadDAO.deleteFileGroupByFileGroupNo(fileGroupNo);
+	}
+	
+	@Override
+	public void insertFileList(List<FileVO> fileList){
+		uploadDAO.insertFileList(fileList);
+	}
+	
+	@Override
+	public Integer insertFileGroup(Integer memNo, Authgroup authgroup){
+		// TODO: 정합성 검사
+		FileGroupVO fileGroupVO = new FileGroupVO();
+		fileGroupVO.setMemNo(memNo);
+		fileGroupVO.setAuthgroup(authgroup);
+		uploadDAO.insertFileGroup(fileGroupVO);
+		return fileGroupVO.getFileGroupNo();
+	}
+	
 	/**
 	 * 파일 정보를 DB에 넣습니다.
 	 * - 파일 레코드 생성
@@ -40,6 +103,7 @@ public class UploadServiceImpl implements UploadService{
 	 * @param fileVO
 	 */
 	private void insertFile(FileVO fileVO){
+		// TODO: 정합성 검사
 		uploadDAO.insertFile(fileVO);
 	}
 
@@ -109,6 +173,7 @@ public class UploadServiceImpl implements UploadService{
 		FileVO fileVO = new FileVO();
 		fileVO.setFileGroupNo(imageFileVO.getFileGroupNo());
 		fileVO.setMemNo(ContextUtil.getMemberInfo().getNo());
+		fileVO.setTempFlag(imageFileVO.getTempFlag());
 		fileVO.setFileSize(fileSize);
 		fileVO.setExtensionName(fileExtension);
 		fileVO.setOriginalFileName(originalFileName);
@@ -164,6 +229,7 @@ public class UploadServiceImpl implements UploadService{
 		HttpServletRequest request		= ContextUtil.getCurrentRequest();
 		HttpServletResponse response	= ContextUtil.getCurrentResponse();
 		
+		Boolean tempFlag		= Boolean.parseBoolean(request.getHeader("file-temp"));
 		Long fileSize			= Long.parseLong(request.getHeader("file-size"));
 		//String fileType			= request.getHeader("file-Type");
 		String originalFileName	= request.getHeader("file-name"); // 원본 파일 명
@@ -202,6 +268,7 @@ public class UploadServiceImpl implements UploadService{
 		FileVO fileVO = new FileVO();
 		fileVO.setFileGroupNo(fileGroupNo);
 		fileVO.setMemNo(memNoOfRequester);
+		fileVO.setTempFlag(tempFlag);
 		fileVO.setFileSize(fileSize);
 		fileVO.setExtensionName(fileExtension);
 		fileVO.setOriginalFileName(originalFileName);
@@ -261,4 +328,5 @@ public class UploadServiceImpl implements UploadService{
 			throw new InternalServerErrorException("저장 경로 반환 실패");
 		}
 	}
+
 }

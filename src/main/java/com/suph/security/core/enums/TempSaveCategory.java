@@ -17,28 +17,7 @@ package com.suph.security.core.enums;
 	15오프모임
  */
 public enum TempSaveCategory{
-	MEMBER_SOFTWARE(1),FREEBOARD(2), SCREENSHOT(3), ART_GALLERY(4), RECOMMEND_STRATEGY(5);
-	
-	private final int value;
-	
-	private TempSaveCategory(int value){
-		this.value = value;
-	}
-	
-	public int getValue(){
-		return value;
-	}
-	
-	public static TempSaveCategory valueOf(int value){
-		switch(value){
-		case 1: return TempSaveCategory.MEMBER_SOFTWARE;
-		case 2: return TempSaveCategory.FREEBOARD;
-		case 3: return TempSaveCategory.SCREENSHOT;
-		case 4: return TempSaveCategory.ART_GALLERY;
-		case 5: return TempSaveCategory.RECOMMEND_STRATEGY;
-		default: throw new AssertionError("Unknown temp save category: " + value);
-		}
-	}
+	MEMBER_SOFTWARE,FREEBOARD, SCREENSHOT, ART_GALLERY, RECOMMEND_STRATEGY
 }
 
 
