@@ -3,6 +3,8 @@ package kr.pe.hayarobys.nox.community.freeboard;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.suph.security.core.dto.JsonResultVO;
+import com.suph.security.core.enums.TempSaveCategory;
+import com.suph.security.core.enums.TempSaveUse;
 
 import kr.pe.hayarobys.nox.common.tempsave.TempSaveVO;
 
@@ -36,4 +38,15 @@ public interface FreeboardService{
 	 * @return
 	 */
 	public abstract ModelAndView getModifyForm(Integer freeboardGroupNo, ModelAndView mav);
+	
+	/**
+	 * 특정 계정이 자유 게시판에서 진행중인 모든 수정을 취소합니다.
+	 * @param memberNo
+	 * @param tempSaveCategory
+	 * @param tempSaveUse
+	 */
+	public abstract void editCancel(Integer memberNo);
+	
+	
+	
 }

@@ -20,6 +20,7 @@ import kr.pe.hayarobys.nox.common.comment.CommentDAO;
 import kr.pe.hayarobys.nox.common.comment.CommentGroupVO;
 import kr.pe.hayarobys.nox.common.exception.ForbiddenException;
 import kr.pe.hayarobys.nox.common.tempsave.TempSaveDAO;
+import kr.pe.hayarobys.nox.common.tempsave.TempSaveService;
 import kr.pe.hayarobys.nox.common.tempsave.TempSaveVO;
 import kr.pe.hayarobys.nox.common.upload.FileGroupVO;
 import kr.pe.hayarobys.nox.common.upload.FileVO;
@@ -31,6 +32,9 @@ public class FreeboardServiceImpl implements FreeboardService{
 	
 	@Autowired
 	private FreeboardDAO freeboardDAO;
+	
+	@Autowired
+	private TempSaveService tempSaveService;
 	
 	@Autowired
 	private TempSaveDAO tempSaveDAO;
@@ -227,5 +231,11 @@ public class FreeboardServiceImpl implements FreeboardService{
 		mav.addObject("fileVOList", fileVOList);
 		mav.setViewName("/community/freeboard/modify");
 		return mav;
+	}
+
+	@Override
+	public void editCancel(Integer memNo){
+		tempSaveService.deleteTempSave(memNo, TempSaveCategory.FREEBOARD, TempSaveUse.MODIFY);
+		
 	}
 }

@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.suph.security.core.dto.JsonResultVO;
+import com.suph.security.core.enums.TempSaveCategory;
+import com.suph.security.core.enums.TempSaveUse;
+import com.suph.security.core.util.ContextUtil;
 
 import kr.pe.hayarobys.nox.common.tempsave.TempSaveVO;
 
@@ -57,7 +60,7 @@ public class FreeboardController{
 	}
 	
 	/** 자유 게시판 특정 글 수정 페이지 */
-	@RequestMapping(value="/{freeboardGroupNo}/write", method=RequestMethod.GET)
+	@RequestMapping(value="/{freeboardGroupNo}/edit", method=RequestMethod.GET)
 	public ModelAndView getModify(
 			@PathVariable(value="freeboardGroupNo", required=true) Integer freeboardGroupNo,
 			ModelAndView mav
@@ -66,13 +69,23 @@ public class FreeboardController{
 	}
 	
 	/** 자유 게시판 특정 글 수정 */
-	@RequestMapping(value="/{freeboardGroupNo}/write", method=RequestMethod.PATCH)
-	public void patchModify(
+	@RequestMapping(value="/{freeboardGroupNo}", method=RequestMethod.PATCH)
+	public @ResponseBody JsonResultVO<Integer> patchModify(
 			@PathVariable(value="freeboardGroupNo", required=true) Integer freeboardGroupNo,
 			@RequestBody TempSaveVO tempSaveVO
 	){
 		logger.debug("수정요청: {} / {}", freeboardGroupNo, tempSaveVO);
+		JsonResultVO<Integer> result = new JsonResultVO<Integer>(freeboardGroupNo);
+		return result;
 		//return freeboardService.patch
+	}
+	
+	/** 자유 게시판 모든 수정 취소 */
+	@RequestMapping(value="/edit-cancel", method=RequestMethod.PUT)
+	public @ResponseBody JsonResultVO<Boolean> editCancel(){
+		Integer memberNo = ContextUtil.getMemberInfo().getNo();
+		freeboardService.editCancel(memberNo);
+		return new JsonResultVO<Boolean>(true);
 	}
 	
 	/** 자유 게시판 특정 글 삭제 */

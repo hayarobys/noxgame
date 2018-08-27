@@ -50,7 +50,12 @@
 				<section class="width_100percent border_white">
 					<header class="inline_block width_100percent">
 						<article class="inline_block width_49percent align_left">
-							<b>첨부파일</b> <input type="number" id="fileGroupNo" value="${tempSaveVO.fileGroupNo}" />
+							<div>
+								<b>첨부파일</b> <input type="number" id="fileGroupNo" value="${tempSaveVO.fileGroupNo}" />
+							</div>
+							<div>
+								<b>임시 업로드 여부</b> <input type="number" id="tempFlag" value="${tempSaveVO.tempFlag}" />
+							</div>
 						</article>
 						<article class="inline_block width_50percent align_right">
 							<button>전체삭제</button>
@@ -93,6 +98,7 @@
 				</section>
 				<p>
 					<input type="button" id="modifyComplete" value="수정 완료" />
+					<input type="button" id="modifyCancel" value="수정 취소" />
 				</p>
 			</article>
 		</section>

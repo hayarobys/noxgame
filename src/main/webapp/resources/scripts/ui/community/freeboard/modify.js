@@ -47,13 +47,13 @@ jQuery(function() {
 				openType: jQuery("input[name='openType']:checked").val()
 		};
 		
-		// 등록 요청 전송
+		// 수정 요청 전송
 		var token = jQuery("meta[name='_csrf']").attr("content");
 		var header = jQuery("meta[name='_csrf_header']").attr("content");
 		
 		jQuery.ajax({
 			type: "PATCH",
-			url: CONTEXT_PATH + "/community/freeboard/" + jQuery("#freeboardGroupNo").text() + "/write",
+			url: CONTEXT_PATH + "/community/freeboard/" + jQuery("#freeboardGroupNo").text(),
 			data: JSON.stringify(formData),
 			contentType: 'application/json',
 			dataType: "json",	// 서버에서 응답한 데이터를 클라이언트에서 읽는 방식
@@ -62,8 +62,37 @@ jQuery(function() {
 				xhr.setRequestHeader(header, token);	// 헤더의 csrf meta태그를 읽어 CSRF 토큰 함께 전송
 			},
 			success: function(data, statusText, xhr){
-				//console.log("응답값: ", data);
-				location.href = CONTEXT_PATH + "/community/freeboard/" + data.data;
+				console.log("응답값: ", data);
+				//location.href = CONTEXT_PATH + "/community/freeboard/" + data.data;
+			},
+			error: function(xhr){
+				console.log("error", xhr);
+			}
+		});
+	});
+	
+	// 게시글 수정 취소 버튼 클릭 이벤트 입니다.
+	jQuery("#modifyCancel").on("click", function(event){
+		event.preventDefault();
+		oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FIELD", []);	// 에디터의 내용이 textarea에 적용됩니다.
+		
+		// 취소 요청 전송
+		var token = jQuery("meta[name='_csrf']").attr("content");
+		var header = jQuery("meta[name='_csrf_header']").attr("content");
+		
+		jQuery.ajax({
+			type: "PUT",
+			url: CONTEXT_PATH + "/community/freeboard/edit-cancel",
+			//data: JSON.stringify(formData),
+			contentType: 'application/json',
+			dataType: "json",	// 서버에서 응답한 데이터를 클라이언트에서 읽는 방식
+			beforeSend: function(xhr){
+				xhr.setRequestHeader("X-Ajax-call", "true");	// CustomAccessDeniedHandler에서 Ajax요청을 구분하기 위해 약속한 값
+				xhr.setRequestHeader(header, token);	// 헤더의 csrf meta태그를 읽어 CSRF 토큰 함께 전송
+			},
+			success: function(data, statusText, xhr){
+				console.log("응답값: ", data);
+				//location.href = CONTEXT_PATH + "/community/freeboard/" + data.data;
 			},
 			error: function(xhr){
 				console.log("error", xhr);
@@ -115,7 +144,7 @@ function addPhotoInfoToAttachmentForm(htPhotoInfo){
 		sSaveFileName:"201808161750066922de9f-fead-4a73-a17a-8d8dd735e081.jpg"
 		sFileNo:"45"
 		sName:"waterfowl-lake-banff-national-park-alberta-canada.jpg"
-		sOriginalImageURL:"/nox/resources/upload/201808161750066922de9f-fead-4a73-a17a-8d8dd735e081.jpg"
+		sOriginalImageURL:"/nox/resources/upload/2018/08/21/201808161750066922de9f-fead-4a73-a17a-8d8dd735e081.jpg"
 	 */
 	var tag = '<img data-file-no="' + htPhotoInfo.sFileNo + '" data-type="attachment" id="' + htPhotoInfo.sSaveFileName + '" title="' + htPhotoInfo.sName + '" src="' + htPhotoInfo.sOriginalImageURL + '" style="width:90px; height: 90px;" />';
 	jQuery("#attachmentPhoto").append(tag);

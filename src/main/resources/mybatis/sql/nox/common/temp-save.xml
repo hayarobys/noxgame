@@ -57,4 +57,13 @@
 		WHERE TEMP_SAVE_SQ_PK = #{tempSaveNo}
 	</delete>
 	
+	<!-- 특정 계정이 특정 카테고리에 특정 용도로 저장한 모든 임시 저장 레코드를 제거합니다. -->
+	<delete id="deleteTempSave" parameterType="TempSaveVO">
+		DELETE FROM TEMP_SAVE_TB
+		WHERE
+			MEM_FK = #{memNo}
+			AND TEMP_SAVE_CATEGORY = #{tempSaveCategory.value}
+			AND TEMP_SAVE_USE = #{tempSaveUse.value}
+	</delete>
+	
 </mapper>
