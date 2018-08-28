@@ -33,6 +33,11 @@ public class TempSaveServiceImpl implements TempSaveService{
 	}
 	
 	@Override
+	public Integer selectFileGroupNoFromTempSaveByTempSaveNo(Integer tempSaveNo){
+		return tempSaveDAO.selectFileGroupNoFromTempSaveByTempSaveNo(tempSaveNo);
+	}
+	
+	@Override
 	public void insertTempSave(TempSaveVO tempSaveVO){
 		// TODO: 정합성 검사
 		tempSaveDAO.insertTempSave(tempSaveVO);
@@ -45,18 +50,21 @@ public class TempSaveServiceImpl implements TempSaveService{
 		// 원본 임시 저장 정보 조회
 		TempSaveVO tempSaveVO = selectLastTempSaveFromMemNoAndCategoryAndUse(memNo, tempSaveCategory, tempSaveUse);
 		
+		if(tempSaveVO == null){ return; }
+		
+		// DB상에서 임시 저장 레코드 제거
+		deleteTempSaveByTempSaveNo(tempSaveVO.getTempSaveNo());
+		
 		// 물리 경로에서 임시 파일만 제거, DB에서 특정 파일 그룹의 파일 전부 제거, DB에서 파일 그룹 제거
 		uploadService.deleteFileByFileGroupNo(tempSaveVO.getFileGroupNo(), true);
-		
-		// DB상에서 임시 저장 제거
-		deleteTempSaveByTempSaveNo(tempSaveVO.getTempSaveNo());
 	}
-
+		
 	@Override
 	public void deleteTempSaveByTempSaveNo(Integer tempSaveNo){
 		// TODO: 정합성 검사
 		tempSaveDAO.deleteTempSaveByTempSaveNo(tempSaveNo);
 	}
 
+	
 
 }

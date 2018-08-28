@@ -20,4 +20,27 @@
 		</selectKey>
 	</insert>
 	
+	<!-- 특정 댓글 그룹의 각 댓글들이 참조하는 모든 파일 그룹 번호를 조회해 목록으로 반환합니다. -->
+	<select id="selectFileGroupNoListFromCommentByCommentGroupNo" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		SELECT
+			FIG.FILE_GRP_SQ_PK
+		FROM
+			CMT_GRP_TB AS CR
+			INNER JOIN CMT_TB AS C			ON(CR.CMT_GRP_SQ_PK = C.CMT_GRP_FK)
+			INNER JOIN FILE_GRP_TB AS FIG	ON(C.FILE_GRP_FK = FIG.FILE_GRP_SQ_PK)
+		WHERE
+			CR.CMT_GRP_SQ_PK = #{commentGroupNo}
+	</select>
+	
+	<!-- 특정 댓글 그룹에 속한 모든 댓글을 제거합니다. -->
+	<delete id="deleteCommentByCommentGroupNo" parameterType="java.lang.Integer">
+		DELETE FROM CMT_TB
+		WHERE CMT_GRP_FK = #{commentGroupNo}
+	</delete>
+	
+	<!-- 특정 댓글 그룹을 제거합니다. -->
+	<delete id="deleteCommentGroupByCommentGroupNo" parameterType="java.lang.Integer">
+		DELETE FROM CMT_GRP_TB
+		WHERE CMT_GRP_SQ_PK = #{commentGroupNo}
+	</delete>
 </mapper>

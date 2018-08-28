@@ -59,13 +59,13 @@ INSERT INTO res_tb (HTTP_METHOD_PK,RES_ORD,RES_TYPE,RES_NM_UNQ,RES_PATTERN) VALU
 ,('POST',110200,'url','차단 계정 추가','/block-member')
 ,('PATCH',110300,'url','차단 계정 정보 수정','/block-member/*')
 ,('DELETE',110400,'url','차단 계정 정보 삭제','/block-member/*')
-,('GET',120000,'url','자유게시판 신규 글 작성 페이지','/community/freeboard/write')
-,('POST',120100,'url','자유게시판 신규 글 등록','/community/freeboard/write')
+,('GET',120400,'url','자유게시판 신규 글 작성 페이지','/community/freeboard/write')
+,('POST',120300,'url','자유게시판 신규 글 등록','/community/freeboard/write')
 ;
 INSERT INTO res_tb (HTTP_METHOD_PK,RES_ORD,RES_TYPE,RES_NM_UNQ,RES_PATTERN) VALUES 
-('GET',120200,'url','자유게시판 상세 조회','/community/freeboard/*')
-,('GET',120300,'url','자유게시판 특정 글 수정 페이지','/community/freeboard/*/edit')
-,('PATCH',120400,'url','자유게시판 특정 글 수정','/community/freeboard/*')
+('GET',120100,'url','자유게시판 상세 조회','/community/freeboard/*')
+,('GET',120200,'url','자유게시판 특정 글 수정 페이지','/community/freeboard/*/edit')
+,('PATCH',120000,'url','자유게시판 특정 글 수정','/community/freeboard/*')
 ,('GET',120500,'url','자유 게시판 수정 취소','/community/freeboard/edit-cancel')
 ;
 

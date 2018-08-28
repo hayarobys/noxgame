@@ -68,26 +68,25 @@ public class FreeboardController{
 	
 	/** 자유 게시판 특정 글 수정 */
 	@RequestMapping(value="/{freeboardGroupNo}", method=RequestMethod.PATCH)
-	public @ResponseBody JsonResultVO<Integer> patchModify(
+	public @ResponseBody void patchModify(
 			@PathVariable(value="freeboardGroupNo", required=true) Integer freeboardGroupNo,
 			@RequestBody TempSaveVO tempSaveVO
 	){
-		logger.debug("수정요청: {} / {}", freeboardGroupNo, tempSaveVO);
-		JsonResultVO<Integer> result = new JsonResultVO<Integer>(freeboardGroupNo);
-		return result;
-		//return freeboardService.patch
+		freeboardService.patchFreeboard(freeboardGroupNo, tempSaveVO);
 	}
 	
 	/** 자유 게시판 모든 수정 취소 */
 	@RequestMapping(value="/edit-cancel", method=RequestMethod.PUT)
-	public void editCancel(){
+	public @ResponseBody void editCancel(){
 		Integer memberNo = ContextUtil.getMemberInfo().getNo();
 		freeboardService.freeboardModifyCancel(memberNo);
 	}
 	
 	/** 자유 게시판 특정 글 삭제 */
-	@RequestMapping(value="/{frbrdGroupNo}", method=RequestMethod.DELETE)
-	public void deleteDetail(){
-		
+	@RequestMapping(value="/{freeboardGroupNo}", method=RequestMethod.DELETE)
+	public void deleteFreeboardGroup(
+			@PathVariable(value="freeboardGroupNo", required=true) Integer freeboardGroupNo
+	){
+		freeboardService.deleteFreeboardGroup(freeboardGroupNo);
 	}
 }

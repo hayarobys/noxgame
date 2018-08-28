@@ -32,6 +32,13 @@ public interface UploadDAO{
 	public abstract List<FileVO> selectFileByFileGroupNo(Integer fileGroupNo);
 	
 	/**
+	 * 전달된 파일 그룹 번호들에 속한 모든 파일 목록을 조회합니다.
+	 * @param fileGroupNoList
+	 * @return
+	 */
+	public abstract List<FileVO> selectFileByFileGroupNoList(List<Integer> fileGroupNoList);
+	
+	/**
 	 * 특정 파일 그룹을 등록한 계정의 일련 번호 조회
 	 * @param fileGroupNo
 	 * @return
@@ -45,6 +52,12 @@ public interface UploadDAO{
 	public abstract void updateAuthgroupOfFileGroupByFileGroupNo(FileGroupVO fileGroupVO);
 	
 	/**
+	 * 특정 파일 그룹에 소속된 파일들의 임시 저장 플래그를 변경합니다.
+	 * @param fileVO tempFlag와 fileGroupNo만 사용합니다.
+	 */
+	public abstract void updateTempFlagOfFileByFileGroupNo(FileVO fileVO);
+	
+	/**
 	 * 특정 파일 그룹에 속한 모든 파일을 DB상에서 제거합니다.
 	 * @param fileGroupNo
 	 */
@@ -56,6 +69,16 @@ public interface UploadDAO{
 	 */
 	public abstract void deleteFileGroupByFileGroupNo(Integer fileGroupNo);
 	
+	/**
+	 * 파일 번호 목록에 해당하는 모든 파일을 DB에서 제거합니다.
+	 * @param fileNoList
+	 */
+	public abstract void deleteFileByFileNoList(List<Integer> fileNoList);
 	
+	/**
+	 * 파일 그룹 번호 목록에 해당하는 모든 파일 그룹을 DB에서 제거합니다.
+	 * @param fileGrouNoList
+	 */
+	public abstract void deleteFileGroupByFileGroupNoList(List<Integer> fileGrouNoList);
 	
 }

@@ -25,13 +25,20 @@ public interface TempSaveService{
 	public abstract TempSaveVO selectTempSaveByTempSaveNo(Integer tempSaveNo);
 	
 	/**
+	 * 특정 임시 저장 글에 연결된 파일 그룹 번호 조회
+	 * @param tempSaveNo
+	 * @return
+	 */
+	public abstract Integer selectFileGroupNoFromTempSaveByTempSaveNo(Integer tempSaveNo);
+	
+	/**
 	 * 임시 저장글을 등록하고, 새롭게 생성한 임시 저장 일련 번호를 매개변수로 넘어온 객체에 담습니다.
 	 * @param tempSaveVO
 	 */
 	public abstract void insertTempSave(TempSaveVO tempSaveVO);
 	
 	/**
-	 * 특정 계정이 특정 카테고리에 특정 용도로 저장한 모든 임시 저장 레코드를 제거합니다.
+	 * 특정 계정이 특정 카테고리에 특정 용도로 저장한 모든 임시 저장 레코드를 제거합니다. 파일 그룹과 파일을 모두 제거하고, 임시 플래그가 true인 물리 파일까지 제거합니다.
 	 * @param memNo
 	 * @param tempSaveCategory
 	 * @param tempSaveUse
@@ -39,7 +46,7 @@ public interface TempSaveService{
 	public abstract void deleteTempSaveByMemNoAndCategoryAndUse(Integer memNo, TempSaveCategory tempSaveCategory, TempSaveUse tempSaveUse);
 	
 	/**
-	 * 특정 임시 저장 번호의 데이터 제거
+	 * 특정 임시 저장 번호의 데이터를 제거합니다.  단, 연결된 파일그룹은 그대로 유지합니다.
 	 * @param tempSaveNo
 	 * @return
 	 */

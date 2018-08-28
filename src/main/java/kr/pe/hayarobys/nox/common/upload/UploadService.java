@@ -21,11 +21,24 @@ public interface UploadService{
 	);
 	
 	/**
+	 * 특정 파일 그룹에 소속된 파일들의 임시 저장 플래그를 변경합니다.
+	 * @param fileGroupNo
+	 * @param tempFlag
+	 */
+	public abstract void updateTempFlagOfFileByFileGroupNo(Integer fileGroupNo, Boolean tempFlag);
+	
+	/**
 	 * 특정 파일 그룹에 속한 모든 파일을 DB와 물리 경로에서 제거.
 	 * @param fileGroupNo
 	 * @param deleteTempOnly 물리 경로상에서 임시 파일만 제거할 것인지 여부. false면 모든 물리 파일 제거. true면 DB상에선 구분없이 지우고 물리경로에선 임시 파일만 제거
 	 */
 	public abstract void deleteFileByFileGroupNo(Integer fileGroupNo, Boolean deleteTempOnly);
+		
+	/**
+	 * 파일 그룹 번호 목록으로 파일 그룹, 파일, 물리 파일을 모두 제거합니다.
+	 * @param fileGroupNoList
+	 */
+	public abstract void deleteFileGroupByFileGroupNoList(List<Integer> fileGroupNoList);
 	
 	/**
 	 * 특정 계정과 특정 조회 권한으로 파일 그룹을 생성한 후, 그 일련 번호를 반환합니다.

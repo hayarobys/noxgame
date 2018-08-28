@@ -3,6 +3,7 @@ package kr.pe.hayarobys.nox.community.freeboard;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.suph.security.core.dto.JsonResultVO;
+import com.suph.security.core.enums.Authgroup;
 
 import kr.pe.hayarobys.nox.common.tempsave.TempSaveVO;
 
@@ -38,6 +39,18 @@ public interface FreeboardService{
 	public abstract ModelAndView getModifyForm(Integer freeboardGroupNo, ModelAndView mav);
 	
 	/**
+	 * 특정 게시글 그룹에 수정 내용을 추가합니다.
+	 */
+	public abstract void patchFreeboard(Integer freeboardGroupNo, TempSaveVO tempSaveVO);
+	
+	/**
+	 * 특정 자유게시판 그룹의 최소 조회 권한을 변경합니다.
+	 * @param freeboardGroupNo
+	 * @param authgroup
+	 */
+	public abstract void updateAuthgroupOfFreeboardGroupByFreeboardGroupNo(Integer freeboardGroupNo, Authgroup authgroup);
+	
+	/**
 	 * 특정 계정이 자유 게시판에서 진행중인 모든 수정을 취소합니다.
 	 * @param memberNo
 	 * @param tempSaveCategory
@@ -45,6 +58,10 @@ public interface FreeboardService{
 	 */
 	public abstract void freeboardModifyCancel(Integer memberNo);
 	
-	
+	/**
+	 * 자유게시판 그룹을 제거합니다.
+	 * @param freeboardGroupNo
+	 */
+	public abstract void deleteFreeboardGroup(Integer freeboardGroupNo);
 	
 }

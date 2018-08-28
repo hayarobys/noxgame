@@ -136,7 +136,7 @@ public class FreeboardServiceImpl implements FreeboardService{
 
 	@Override
 	public ModelAndView getDetail(Integer freeboardGroupNo, ModelAndView mav){
-		FreeboardDetailVO freeboardDetailVO = freeboardDAO.selectFreeboardDetail(freeboardGroupNo);
+		FreeboardDetailVO freeboardDetailVO = freeboardDAO.selectLastFreeboardDetail(freeboardGroupNo);
 		
 		// TODO: 요청자가 이 게시글의 최소 조회 권한을 통과하는지 확인 할 것
 		
@@ -158,7 +158,7 @@ public class FreeboardServiceImpl implements FreeboardService{
 	@Override
 	public ModelAndView getModifyForm(Integer freeboardGroupNo, ModelAndView mav){
 		// 수정 대상글의 원본 정보 조회
-		FreeboardDetailVO freeboardDetailVO = freeboardDAO.selectFreeboardDetail(freeboardGroupNo);
+		FreeboardDetailVO freeboardDetailVO = freeboardDAO.selectLastFreeboardDetail(freeboardGroupNo);
 		
 		// 요청자와 수정 대상글의 계정 정보가 일치하는지 확인
 		Integer memNo = ContextUtil.getMemberInfo().getNo();
@@ -207,9 +207,75 @@ public class FreeboardServiceImpl implements FreeboardService{
 		mav.setViewName("/community/freeboard/modify");
 		return mav;
 	}
-
+	
+	@Override
+	public void patchFreeboard(Integer freeboardGroupNo, TempSaveVO tempSaveVO){
+		// 요청자 확인
+		MemberInfo memberInfo = ContextUtil.getMemberInfo();
+		
+		// 수정 대상이 되는 게시글 그룹의 작성자 조회
+		Integer memNo = freeboardDAO.selectMemNoFromFreeboardGroupByFreeboardGroupNo(freeboardGroupNo);
+		
+		// 계정 일치 여부 확인
+		if(memberInfo.getNo() != memNo){
+			throw new ForbiddenException("요청자와 수정 대상글의 등록자가 불일치 합니다."); // 남의 글은 수정 할 수 없습니다.
+		}
+		
+		// 원본 임시 저장글의 파일 그룹 번호 조회
+		Integer fileGroupNo = tempSaveService.selectFileGroupNoFromTempSaveByTempSaveNo(tempSaveVO.getTempSaveNo());
+		
+		// 파일 그룹의 최소 조회 권한 수정
+		uploadService.updateAuthgroupOfFileGroupByFileGroupNo(fileGroupNo, tempSaveVO.getOpenType());
+		
+		// 자유 게시판 그룹의 최소 조회 권한 수정
+		updateAuthgroupOfFreeboardGroupByFreeboardGroupNo(freeboardGroupNo, tempSaveVO.getOpenType());
+		
+		// 원본 임시 저장 제거. 단, 연결된 파일은 제외
+		tempSaveService.deleteTempSaveByTempSaveNo(tempSaveVO.getTempSaveNo());
+		
+		// 자유 게시판 상세 추가
+		FreeboardVO freeboardVO = new FreeboardVO();
+		freeboardVO.setFreeboardGroupNo(freeboardGroupNo);
+		freeboardVO.setFileGroupNo(fileGroupNo);
+		freeboardVO.setFreeboardTitle(tempSaveVO.getTempSaveTitle());
+		freeboardVO.setFreeboardBody(tempSaveVO.getTempSaveBody());
+		freeboardDAO.insertFreeboard(freeboardVO);
+		
+		// 연결된 파일들 임시 플래그를 false로 일괄 변경
+		uploadService.updateTempFlagOfFileByFileGroupNo(fileGroupNo, false);
+	}
+	
+	@Override
+	public void updateAuthgroupOfFreeboardGroupByFreeboardGroupNo(Integer freeboardGroupNo, Authgroup authgroup){
+		FreeboardGroupVO freeboardGroupVO = new FreeboardGroupVO();
+		freeboardGroupVO.setFreeboardGroupNo(freeboardGroupNo);
+		freeboardGroupVO.setAuthgroup(authgroup);
+		freeboardDAO.updateAuthgroupOfFreeboardGroupByFreeboardGroupNo(freeboardGroupVO);
+	}
+	
 	@Override
 	public void freeboardModifyCancel(Integer memNo){
 		tempSaveService.deleteTempSaveByMemNoAndCategoryAndUse(memNo, TempSaveCategory.FREEBOARD, TempSaveUse.MODIFY);
+	}
+	
+	@Override
+	public void deleteFreeboardGroup(Integer freeboardGroupNo){
+		// 자유게시판 그룹에 연결된 댓글 그룹 번호 조회
+		Integer commentGroupNo = freeboardDAO.selectCommentGroupNoFromFreeboardGroupByFreeboardGroupNo(freeboardGroupNo);
+		
+		// 자유게시판 그룹 제거
+		freeboardDAO.deleteFreeboardGroupByFreeboardGroupNo(freeboardGroupNo);
+		
+		// 댓글 제거 서비스 요청
+		commentService.deleteCommentGroup(commentGroupNo);
+		
+		// 자유게시판 상세 목록에 연결된 각 파일 그룹 목록 조회
+		List<Integer> fileGroupNoList = freeboardDAO.selectFileGroupFromFreeoboardGroupByFreeobardGroupNo(freeboardGroupNo);
+		
+		// 자유게시판 상세 목록 제거
+		freeboardDAO.deleteFreeboardByFreeboardGroupNo(freeboardGroupNo);
+		
+		// 이 파일 그룹들에 연결된 모든 파일과 물리 파일 제거 서비스 요청
+		uploadService.deleteFileGroupByFileGroupNoList(fileGroupNoList);
 	}
 }

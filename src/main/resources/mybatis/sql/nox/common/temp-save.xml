@@ -32,6 +32,20 @@
 		LIMIT	1;
 	</select>
 	
+	<!-- 특정 일련번호의 임시 저장 글이 바라보고 있는 파일 그룹 번호와 계정 번호를 조회합니다. -->
+	<select id="selectTempSaveByTempSaveNo" parameterType="java.lang.Integer" resultMap="TempSaveVO">
+		SELECT	FILE_GRP_FK, MEM_FK
+		FROM	TEMP_SAVE_TB
+		WHERE	TEMP_SAVE_SQ_PK = #{tempSaveNo}
+	</select>
+	
+	<!-- 특정 임시 저장 글에 연결된 파일 그룹 번호 조회 -->
+	<select id="selectFileGroupNoFromTempSaveByTempSaveNo" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		SELECT FILE_GRP_FK
+		FROM TEMP_SAVE_TB
+		WHERE TEMP_SAVE_SQ_PK = #{tempSaveNo}
+	</select>
+	
 	<!-- 게시글 임시 저장 레코드 추가하고 새로 생성된 시퀀스를 가져옵니다. -->
 	<insert id="insertTempSave" parameterType="TempSaveVO">
 		INSERT INTO TEMP_SAVE_TB(
@@ -43,13 +57,6 @@
 			SELECT LAST_INSERT_ID()
 		</selectKey>
 	</insert>
-	
-	<!-- 특정 일련번호의 임시 저장 글이 바라보고 있는 파일 그룹 번호와 계정 번호를 조회합니다. -->
-	<select id="selectTempSaveByTempSaveNo" parameterType="java.lang.Integer" resultMap="TempSaveVO">
-		SELECT	FILE_GRP_FK, MEM_FK
-		FROM	TEMP_SAVE_TB
-		WHERE	TEMP_SAVE_SQ_PK = #{tempSaveNo}
-	</select>
 	
 	<!-- 특정 일련 번호의 게시물 임시 저장 레코드를 제거합니다. -->
 	<delete id="deleteTempSaveByTempSaveNo" parameterType="java.lang.Integer">

@@ -2,7 +2,18 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="kr.pe.hayarobys.nox.community.freeboard.FreeboardDAO">	
+<mapper namespace="kr.pe.hayarobys.nox.community.freeboard.FreeboardDAO">
+	<!-- 
+	<resultMap type="kr.pe.hayarobys.nox.community.freeboard.FreeboardGroupVO" id="FreeboardGroupVO">
+		<result column="FRBRD_GRP_SQ_PK" property="freeboardGroupNo"/>
+		<result column="MEM_FK" property="memNo"/>
+		<result column="CMT_GRP_FK" property="commentGroupNo"/>
+		<result column="AUTH_GRP_FK" property="authgroup"/>
+		<result column="FRBRD_GRP_CLS_FK" property="freeboardGroupClassNo"/>
+		<result column="FRBRD_GRP_CLS_ORD" property="freeboardGroupClassOrder"/>
+		<result column="FRBRD_GRP_CLS_DPTH" property="freeboardGroupClassDepth"/>
+	</resultMap>
+	-->
 	<resultMap type="kr.pe.hayarobys.nox.community.freeboard.FreeboardDetailVO" id="FreeboardDetailVO">
 		<result column="MEM_SQ_PK" property="memNo"/>
 		<result column="MEM_NICKNM" property="nickname"/>
@@ -64,7 +75,7 @@
 	</insert>
 	
 	<!-- 특정 게시글 상세 조회에 필요한 정보들을 조회합니다. -->
-	<select id="selectFreeboardDetail" parameterType="java.lang.Integer" resultMap="FreeboardDetailVO">
+	<select id="selectLastFreeboardDetail" parameterType="java.lang.Integer" resultMap="FreeboardDetailVO">
 		SELECT *
 		FROM(
 			SELECT
@@ -90,5 +101,50 @@
 			ORDER BY F.FRBRD_SQ_PK DESC
 		) AS T
 		LIMIT 1;
+	</select>
+	
+	<!-- 특정 게시글 그룹의 작성자를 조회합니다. -->
+	<select id="selectMemNoFromFreeboardGroupByFreeboardGroupNo" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		SELECT MEM_FK
+		FROM FRBRD_GRP_TB
+		WHERE FRBRD_GRP_SQ_PK = #{freeboardGroupNo}
+	</select>
+	
+	<!-- 특정 일련 번호의 자유 게시판 그룹에 연결된 댓글 그룹 번호를 조회합니다. -->
+	<select id="selectCommentGroupNoFromFreeboardGroupByFreeboardGroupNo" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		SELECT CMT_GRP_FK
+		FROM FRBRD_GRP_TB
+		WHERE FRBRD_GRP_SQ_PK = #{freeboardGroupNo}
+	</select>
+	
+	<!-- 특정 자유게시판 그룹의 최소 조회 권한을 변경합니다. -->
+	<update id="updateAuthgroupOfFreeboardGroupByFreeboardGroupNo" parameterType="FreeboardGroupVO">
+		UPDATE FRBRD_GRP_TB
+		SET AUTH_GRP_FK = #{authgroup}
+		WHERE FRBRD_GRP_SQ_PK = #{freeboardGroupNo}
+	</update>
+	
+	<!-- 특정 일련 번호의 자유 게시판 그룹을 제거합니다. -->
+	<delete id="deleteFreeboardGroupByFreeboardGroupNo" parameterType="java.lang.Integer">
+		DELETE FROM FRBRD_GRP_TB
+		WHERE FRBRD_GRP_SQ_PK = #{freeboardGroupNo}
+	</delete>
+	
+	<!-- 특정 게시글 그룹에 속한 모든 게시글을 제거합니다. -->
+	<delete id="deleteFreeboardByFreeboardGroupNo" parameterType="java.lang.Integer">
+		DELETE FROM FRBRD_TB
+		WHERE FRBRD_GRP_FK = #{freeboarGroupNo}
+	</delete>
+	
+	<!-- 자유게시판 그룹에 소속된 파일들의 일련 번호 목록을 조회합니다. -->
+	<select id="selectFileGroupFromFreeoboardGroupByFreeobardGroupNo" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		SELECT
+			FIG.FILE_GRP_SQ_PK
+		FROM
+			FRBRD_GRP_TB AS FRG
+			INNER JOIN FRBRD_TB AS FR		ON(FRG.FRBRD_GRP_SQ_PK = FR.FRBRD_GRP_FK)
+			INNER JOIN FILE_GRP_TB AS FIG	ON(FR.FILE_GRP_FK = FIG.FILE_GRP_SQ_PK)
+		WHERE
+			FRG.FRBRD_GRP_SQ_PK = 1
 	</select>
 </mapper>

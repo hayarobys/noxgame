@@ -9,9 +9,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Matcher;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -48,29 +50,40 @@ public class UploadServiceImpl implements UploadService{
 		uploadDAO.updateAuthgroupOfFileGroupByFileGroupNo(fileGroupVO);
 	}
 	
+	/**
+	 * 물리적 경로의 파일을 제거합니다.
+	 * @param fileDir
+	 */
+	private void deleteLocalFileByFileDir(String fileDir){
+		File file = new File(fileDir);
+		if(file.exists() == true){
+			file.delete();
+		}
+	}
+	
+	@Override
+	public void updateTempFlagOfFileByFileGroupNo(Integer fileGroupNo, Boolean tempFlag){
+		FileVO fileVO = new FileVO();
+		fileVO.setFileGroupNo(fileGroupNo);
+		fileVO.setTempFlag(tempFlag);
+		uploadDAO.updateTempFlagOfFileByFileGroupNo(fileVO);
+	}
+	
 	@Override
 	public void deleteFileByFileGroupNo(Integer fileGroupNo, Boolean deleteTempOnly){
 		// 파일 그룹 번호와 연결된 파일 목록 조회
 		List<FileVO> fileList = selectFileByFileGroupNo(fileGroupNo);
 		
 		// 파일 목록을 순회하며 물리 파일 제거
-		for(FileVO fileVO : fileList){
-			if(deleteTempOnly == true){
+		if(deleteTempOnly == true){
+			for(FileVO fileVO : fileList){
 				if(fileVO.getTempFlag() == true){
-					String fileDir = fileVO.getFileSaveDirectory();
-					try{
-						// TODO: 임시 물리 파일만 제거
-					}catch(RuntimeException re){
-						
-					}
+					deleteLocalFileByFileDir(fileVO.getFileSaveDirectory() + fileVO.getSaveFileName());
 				}
-			}else{
-				String fileDir = fileVO.getFileSaveDirectory();
-				try{
-					// TODO: 물리파일 몽땅 제거
-				}catch(RuntimeException re){
-					
-				}
+			}
+		}else{
+			for(FileVO fileVO : fileList){
+				deleteLocalFileByFileDir(fileVO.getFileSaveDirectory() + fileVO.getSaveFileName());
 			}
 		}
 		
@@ -79,6 +92,28 @@ public class UploadServiceImpl implements UploadService{
 		
 		// DB상에서 파일 그룹 제거
 		uploadDAO.deleteFileGroupByFileGroupNo(fileGroupNo);
+	}
+	
+	@Override
+	public void deleteFileGroupByFileGroupNoList(List<Integer> fileGroupNoList){
+		
+		// 파일 목록 조회
+		List<FileVO> fileList = uploadDAO.selectFileByFileGroupNoList(fileGroupNoList);
+
+		// 파일 목록들의 모든 물리 파일 제거
+		List<Integer> fileNoList = new ArrayList<Integer>();
+		for(FileVO fileVO : fileList){
+			fileNoList.add(fileVO.getFileNo());
+			if(fileVO.getTempFlag() == true){
+				deleteLocalFileByFileDir(fileVO.getFileSaveDirectory() + fileVO.getSaveFileName());
+			}
+		}
+		
+		// DB에서 파일 목록 제거
+		uploadDAO.deleteFileByFileNoList(fileNoList);
+		
+		// DB에서 파일 그룹 목록 제거
+		uploadDAO.deleteFileGroupByFileGroupNoList(fileGroupNoList);
 	}
 	
 	@Override
@@ -204,7 +239,7 @@ public class UploadServiceImpl implements UploadService{
 		result.append(originalFileName);			// img 태그의 title 속성에 쓰일 원본 파일명
 		result.append("&sFileURL=");
 		result.append(request.getContextPath());	// img 태그의 src 속성에 쓰일 저장 경로
-		result.append(uploadPathBuffer.toString());
+		result.append(uploadPathBuffer.toString().replaceAll(Matcher.quoteReplacement(File.separator), "/"));
 		result.append(saveFileName);
 		result.append("&sFileNo=");
 		result.append(fileVO.getFileNo());
@@ -313,7 +348,7 @@ public class UploadServiceImpl implements UploadService{
 		result.append(originalFileName);			// img 태그의 title 속성에 쓰일 원본 파일명
 		result.append("&sFileURL=");				// &sFileURL=/nox/resources/upload/20180809102839dbb939e5-a3c2-4062-bd1d-eea17d2146e9.jpg
 		result.append(request.getContextPath());	// img 태그의 src 속성에 쓰일 저장 경로
-		result.append(uploadPathBuffer.toString());
+		result.append(uploadPathBuffer.toString().replaceAll(Matcher.quoteReplacement(File.separator), "/"));
 		result.append(saveFileName);
 		result.append("&sFileNo=");
 		result.append(fileVO.getFileNo());
