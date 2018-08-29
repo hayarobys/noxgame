@@ -52,6 +52,12 @@ public interface UploadDAO{
 	public abstract void updateAuthgroupOfFileGroupByFileGroupNo(FileGroupVO fileGroupVO);
 	
 	/**
+	 * 이 파일 그룹 목록의 최소 조회 권한을 일괄 수정 합니다.
+	 * @param fileGroupVOList
+	 */
+	public abstract void updateAuthgroupOfFileGroupByFileGroupNoList(UpdateAuthgroupByListVO updateAuthgroupByListVO);
+	
+	/**
 	 * 특정 파일 그룹에 소속된 파일들의 임시 저장 플래그를 변경합니다.
 	 * @param fileVO tempFlag와 fileGroupNo만 사용합니다.
 	 */

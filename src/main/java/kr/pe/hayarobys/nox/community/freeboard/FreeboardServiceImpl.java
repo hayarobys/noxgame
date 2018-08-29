@@ -224,9 +224,6 @@ public class FreeboardServiceImpl implements FreeboardService{
 		// 원본 임시 저장글의 파일 그룹 번호 조회
 		Integer fileGroupNo = tempSaveService.selectFileGroupNoFromTempSaveByTempSaveNo(tempSaveVO.getTempSaveNo());
 		
-		// 파일 그룹의 최소 조회 권한 수정
-		uploadService.updateAuthgroupOfFileGroupByFileGroupNo(fileGroupNo, tempSaveVO.getOpenType());
-		
 		// 자유 게시판 그룹의 최소 조회 권한 수정
 		updateAuthgroupOfFreeboardGroupByFreeboardGroupNo(freeboardGroupNo, tempSaveVO.getOpenType());
 		
@@ -240,6 +237,12 @@ public class FreeboardServiceImpl implements FreeboardService{
 		freeboardVO.setFreeboardTitle(tempSaveVO.getTempSaveTitle());
 		freeboardVO.setFreeboardBody(tempSaveVO.getTempSaveBody());
 		freeboardDAO.insertFreeboard(freeboardVO);
+		
+		// 이 자유 게시판 그룹에 속한 모든 파일 그룹 조회
+		List<Integer> fileGroupNoList = freeboardDAO.selectFileGroupFromFreeoboardGroupByFreeobardGroupNo(freeboardGroupNo);
+		
+		// 이 파일 그룹 목록의 최소 조회 권한 일괄 수정
+		uploadService.updateAuthgroupOfFileGroupByFileGroupNoList(fileGroupNoList, tempSaveVO.getOpenType());
 		
 		// 연결된 파일들 임시 플래그를 false로 일괄 변경
 		uploadService.updateTempFlagOfFileByFileGroupNo(fileGroupNo, false);
@@ -263,12 +266,6 @@ public class FreeboardServiceImpl implements FreeboardService{
 		// 자유게시판 그룹에 연결된 댓글 그룹 번호 조회
 		Integer commentGroupNo = freeboardDAO.selectCommentGroupNoFromFreeboardGroupByFreeboardGroupNo(freeboardGroupNo);
 		
-		// 자유게시판 그룹 제거
-		freeboardDAO.deleteFreeboardGroupByFreeboardGroupNo(freeboardGroupNo);
-		
-		// 댓글 제거 서비스 요청
-		commentService.deleteCommentGroup(commentGroupNo);
-		
 		// 자유게시판 상세 목록에 연결된 각 파일 그룹 목록 조회
 		List<Integer> fileGroupNoList = freeboardDAO.selectFileGroupFromFreeoboardGroupByFreeobardGroupNo(freeboardGroupNo);
 		
@@ -277,5 +274,11 @@ public class FreeboardServiceImpl implements FreeboardService{
 		
 		// 이 파일 그룹들에 연결된 모든 파일과 물리 파일 제거 서비스 요청
 		uploadService.deleteFileGroupByFileGroupNoList(fileGroupNoList);
+		
+		// 자유게시판 그룹 제거
+		freeboardDAO.deleteFreeboardGroupByFreeboardGroupNo(freeboardGroupNo);
+		
+		// 댓글 제거 서비스 요청
+		commentService.deleteCommentGroup(commentGroupNo);
 	}
 }

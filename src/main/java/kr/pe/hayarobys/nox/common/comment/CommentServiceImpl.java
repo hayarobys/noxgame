@@ -35,6 +35,8 @@ public class CommentServiceImpl implements CommentService{
 		commentDAO.deleteCommentGroupByCommentGroupNo(commentGroupNo);
 		
 		// 파일 그룹과 그에 연결된 DB파일, 물리파일 제거 서비스 요청
-		uploadService.deleteFileGroupByFileGroupNoList(fileGroupNoList);
+		if(fileGroupNoList.size() > 0){
+			uploadService.deleteFileGroupByFileGroupNoList(fileGroupNoList);
+		}
 	}
 }

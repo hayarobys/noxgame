@@ -50,6 +50,14 @@ public class UploadServiceImpl implements UploadService{
 		uploadDAO.updateAuthgroupOfFileGroupByFileGroupNo(fileGroupVO);
 	}
 	
+	@Override
+	public void updateAuthgroupOfFileGroupByFileGroupNoList(List<Integer> fileGroupNoList, Authgroup authgroup){
+		UpdateAuthgroupByListVO updateAuthgroupByListVO = new UpdateAuthgroupByListVO();
+		updateAuthgroupByListVO.setList(fileGroupNoList);
+		updateAuthgroupByListVO.setAuthgroup(authgroup);
+		uploadDAO.updateAuthgroupOfFileGroupByFileGroupNoList(updateAuthgroupByListVO);
+	}
+	
 	/**
 	 * 물리적 경로의 파일을 제거합니다.
 	 * @param fileDir
@@ -95,8 +103,7 @@ public class UploadServiceImpl implements UploadService{
 	}
 	
 	@Override
-	public void deleteFileGroupByFileGroupNoList(List<Integer> fileGroupNoList){
-		
+	public void deleteFileGroupByFileGroupNoList(List<Integer> fileGroupNoList){		
 		// 파일 목록 조회
 		List<FileVO> fileList = uploadDAO.selectFileByFileGroupNoList(fileGroupNoList);
 
@@ -363,5 +370,4 @@ public class UploadServiceImpl implements UploadService{
 			throw new InternalServerErrorException("저장 경로 반환 실패");
 		}
 	}
-
 }

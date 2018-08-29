@@ -4,8 +4,8 @@
 CREATE TABLE MEM_TB
 (
     `MEM_SQ_PK`          INT             NOT NULL    AUTO_INCREMENT COMMENT '계정 시퀀스 기본키', 
-    `MEM_JOIN_DT`        TIMESTAMP       NOT NULL    COMMENT '계정 가입 날짜', 
-    `MEM_LAST_LOGIN_DT`  TIMESTAMP       NOT NULL    COMMENT '계정 마지막 로그인 날짜', 
+    `MEM_JOIN_DT`        TIMESTAMP       NOT NULL    DEFAULT current_timestamp() COMMENT '계정 가입 날짜', 
+    `MEM_LAST_LOGIN_DT`  TIMESTAMP       NOT NULL    DEFAULT current_timestamp() COMMENT '계정 마지막 로그인 날짜', 
     `MEM_STATE`          VARCHAR(20)     NOT NULL    COMMENT '계정 상태', 
     `MEM_NICKNM`         VARCHAR(30)     NOT NULL    COMMENT '계정 닉네임', 
     `MEM_ID`             VARCHAR(50)     NOT NULL    COMMENT '계정 아이디', 
@@ -33,7 +33,7 @@ CREATE TABLE FILE_GRP_TB
     `FILE_GRP_SQ_PK`   INT            NOT NULL    AUTO_INCREMENT COMMENT '파일 묶음 시퀀스 기본키', 
     `MEM_FK`           INT            NOT NULL    COMMENT '계정 외래키', 
     `AUTH_GRP_FK`      VARCHAR(45)    NOT NULL    COMMENT '최소 조회 권한', 
-    `FILE_GRP_REG_DT`  TIMESTAMP      NOT NULL    COMMENT '파일 묶음 등록 날짜', 
+    `FILE_GRP_REG_DT`  TIMESTAMP      NOT NULL    DEFAULT current_timestamp() COMMENT '파일 묶음 등록 날짜', 
     PRIMARY KEY (FILE_GRP_SQ_PK)
 );
 
@@ -64,7 +64,7 @@ ALTER TABLE AUTH_TB
 CREATE TABLE CMT_GRP_TB
 (
     `CMT_GRP_SQ_PK`       INT        NOT NULL    AUTO_INCREMENT COMMENT '댓글 묶음 시퀀스 기본키', 
-    `CMT_GRP_NEW_WRT_FL`  TINYINT    NOT NULL    DEFAULT true COMMENT '댓글 묶음 신규 작성 플래그 true면 신규 작성 가능', 
+    `CMT_GRP_NEW_WRT_FL`  TINYINT    NOT NULL    DEFAULT true COMMENT '댓글 그룹 신규 작성 플래그 true면 신규 작성 가능', 
     PRIMARY KEY (CMT_GRP_SQ_PK)
 );
 
@@ -87,38 +87,6 @@ ALTER TABLE RES_TB COMMENT '리소스 테이블(복합키)';
 
 ALTER TABLE RES_TB
     ADD CONSTRAINT UC_RES_NM_UNQ UNIQUE (RES_NM_UNQ);
-
-
--- CMT_TB Table Create SQL
-CREATE TABLE CMT_TB
-(
-    `CMT_SQ_PK`     INT            NOT NULL    AUTO_INCREMENT COMMENT '댓글 시퀀스 기본키', 
-    `CMT_GRP_FK`    INT            NOT NULL    COMMENT '댓글 묶음 외래키', 
-    `MEM_FK`        INT            NOT NULL    COMMENT '계정 외래키', 
-    `FILE_GRP_FK`   INT            NOT NULL    COMMENT '파일 묶음 외래키', 
-    `AUTH_GRP_FK`   VARCHAR(45)    NOT NULL    COMMENT '최소 조회 권한', 
-    `CMT_CLS_FK`    INT            NOT NULL    COMMENT '댓글 계층 외래키 default 댓글 일련 번호와 동일', 
-    `CMT_CLS_ORD`   INT            NOT NULL    DEFAULT 0 COMMENT '댓글 계층 정렬순서 default 0', 
-    `CMT_CLS_DPTH`  INT            NOT NULL    DEFAULT 1 COMMENT '댓글 계층 깊이 default 1', 
-    `CMT_REG_DT`    TIMESTAMP      NOT NULL    COMMENT '댓글 등록 날짜', 
-    `CMT_MOD_DT`    TIMESTAMP      NOT NULL    COMMENT '댓글 수정 날짜', 
-    `CMT_SCRT_FL`   TINYINT        NOT NULL    DEFAULT false COMMENT '댓글 비밀 플래그 true면 작성자, 부모댓글 작성자, 게시글 작성자, 관리자만 볼 수 있음', 
-    `CMT_BODY`      TINYTEXT       NOT NULL    COMMENT '댓글 본문 255글자', 
-    PRIMARY KEY (CMT_SQ_PK)
-);
-
-ALTER TABLE CMT_TB COMMENT '댓글 테이블';
-
-ALTER TABLE CMT_TB ADD CONSTRAINT FK_CMT_TB_CMT_GRP_FK_CMT_GRP_TB_CMT_GRP_SQ_PK FOREIGN KEY (CMT_GRP_FK)
- REFERENCES CMT_GRP_TB (CMT_GRP_SQ_PK)  ON DELETE RESTRICT ON UPDATE RESTRICT;
-ALTER TABLE CMT_TB ADD CONSTRAINT FK_CMT_TB_MEM_FK_MEM_TB_MEM_SQ_PK FOREIGN KEY (MEM_FK)
- REFERENCES MEM_TB (MEM_SQ_PK)  ON DELETE RESTRICT ON UPDATE RESTRICT;
-ALTER TABLE CMT_TB ADD CONSTRAINT FK_CMT_TB_FILE_GRP_FK_FILE_GRP_TB_FILE_GRP_SQ_PK FOREIGN KEY (FILE_GRP_FK)
- REFERENCES FILE_GRP_TB (FILE_GRP_SQ_PK)  ON DELETE RESTRICT ON UPDATE RESTRICT;
-ALTER TABLE CMT_TB ADD CONSTRAINT FK_CMT_TB_CMT_CLS_FK_CMT_TB_CMT_SQ_PK FOREIGN KEY (CMT_CLS_FK)
- REFERENCES CMT_TB (CMT_SQ_PK)  ON DELETE RESTRICT ON UPDATE RESTRICT;
-ALTER TABLE CMT_TB ADD CONSTRAINT FK_CMT_TB_AUTH_GRP_FK_AUTH_GRP_TB_AUTH_GRP_PK FOREIGN KEY (AUTH_GRP_FK)
- REFERENCES AUTH_GRP_TB (AUTH_GRP_PK)  ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 
 -- FRBRD_GRP_TB Table Create SQL
@@ -198,9 +166,9 @@ CREATE TABLE BLOCK_TB
     `BLOCK_SQ_PK`        INT             NOT NULL    AUTO_INCREMENT COMMENT '차단 시퀀스 기본키', 
     `BLOCK_TRGT_MEM_FK`  INT             NOT NULL    COMMENT '차단 대상 계정 외래키', 
     `BLOCK_REG_MEM_FK`   INT             NOT NULL    COMMENT '차단 등록 계정 외래키', 
-    `BLOCK_REG_DT`       TIMESTAMP       NOT NULL    COMMENT '차단 등록 날짜', 
-    `BLOCK_START_DT`     TIMESTAMP       NOT NULL    COMMENT '차단 시작 날짜', 
-    `BLOCK_EXPIRE_DT`    TIMESTAMP       NOT NULL    COMMENT '차단 만료 날짜', 
+    `BLOCK_REG_DT`       TIMESTAMP       NOT NULL    DEFAULT current_timestamp() COMMENT '차단 등록 날짜', 
+    `BLOCK_START_DT`     TIMESTAMP       NOT NULL    DEFAULT current_timestamp() COMMENT '차단 시작 날짜', 
+    `BLOCK_EXPIRE_DT`    TIMESTAMP       NOT NULL    DEFAULT current_timestamp() COMMENT '차단 만료 날짜', 
     `BLOCK_CAUSE`        VARCHAR(300)    NOT NULL    COMMENT '차단 이유', 
     PRIMARY KEY (BLOCK_SQ_PK)
 );
@@ -220,7 +188,7 @@ CREATE TABLE FILE_TB
     `FILE_GRP_FK`    INT             NOT NULL    COMMENT '파일 묶음 외래키', 
     `MEM_FK`         INT             NOT NULL    COMMENT '계정 외래키', 
     `TEMP_FL`        TINYINT         NOT NULL    DEFAULT true COMMENT '임시로 등록된 파일인지의 여부. 게시글 수정 취소 시 임시 플래그가 true인 데이터들을 물리적 경로에서도 제거하기 위해 사용.', 
-    `FILE_REG_DT`    TIMESTAMP       NOT NULL    COMMENT '파일 등록 날짜', 
+    `FILE_REG_DT`    TIMESTAMP       NOT NULL    DEFAULT current_timestamp() COMMENT '파일 등록 날짜', 
     `DWN_CNT`        INT             NOT NULL    DEFAULT 0 COMMENT '다운로드 수', 
     `FILE_SIZE`      INT(11)         NOT NULL    COMMENT '파일 크기', 
     `EXT_NM`         VARCHAR(45)     NOT NULL    COMMENT '확장자 이름', 
@@ -244,7 +212,7 @@ CREATE TABLE FRBRD_TB
     `FRBRD_SQ_PK`   INT           NOT NULL    AUTO_INCREMENT COMMENT '자유게시판 시퀀스 기본키', 
     `FRBRD_GRP_FK`  INT           NOT NULL    COMMENT 'DELETE CASCADE', 
     `FILE_GRP_FK`   INT           NOT NULL    COMMENT '파일 묶음 외래키', 
-    `FRBRD_REG_DT`  TIMESTAMP     NOT NULL    COMMENT '자유게시판 등록 날짜', 
+    `FRBRD_REG_DT`  TIMESTAMP     NOT NULL    DEFAULT current_timestamp() COMMENT '자유게시판 등록 날짜', 
     `FRBRD_TITLE`   TINYTEXT      NOT NULL    COMMENT '자유게시판 제목', 
     `FRBRD_BODY`    MEDIUMTEXT    NOT NULL    COMMENT '자유게시판 본문', 
     PRIMARY KEY (FRBRD_SQ_PK)
@@ -253,22 +221,52 @@ CREATE TABLE FRBRD_TB
 ALTER TABLE FRBRD_TB COMMENT '자유게시판 상세 테이블';
 
 ALTER TABLE FRBRD_TB ADD CONSTRAINT FK_FRBRD_TB_FRBRD_GRP_FK_FRBRD_GRP_TB_FRBRD_GRP_SQ_PK FOREIGN KEY (FRBRD_GRP_FK)
- REFERENCES FRBRD_GRP_TB (FRBRD_GRP_SQ_PK)  ON DELETE CASCADE ON UPDATE RESTRICT;
+ REFERENCES FRBRD_GRP_TB (FRBRD_GRP_SQ_PK)  ON DELETE RESTRICT ON UPDATE RESTRICT;
 ALTER TABLE FRBRD_TB ADD CONSTRAINT FK_FRBRD_TB_FILE_GRP_FK_FILE_GRP_TB_FILE_GRP_SQ_PK FOREIGN KEY (FILE_GRP_FK)
  REFERENCES FILE_GRP_TB (FILE_GRP_SQ_PK)  ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- CMT_TB Table Create SQL
+CREATE TABLE CMT_TB
+(
+    `CMT_SQ_PK`     INT            NOT NULL    AUTO_INCREMENT COMMENT '댓글 시퀀스 기본키', 
+    `CMT_GRP_FK`    INT            NOT NULL    COMMENT '댓글 묶음 외래키', 
+    `MEM_FK`        INT            NOT NULL    COMMENT '계정 외래키', 
+    `FILE_GRP_FK`   INT            NOT NULL    COMMENT '파일 묶음 외래키', 
+    `AUTH_GRP_FK`   VARCHAR(45)    NOT NULL    COMMENT '최소 조회 권한', 
+    `CMT_CLS_FK`    INT            NULL        COMMENT '댓글 계층 외래키 default 댓글 일련 번호와 동일', 
+    `CMT_CLS_ORD`   INT            NOT NULL    DEFAULT 0 COMMENT '댓글 계층 정렬순서 default 0', 
+    `CMT_CLS_DPTH`  INT            NOT NULL    DEFAULT 1 COMMENT '댓글 계층 깊이 default 1', 
+    `CMT_REG_DT`    TIMESTAMP      NOT NULL    DEFAULT current_timestamp() COMMENT '댓글 등록 날짜', 
+    `CMT_MOD_DT`    TIMESTAMP      NOT NULL    DEFAULT current_timestamp() COMMENT '댓글 수정 날짜', 
+    `CMT_SCRT_FL`   TINYINT        NOT NULL    DEFAULT false COMMENT '댓글 비밀 플래그 true면 작성자, 부모댓글 작성자, 게시글 작성자, 관리자만 볼 수 있음', 
+    `CMT_BODY`      TINYTEXT       NOT NULL    COMMENT '댓글 본문 255글자', 
+    PRIMARY KEY (CMT_SQ_PK)
+);
+
+ALTER TABLE CMT_TB COMMENT '댓글 테이블';
+
+ALTER TABLE CMT_TB ADD CONSTRAINT FK_CMT_TB_CMT_GRP_FK_CMT_GRP_TB_CMT_GRP_SQ_PK FOREIGN KEY (CMT_GRP_FK)
+ REFERENCES CMT_GRP_TB (CMT_GRP_SQ_PK)  ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE CMT_TB ADD CONSTRAINT FK_CMT_TB_MEM_FK_MEM_TB_MEM_SQ_PK FOREIGN KEY (MEM_FK)
+ REFERENCES MEM_TB (MEM_SQ_PK)  ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE CMT_TB ADD CONSTRAINT FK_CMT_TB_FILE_GRP_FK_FILE_GRP_TB_FILE_GRP_SQ_PK FOREIGN KEY (FILE_GRP_FK)
+ REFERENCES FILE_GRP_TB (FILE_GRP_SQ_PK)  ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE CMT_TB ADD CONSTRAINT FK_CMT_TB_AUTH_GRP_FK_AUTH_GRP_TB_AUTH_GRP_PK FOREIGN KEY (AUTH_GRP_FK)
+ REFERENCES AUTH_GRP_TB (AUTH_GRP_PK)  ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 
 -- TEMP_SAVE_TB Table Create SQL
 CREATE TABLE TEMP_SAVE_TB
 (
-    `TEMP_SAVE_SQ_PK`     INT                                                                                    NOT NULL    AUTO_INCREMENT COMMENT '임시 저장 시퀀스 기본키', 
-    `MEM_FK`              INT                                                                                    NOT NULL    COMMENT '계정 외래키', 
-    `FILE_GRP_FK`         INT                                                                                    NOT NULL    COMMENT '파일 묶음 외래키', 
-    `TEMP_SAVE_CATEGORY`  ENUM('MEMBER_SOFTWARE','FREEBOARD','SCREENSHOT','ART_GALLERY','RECOMMEND_STRATEGY')    NOT NULL    COMMENT '어느 게시판의 데이터인지 Enum으로 관리', 
-    `TEMP_SAVE_USE`       ENUM('WRITE','MODIFY')                                                                 NOT NULL    COMMENT '어떤 용도의 임시 저장 인지 Enum으로 관리. 쓰기 임시 저장과 수정 임시 저장을 구분하는 용도의 컬럼', 
-    `TEMP_SAVE_MOD_DT`    TIMESTAMP                                                                              NOT NULL    COMMENT '임시 저장 수정 날짜', 
-    `TEMP_SAVE_TITLE`     TINYTEXT                                                                               NOT NULL    COMMENT '임시 저장 제목', 
-    `TEMP_SAVE_BODY`      MEDIUMTEXT                                                                             NOT NULL    COMMENT '임시 저장 본문', 
+    `TEMP_SAVE_SQ_PK`     INT            NOT NULL    AUTO_INCREMENT COMMENT '임시 저장 시퀀스 기본키', 
+    `MEM_FK`              INT            NOT NULL    COMMENT '계정 외래키', 
+    `FILE_GRP_FK`         INT            NOT NULL    COMMENT '파일 묶음 외래키', 
+    `TEMP_SAVE_CATEGORY`  VARCHAR(45)    NOT NULL    COMMENT '어느 게시판의 데이터인지 관리 MEMBER_SOFTWARE,FREEBOARD,SCREENSHOT,ART_GALLERY,RECOMMEND_STRATEGY', 
+    `TEMP_SAVE_USE`       VARCHAR(30)    NOT NULL    COMMENT '어떤 용도의 임시 저장 인지 구분하는 용도의 컬럼. WRITE, MODIFY', 
+    `TEMP_SAVE_MOD_DT`    TIMESTAMP      NOT NULL    DEFAULT current_timestamp() COMMENT '임시 저장 수정 날짜', 
+    `TEMP_SAVE_TITLE`     TINYTEXT       NOT NULL    COMMENT '임시 저장 제목', 
+    `TEMP_SAVE_BODY`      MEDIUMTEXT     NOT NULL    COMMENT '임시 저장 본문', 
     PRIMARY KEY (TEMP_SAVE_SQ_PK)
 );
 

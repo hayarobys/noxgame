@@ -21,6 +21,15 @@ public interface UploadService{
 	);
 	
 	/**
+	 * 이 파일 그룹 목록의 최소 조회 권한을 일괄 수정 합니다.
+	 * @param fileGroupNoList
+	 * @param authgroup
+	 */
+	public abstract void updateAuthgroupOfFileGroupByFileGroupNoList(
+			List<Integer> fileGroupNoList, Authgroup authgroup
+	);
+	
+	/**
 	 * 특정 파일 그룹에 소속된 파일들의 임시 저장 플래그를 변경합니다.
 	 * @param fileGroupNo
 	 * @param tempFlag
