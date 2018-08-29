@@ -3,11 +3,20 @@ package kr.pe.hayarobys.nox.community.freeboard;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.suph.security.core.dto.JsonResultVO;
+import com.suph.security.core.dto.PaginationRequest;
+import com.suph.security.core.dto.PaginationResponse;
 import com.suph.security.core.enums.Authgroup;
 
 import kr.pe.hayarobys.nox.common.tempsave.TempSaveVO;
 
 public interface FreeboardService{
+	/**
+	 * 모든 자유 게시판 목록을 조회합니다.
+	 * @param paginationRequest 페이징 검색 조건
+	 * @return
+	 */
+	public abstract PaginationResponse<FreeboardGroupVO> getFreeboardGroupList(PaginationRequest paginationRequest);
+	
 	/***
 	 * 임시 저장글 번호를 생성 후 반환 합니다.
 	 * @param mav

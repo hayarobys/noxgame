@@ -8,10 +8,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.suph.security.core.dto.JsonResultVO;
+import com.suph.security.core.dto.PaginationRequest;
+import com.suph.security.core.dto.PaginationResponse;
 import com.suph.security.core.util.ContextUtil;
 
 import kr.pe.hayarobys.nox.common.tempsave.TempSaveVO;
@@ -32,8 +35,15 @@ public class FreeboardController{
 	
 	/** 자유 게시판 글 목록 */
 	@RequestMapping(value="/list", method=RequestMethod.GET)
-	public void getList(){
+	public @ResponseBody PaginationResponse<FreeboardGroupVO> getFreeboardGroupList(
+			@RequestParam(name="pagenum", required=false, defaultValue="0") int pagenum,
+			@RequestParam(name="pagesize", required=false, defaultValue="20") int pagesize
+	){
+		PaginationRequest paginationRequest = new PaginationRequest();
+		paginationRequest.setPagenum(pagenum);
+		paginationRequest.setPagesize(pagesize);
 		
+		return freeboardService.getFreeboardGroupList(paginationRequest);
 	}
 	
 	/** 자유 게시판 신규 글 작성 페이지 */

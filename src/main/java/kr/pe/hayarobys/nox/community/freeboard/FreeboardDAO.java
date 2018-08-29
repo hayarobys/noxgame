@@ -4,8 +4,23 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.suph.security.core.dto.PaginationRequest;
+
 @Repository
 public interface FreeboardDAO{
+	
+	/**
+	 * 모든 자유게시판 목록을 페이징 처리하여 조회합니다.
+	 * @param paginationRequest
+	 * @return
+	 */
+	public abstract List<FreeboardGroupVO> getFreeboardGroupList(PaginationRequest paginationRequest);
+	
+	/**
+	 * 모든 자유게시판 목록의 개수를 조회 합니다.
+	 * @return
+	 */
+	public abstract Integer getFreeboardGroupListTotalRows();
 	
 	/**
 	 * 자유게시판 그룹을 등록하고 생성된 일련 번호를 조회 합니다.
@@ -13,13 +28,7 @@ public interface FreeboardDAO{
 	 * @return 
 	 */
 	public abstract void insertFreeboardGroup(FreeboardGroupVO freeboardGroupVO);
-	
-	/**
-	 * 특정 일련 번호의 자유 게시판 그룹이 가진 계층 번호를 수정합니다.
-	 * @param freeboardGroupVO
-	 */
-	public abstract void updateFreeboardGroupClassNo(FreeboardGroupVO freeboardGroupVO);
-	
+		
 	/**
 	 * 자유게시판 상세 정보를 등록합니다.
 	 * @param freeboardVO
@@ -70,7 +79,7 @@ public interface FreeboardDAO{
 	 * @param freeboardGroupNo
 	 * @return
 	 */
-	public abstract List<Integer> selectFileGroupFromFreeoboardGroupByFreeobardGroupNo(Integer freeboardGroupNo);
+	public abstract List<Integer> selectFileGroupFromFreeboardGroupByFreeobardGroupNo(Integer freeboardGroupNo);
 }
 
 

@@ -3,17 +3,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.pe.hayarobys.nox.community.freeboard.FreeboardDAO">
-	<!-- 
 	<resultMap type="kr.pe.hayarobys.nox.community.freeboard.FreeboardGroupVO" id="FreeboardGroupVO">
 		<result column="FRBRD_GRP_SQ_PK" property="freeboardGroupNo"/>
 		<result column="MEM_FK" property="memNo"/>
 		<result column="CMT_GRP_FK" property="commentGroupNo"/>
 		<result column="AUTH_GRP_FK" property="authgroup"/>
-		<result column="FRBRD_GRP_CLS_FK" property="freeboardGroupClassNo"/>
-		<result column="FRBRD_GRP_CLS_ORD" property="freeboardGroupClassOrder"/>
-		<result column="FRBRD_GRP_CLS_DPTH" property="freeboardGroupClassDepth"/>
+		<result column="FRBRD_GRP_REG_DT" property="freeboardGroupRegDate"/>
 	</resultMap>
-	-->
+	
 	<resultMap type="kr.pe.hayarobys.nox.community.freeboard.FreeboardDetailVO" id="FreeboardDetailVO">
 		<result column="MEM_SQ_PK" property="memNo"/>
 		<result column="MEM_NICKNM" property="nickname"/>
@@ -31,33 +28,33 @@
 		<result column="FRBRD_BODY" property="freeboardBody"/>
 	</resultMap>
 	
+	<!-- 모든 자유게시판 목록을 페이징 처리하여 조회합니다. -->
+	<select id="getFreeboardGroupList" parameterType="PaginationRequest" resultMap="FreeboardGroupVO">
+		SELECT * FROM FRBRD_GRP_TB
+		LIMIT ${start}, ${pagesize}
+	</select>
+	
+	<!-- 모든 자유게시판 목록의 개수를 조회 합니다. -->
+	<select id="getFreeboardGroupListTotalRows" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM FRBRD_GRP_TB
+	</select>
+	
 	<!-- 자유 게시판 그룹을 등록하고 생성된 일련 번호를 조회합니다. -->
 	<insert id="insertFreeboardGroup" parameterType="FreeboardGroupVO">		
 		INSERT INTO FRBRD_GRP_TB(
 			MEM_FK,
 			CMT_GRP_FK,
-			AUTH_GRP_FK,
-			FRBRD_GRP_CLS_ORD,
-			FRBRD_GRP_CLS_DPTH
+			AUTH_GRP_FK
 		)VALUES(
 			#{memNo},
 			#{commentGroupNo},
-			#{authgroup},
-			#{freeboardGroupClassOrder},
-			#{freeboardGroupClassDepth}
+			#{authgroup}
 		)
 		<selectKey resultType="java.lang.Integer" keyProperty="freeboardGroupNo" order="AFTER">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
 	</insert>
-	
-	<!-- 특정 일련 번호의 자유 게시판 그룹이 가진 계층 번호를 수정합니다. -->
-	<update id="updateFreeboardGroupClassNo" parameterType="FreeboardGroupVO">
-		UPDATE	FRBRD_GRP_TB
-		SET		FRBRD_GRP_CLS_FK = #{freeboardGroupClassNo}
-		WHERE	FRBRD_GRP_SQ_PK = #{freeboardGroupNo}
-	</update>
-	
+		
 	<!-- 자유게시판 상세 정보를 등록합니다. -->
 	<insert id="insertFreeboard" parameterType="FreeboardVO">
 		INSERT INTO FRBRD_TB(
@@ -140,7 +137,7 @@
 	</delete>
 	
 	<!-- 자유게시판 그룹에 소속된 파일들의 일련 번호 목록을 조회합니다. -->
-	<select id="selectFileGroupFromFreeoboardGroupByFreeobardGroupNo" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+	<select id="selectFileGroupFromFreeboardGroupByFreeobardGroupNo" parameterType="java.lang.Integer" resultType="java.lang.Integer">
 		SELECT
 			FIG.FILE_GRP_SQ_PK
 		FROM

@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.suph.security.core.dto.JsonResultVO;
+import com.suph.security.core.dto.PaginationRequest;
+import com.suph.security.core.dto.PaginationResponse;
 import com.suph.security.core.enums.Authgroup;
 import com.suph.security.core.enums.TempSaveCategory;
 import com.suph.security.core.enums.TempSaveUse;
@@ -37,6 +39,14 @@ public class FreeboardServiceImpl implements FreeboardService{
 	
 	@Autowired
 	private CommentService commentService;
+	
+	@Override
+	public PaginationResponse<FreeboardGroupVO> getFreeboardGroupList(PaginationRequest paginationRequest){
+		List<FreeboardGroupVO> list = freeboardDAO.getFreeboardGroupList(paginationRequest);
+		int totalRows = freeboardDAO.getFreeboardGroupListTotalRows();
+		
+		return new PaginationResponse<FreeboardGroupVO>(list, totalRows);
+	}
 	
 	@Override
 	public ModelAndView getFreeboardTempSaveNo(ModelAndView mav){
@@ -114,8 +124,6 @@ public class FreeboardServiceImpl implements FreeboardService{
 		freeboardGroupVO.setMemNo(memNo);
 		freeboardGroupVO.setCommentGroupNo(commentGroupNo);
 		freeboardGroupVO.setAuthgroup(authgroup);
-		freeboardGroupVO.setFreeboardGroupClassOrder(0);
-		freeboardGroupVO.setFreeboardGroupClassDepth(1);
 		this.insertFreeboardGroup(freeboardGroupVO);
 		
 		// 자유 게시판 상세 생성
@@ -156,8 +164,6 @@ public class FreeboardServiceImpl implements FreeboardService{
 	 */
 	private void insertFreeboardGroup(FreeboardGroupVO freeboardGroupVO){
 		freeboardDAO.insertFreeboardGroup(freeboardGroupVO);
-		freeboardGroupVO.setFreeboardGroupClassNo(freeboardGroupVO.getFreeboardGroupNo());
-		freeboardDAO.updateFreeboardGroupClassNo(freeboardGroupVO);
 	}
 
 	@Override
@@ -250,7 +256,7 @@ public class FreeboardServiceImpl implements FreeboardService{
 		freeboardDAO.insertFreeboard(freeboardVO);
 		
 		// 이 자유 게시판 그룹에 속한 모든 파일 그룹 조회
-		List<Integer> fileGroupNoList = freeboardDAO.selectFileGroupFromFreeoboardGroupByFreeobardGroupNo(freeboardGroupNo);
+		List<Integer> fileGroupNoList = freeboardDAO.selectFileGroupFromFreeboardGroupByFreeobardGroupNo(freeboardGroupNo);
 		
 		// 이 파일 그룹 목록의 최소 조회 권한 일괄 수정
 		uploadService.updateAuthgroupOfFileGroupByFileGroupNoList(fileGroupNoList, tempSaveVO.getOpenType());
@@ -284,7 +290,7 @@ public class FreeboardServiceImpl implements FreeboardService{
 		Integer commentGroupNo = freeboardDAO.selectCommentGroupNoFromFreeboardGroupByFreeboardGroupNo(freeboardGroupNo);
 		
 		// 자유게시판 상세 목록에 연결된 각 파일 그룹 목록 조회
-		List<Integer> fileGroupNoList = freeboardDAO.selectFileGroupFromFreeoboardGroupByFreeobardGroupNo(freeboardGroupNo);
+		List<Integer> fileGroupNoList = freeboardDAO.selectFileGroupFromFreeboardGroupByFreeobardGroupNo(freeboardGroupNo);
 		
 		// 자유게시판 상세 목록 제거
 		freeboardDAO.deleteFreeboardByFreeboardGroupNo(freeboardGroupNo);
@@ -297,5 +303,5 @@ public class FreeboardServiceImpl implements FreeboardService{
 		
 		// 댓글 제거 서비스 요청
 		commentService.deleteCommentGroup(commentGroupNo);
-	}
+	}	
 }
