@@ -44,7 +44,8 @@ jQuery(function() {
 				tempSaveNo: jQuery("#tempSaveNo").val(),
 				tempSaveTitle: jQuery("#tempSaveTitle").val(),
 				tempSaveBody: jQuery("#ir1").val(),
-				openType: jQuery("input[name='openType']:checked").val()
+				openType: jQuery("input[name='openType']:checked").val(),
+				allowComment:  jQuery("#allowComment").is(":checked")
 		};
 		
 		// 수정 요청 전송
@@ -74,7 +75,6 @@ jQuery(function() {
 	// 게시글 수정 취소 버튼 클릭 이벤트 입니다.
 	jQuery("#modifyCancel").on("click", function(event){
 		event.preventDefault();
-		oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FIELD", []);	// 에디터의 내용이 textarea에 적용됩니다.
 		
 		// 취소 요청 전송
 		var token = jQuery("meta[name='_csrf']").attr("content");
@@ -83,7 +83,6 @@ jQuery(function() {
 		jQuery.ajax({
 			type: "PUT",
 			url: CONTEXT_PATH + "/community/freeboard/edit-cancel",
-			//data: JSON.stringify(formData),
 			contentType: 'application/json',
 			//dataType: "json",	// 서버에서 응답한 데이터를 클라이언트에서 읽는 방식
 			beforeSend: function(xhr){

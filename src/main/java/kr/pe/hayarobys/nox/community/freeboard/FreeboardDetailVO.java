@@ -25,6 +25,8 @@ public class FreeboardDetailVO{
 	private Integer commentGroupNo;
 	/** 최소 조회 권한 그룹(공개 범위) */
 	private Authgroup authgroup;
+	/** 댓글 신규 작성 가능 여부 */
+	private Boolean allowComment;
 	
 	/** 게시글 번호 */
 	private Integer freeboardNo;
@@ -91,6 +93,14 @@ public class FreeboardDetailVO{
 	public void setAuthgroup(Authgroup authgroup){
 		this.authgroup = authgroup;
 	}
+	
+	public Boolean getAllowComment(){
+		return allowComment;
+	}
+
+	public void setAllowComment(Boolean allowComment){
+		this.allowComment = allowComment;
+	}
 
 	public Integer getFreeboardNo(){
 		return freeboardNo;
@@ -127,7 +137,8 @@ public class FreeboardDetailVO{
 	@Override
 	public String toString(){
 		return "FreeboardDetailVO [memNo=" + memNo + ", nickname=" + nickname + ", id=" + id + ", freeboardGroupNo=" + freeboardGroupNo
-				+ ", fileGroupNo=" + fileGroupNo + ", commentGroupNo=" + commentGroupNo + ", freeboardNo=" + freeboardNo + ", freeboardRegDate="
-				+ freeboardRegDate + ", freeboardTitle=" + freeboardTitle + ", freeboardBody=" + freeboardBody + "]";
+				+ ", fileGroupNo=" + fileGroupNo + ", commentGroupNo=" + commentGroupNo + ", authgroup=" + authgroup + ", allowComment="
+				+ allowComment + ", freeboardNo=" + freeboardNo + ", freeboardRegDate=" + freeboardRegDate + ", freeboardTitle=" + freeboardTitle
+				+ ", freeboardBody=" + freeboardBody + "]";
 	}
 }

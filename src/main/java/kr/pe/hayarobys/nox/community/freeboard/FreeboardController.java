@@ -48,6 +48,13 @@ public class FreeboardController{
 		return freeboardService.postWrite(tempSaveVO);
 	}
 	
+	/** 자유 게시판 모든 작성 취소 */
+	@RequestMapping(value="/write-cancel", method=RequestMethod.PUT)
+	public @ResponseBody void writeCancel(){
+		Integer memberNo = ContextUtil.getMemberInfo().getNo();
+		freeboardService.freeboardWriteCancel(memberNo);
+	}
+	
 	/** 자유 게시판 상세 조회 */
 	@RequestMapping(value="/{freeboardGroupNo}", method=RequestMethod.GET)
 	public ModelAndView getDetail(

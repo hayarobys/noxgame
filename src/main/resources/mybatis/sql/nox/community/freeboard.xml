@@ -23,6 +23,7 @@
 		<result column="FILE_GRP_FK" property="fileGroupNo"/>
 		<result column="CMT_GRP_FK" property="commentGroupNo"/>
 		<result column="AUTH_GRP_FK" property="authgroup"/>
+		<result column="CMT_GRP_NEW_WRT_FL" property="allowComment"/>
 		
 		<result column="FRBRD_SQ_PK" property="freeboardNo"/>
 		<result column="FRBRD_REG_DT" property="freeboardRegDate"/>
@@ -86,6 +87,7 @@
 				FG.FRBRD_GRP_SQ_PK,
 				FG.CMT_GRP_FK,
 				FG.AUTH_GRP_FK,
+				CG.CMT_GRP_NEW_WRT_FL,
 				
 				F.FRBRD_SQ_PK,
 				F.FRBRD_REG_DT,
@@ -96,6 +98,7 @@
 				FRBRD_GRP_TB AS FG
 				INNER JOIN MEM_TB AS M		ON(FG.MEM_FK = M.MEM_SQ_PK)
 				INNER JOIN FRBRD_TB AS F	ON(FG.FRBRD_GRP_SQ_PK = F.FRBRD_GRP_FK)
+				INNER JOIN CMT_GRP_TB CG	ON(FG.CMT_GRP_FK = CG.CMT_GRP_SQ_PK)
 			WHERE
 				FG.FRBRD_GRP_SQ_PK = #{freeboardGroupNo}
 			ORDER BY F.FRBRD_SQ_PK DESC

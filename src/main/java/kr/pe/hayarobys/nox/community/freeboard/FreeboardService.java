@@ -23,6 +23,12 @@ public interface FreeboardService{
 	public abstract JsonResultVO<Integer> postWrite(TempSaveVO tempSaveVO);
 	
 	/**
+	 * 특정 계정이 자유 게시판에서 진행중인 모든 신규 글 작성을 취소합니다.
+	 * @param memNo
+	 */
+	public abstract void freeboardWriteCancel(Integer memNo);
+	
+	/**
 	 * 게시글 상세 정보를 조회합니다.
 	 * @param freeboardGroupNo
 	 * @param mav
@@ -52,11 +58,9 @@ public interface FreeboardService{
 	
 	/**
 	 * 특정 계정이 자유 게시판에서 진행중인 모든 수정을 취소합니다.
-	 * @param memberNo
-	 * @param tempSaveCategory
-	 * @param tempSaveUse
+	 * @param memNo
 	 */
-	public abstract void freeboardModifyCancel(Integer memberNo);
+	public abstract void freeboardModifyCancel(Integer memNo);
 	
 	/**
 	 * 자유게시판 그룹을 제거합니다.

@@ -9,6 +9,13 @@ public interface CommentService{
 	public abstract Integer insertCommentGroup(Boolean commentGroupNewWriteFlag);
 	
 	/**
+	 * 특정 댓글 그룹의 신규 작성 가능 여부를 변경합니다.
+	 * @param commentGroupNo
+	 * @param allowComment
+	 */
+	public abstract void updateAllowCommentOfCommentGroupByCommentGroupNo(Integer commentGroupNo, Boolean allowComment);
+	
+	/**
 	 * 댓글 그룹과 그에 연결된 댓글, 파일 그룹, 파일, 물리 파일들을 모두 제거합니다.
 	 * @param commentGroupNo
 	 */

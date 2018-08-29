@@ -78,19 +78,19 @@
 							<label>설정정보</label>
 							<div>
 								<p>
-									<input type="radio" id="setPublic" value="PUBLIC" name="openType">
+									<input type="radio" id="setPublic" value="PUBLIC" name="openType" checked="checked">
 									<label for="setPublic" title="비회원에게도 공개 합니다.">전체공개</label>
 									<input type="radio" id="setMember" value="MEMBER" name="openType">
 									<label for="setMember" title="로그인 한 계정에게 공개합니다.">회원공개</label>
 									<input type="radio" id="setSecret" value="SECRET" name="openType">
 									<label for="setSecret" title="작성자, 관리자, 답글의 경우 대상글의 작성자만 볼 수 있습니다.">비밀글</label>
 									<sec:authorize access="hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')">
-										<input type="radio" id="setCLOSE" value="CLOSE" name="openType">
+										<input type="radio" id="setClose" value="CLOSE" name="openType">
 										<label for="setClose" title="작성자와 매니저, 어드민만 조회 할 수 있습니다.">비공개</label><!-- 이 항목은 관리자만 볼 수 있습니다. -->
 									</sec:authorize>
 								</p>
 								<p>
-									<input type="checkbox" id="allowComment">
+									<input type="checkbox" id="allowComment" checked="checked">
 									<label for="allowComment">댓글허용</label>
 								</p>
 							</div>
@@ -101,6 +101,7 @@
 					<!-- <input type="button" onclick="pasteHTML();" value="본문에 내용 넣기" /> -->
 					<!-- <input type="button" onclick="showHTML();" value="본문 내용 가져오기" /> -->
 					<input type="button" id="writeComplete" value="작성 완료" />
+					<input type="button" id="writeCancel" value="작성 취소" />
 					<!-- <input type="button" onclick="setDefaultFont();" value="기본 폰트 지정하기 (궁서_24)" /> -->
 				</p>
 			</article>

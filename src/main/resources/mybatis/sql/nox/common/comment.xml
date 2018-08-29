@@ -32,6 +32,13 @@
 			CR.CMT_GRP_SQ_PK = #{commentGroupNo}
 	</select>
 	
+	<!-- 특정 댓글 그룹의 신규 작성 가능 여부를 변경합니다. -->
+	<update id="updateAllowCommentOfCommentGroupByCommentGroupNo">
+		UPDATE CMT_GRP_TB
+		SET CMT_GRP_NEW_WRT_FL = #{commentGroupNewWriteFlag}
+		WHERE CMT_GRP_SQ_PK = #{commentGroupNo}
+	</update>
+	
 	<!-- 특정 댓글 그룹에 속한 모든 댓글을 제거합니다. -->
 	<delete id="deleteCommentByCommentGroupNo" parameterType="java.lang.Integer">
 		DELETE FROM CMT_TB

@@ -27,6 +27,8 @@ public class TempSaveVO{
 	private Date tempSaveModDt;
 	/** AUTH_GRP_FK 최소 조회 권한 (공개범위) */
 	private Authgroup openType;
+	/** CMT_GRP_NEW_WRT_FL 댓글 신규 작성 허용 여부 */
+	private Boolean allowComment;
 	
 	public Integer getTempSaveNo(){
 		return tempSaveNo;
@@ -99,11 +101,19 @@ public class TempSaveVO{
 	public void setOpenType(Authgroup openType){
 		this.openType = openType;
 	}
+	
+	public Boolean getAllowComment(){
+		return allowComment;
+	}
+
+	public void setAllowComment(Boolean allowComment){
+		this.allowComment = allowComment;
+	}
 
 	@Override
 	public String toString(){
 		return "TempSaveVO [tempSaveNo=" + tempSaveNo + ", memNo=" + memNo + ", tempSaveCategory=" + tempSaveCategory + ", tempSaveUse=" + tempSaveUse
 				+ ", fileGroupNo=" + fileGroupNo + ", tempSaveTitle=" + tempSaveTitle + ", tempSaveBody=" + tempSaveBody + ", tempSaveModDt="
-				+ tempSaveModDt + ", openType=" + openType + "]";
+				+ tempSaveModDt + ", openType=" + openType + ", allowComment=" + allowComment + "]";
 	}
 }

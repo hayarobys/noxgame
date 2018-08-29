@@ -106,7 +106,7 @@ public class UploadServiceImpl implements UploadService{
 	public void deleteFileGroupByFileGroupNoList(List<Integer> fileGroupNoList){		
 		// 파일 목록 조회
 		List<FileVO> fileList = uploadDAO.selectFileByFileGroupNoList(fileGroupNoList);
-
+		
 		// 파일 목록들의 모든 물리 파일 제거
 		List<Integer> fileNoList = new ArrayList<Integer>();
 		for(FileVO fileVO : fileList){
@@ -117,7 +117,9 @@ public class UploadServiceImpl implements UploadService{
 		}
 		
 		// DB에서 파일 목록 제거
-		uploadDAO.deleteFileByFileNoList(fileNoList);
+		if(fileList.size() > 0){
+			uploadDAO.deleteFileByFileNoList(fileNoList);
+		}
 		
 		// DB에서 파일 그룹 목록 제거
 		uploadDAO.deleteFileGroupByFileGroupNoList(fileGroupNoList);

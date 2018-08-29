@@ -22,6 +22,14 @@ public class CommentServiceImpl implements CommentService{
 		commentDAO.insertCommentGroup(commentGroupVO);
 		return commentGroupVO.getCommentGroupNo();
 	}
+	
+	@Override
+	public void updateAllowCommentOfCommentGroupByCommentGroupNo(Integer commentGroupNo, Boolean allowComment){
+		CommentGroupVO commentGroupVO = new CommentGroupVO();
+		commentGroupVO.setCommentGroupNo(commentGroupNo);
+		commentGroupVO.setCommentGroupNewWriteFlag(allowComment);
+		commentDAO.updateAllowCommentOfCommentGroupByCommentGroupNo(commentGroupVO);
+	}
 
 	@Override
 	public void deleteCommentGroup(Integer commentGroupNo){

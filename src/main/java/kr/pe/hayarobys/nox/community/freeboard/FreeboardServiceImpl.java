@@ -107,7 +107,7 @@ public class FreeboardServiceImpl implements FreeboardService{
 		uploadService.updateAuthgroupOfFileGroupByFileGroupNo(fileGroupNo, authgroup);
 		
 		// 댓글 그룹 생성
-		Integer commentGroupNo = commentService.insertCommentGroup(true);
+		Integer commentGroupNo = commentService.insertCommentGroup(requestTempSaveVO.getAllowComment());
 		
 		// 자유 게시판 그룹 생성
 		FreeboardGroupVO freeboardGroupVO = new FreeboardGroupVO();
@@ -133,7 +133,12 @@ public class FreeboardServiceImpl implements FreeboardService{
 		JsonResultVO<Integer> jsonResultVO = new JsonResultVO<Integer>(freeboardGroupVO.getFreeboardGroupNo());
 		return jsonResultVO;
 	}
-
+	
+	@Override
+	public void freeboardWriteCancel(Integer memNo){
+		tempSaveService.deleteTempSaveByMemNoAndCategoryAndUse(memNo, TempSaveCategory.FREEBOARD, TempSaveUse.WRITE);
+	}
+	
 	@Override
 	public ModelAndView getDetail(Integer freeboardGroupNo, ModelAndView mav){
 		FreeboardDetailVO freeboardDetailVO = freeboardDAO.selectLastFreeboardDetail(freeboardGroupNo);
@@ -181,10 +186,12 @@ public class FreeboardServiceImpl implements FreeboardService{
 			
 			// 수정 대상글의 파일 상세 레코드 복제. 물리적 파일은 복제 없이 그대로 유지
 			List<FileVO> originalFileVOList = uploadService.selectFileByFileGroupNo(freeboardDetailVO.getFileGroupNo());
-			for(FileVO vo : originalFileVOList){
-				vo.setFileGroupNo(fileGroupNo);
+			if(originalFileVOList.size() > 0){
+				for(FileVO vo : originalFileVOList){
+					vo.setFileGroupNo(fileGroupNo);
+				}
+				uploadService.insertFileList(originalFileVOList);
 			}
-			uploadService.insertFileList(originalFileVOList);
 			
 			// 새롭게 복제한 파일 목록 조회
 			fileVOList = uploadService.selectFileByFileGroupNo(fileGroupNo);
@@ -199,6 +206,10 @@ public class FreeboardServiceImpl implements FreeboardService{
 			tempSaveVO.setTempSaveBody(freeboardDetailVO.getFreeboardBody());
 			tempSaveService.insertTempSave(tempSaveVO);
 		}
+		
+		// 최소 조회 권한과 댓글 허용 여부 입력
+		tempSaveVO.setOpenType(freeboardDetailVO.getAuthgroup());
+		tempSaveVO.setAllowComment(freeboardDetailVO.getAllowComment());
 		
 		// 생성한 레코드 정보 MODEL에 담아 VIEW로 반환
 		mav.addObject("freeboardGroupNo", freeboardGroupNo);
@@ -246,6 +257,12 @@ public class FreeboardServiceImpl implements FreeboardService{
 		
 		// 연결된 파일들 임시 플래그를 false로 일괄 변경
 		uploadService.updateTempFlagOfFileByFileGroupNo(fileGroupNo, false);
+		
+		// 수정 대상이 되는 게시글 그룹의 댓글 그룹 번호 조회
+		Integer commentGroupNo = freeboardDAO.selectCommentGroupNoFromFreeboardGroupByFreeboardGroupNo(freeboardGroupNo);
+		
+		// 댓글 그룹의 신규 작성 가능 여부 갱신
+		commentService.updateAllowCommentOfCommentGroupByCommentGroupNo(commentGroupNo, tempSaveVO.getAllowComment());
 	}
 	
 	@Override

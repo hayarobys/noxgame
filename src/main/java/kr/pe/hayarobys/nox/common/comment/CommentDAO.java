@@ -20,6 +20,12 @@ public interface CommentDAO{
 	public abstract List<Integer> selectFileGroupNoListFromCommentByCommentGroupNo(Integer commentGroupNo);
 	
 	/**
+	 * 특정 댓글 그룹의 신규 작성 가능 여부를 변경합니다.
+	 * @param commentGroupVO
+	 */
+	public abstract void updateAllowCommentOfCommentGroupByCommentGroupNo(CommentGroupVO commentGroupVO);
+	
+	/**
 	 * 특정 댓글 그룹에 속한 모든 댓글을 제거합니다.
 	 * @param commentGroupNo
 	 */

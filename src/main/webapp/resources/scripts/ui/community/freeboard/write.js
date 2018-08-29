@@ -44,7 +44,8 @@ jQuery(function() {
 				tempSaveNo: jQuery("#tempSaveNo").val(),
 				tempSaveTitle: jQuery("#tempSaveTitle").val(),
 				tempSaveBody: jQuery("#ir1").val(),
-				openType: jQuery("input[name='openType']:checked").val()
+				openType: jQuery("input[name='openType']:checked").val(),
+				allowComment:  jQuery("#allowComment").is(":checked")
 		};
 		
 		// 등록 요청 전송
@@ -64,6 +65,33 @@ jQuery(function() {
 			success: function(data, statusText, xhr){
 				//console.log("응답값: ", data);
 				location.href = CONTEXT_PATH + "/community/freeboard/" + data.data;
+			},
+			error: function(xhr){
+				console.log("error", xhr);
+			}
+		});
+	});
+	
+	// 게시글 작성 취소 버튼 클릭 이벤트 입니다.
+	jQuery("#writeCancel").on("click", function(event){
+		event.preventDefault();
+		
+		// 취소 요청 전송
+		var token = jQuery("meta[name='_csrf']").attr("content");
+		var header = jQuery("meta[name='_csrf_header']").attr("content");
+		
+		jQuery.ajax({
+			type: "PUT",
+			url: CONTEXT_PATH + "/community/freeboard/write-cancel",
+			contentType: 'application/json',
+			//dataType: "json",	// 서버에서 응답한 데이터를 클라이언트에서 읽는 방식
+			beforeSend: function(xhr){
+				xhr.setRequestHeader("X-Ajax-call", "true");	// CustomAccessDeniedHandler에서 Ajax요청을 구분하기 위해 약속한 값
+				xhr.setRequestHeader(header, token);	// 헤더의 csrf meta태그를 읽어 CSRF 토큰 함께 전송
+			},
+			success: function(data, statusText, xhr){
+				console.log("응답값: ", data);
+				//location.href = CONTEXT_PATH + "/community/freeboard/" + data.data;
 			},
 			error: function(xhr){
 				console.log("error", xhr);
