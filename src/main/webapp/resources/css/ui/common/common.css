@@ -4,3 +4,33 @@ body{
 	background-color: black/* #6b6b6b */;
 	color: white;
 }
+
+.pagination{
+	display: block;
+	text-align: center;
+}
+
+.paging-bar{
+	list-style-type: none;
+	display: inline-block;
+}
+
+.paging-bar li{
+	float: left;
+	margin-left: 4px;
+	margin-right: 4px;
+	width: 25px;
+}
+
+.paging-bar a:link { color: white; text-decoration: none;}
+.paging-bar a:visited { color: white; text-decoration: none;}
+.paging-bar a:hover { color: white; text-decoration: underline;}
+.paging-bar a{
+	display: block;
+	width: 100%;
+	text-align: center;
+}
+.paging-bar a.current{
+	color: gold;
+	font-weight: bold;
+}

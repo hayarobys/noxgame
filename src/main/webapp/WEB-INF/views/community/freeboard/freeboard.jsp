@@ -8,6 +8,7 @@
 	<title>자유게시판</title>
 	
 	<link rel="stylesheet" href="<c:url value='/resources/css/ui/community/freeboard/freeboard.css'/>" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/4.1.0/rx.all.min.js"></script>
 	<script src="<c:url value='/resources/scripts/ui/community/freeboard/freeboard.js'/>"></script>
 </head>
 <body>
@@ -25,38 +26,12 @@
 				<button class="write-btn" id="write-btn" type="button">
 					<div class="text">글쓰기</div>
 				</button>
-				<ul class="contents-title">
-					<li>
-						<dl class="item-list">
-							<dt class="no">번호</dt>
-							<dt class="nick">닉네임</dt>
-							<dt class="title">제목(댓글수)</dt>
-							<dt class="last-date">마지막 수정일</dt>
-							<dt class="views">조회수</dt>
-						</dl>
-					</li>
-				</ul>
-				<ul class="contents-list">
-					<li>
-						<dl class="item-list">
-							<dt class="no">2</dt>
-							<dt class="nick">홍길동</dt>
-							<dt class="title">와 게시판이다(2)</dt>
-							<dt class="last-date">30초 전</dt>
-							<dt class="views">4</dt>
-						</dl>
-					</li>
-					<li>
-						<dl class="item-list">
-							<dt class="no">1</dt>
-							<dt class="nick">tester</dt>
-							<dt class="title">첫 게시글 입니다(0)</dt>
-							<dt class="last-date">2018.07.12</dt>
-							<dt class="views">12</dt>
-						</dl>
-					</li>
-					
-				</ul>
+				<article id="freeboardList" class="freeboard-list">
+				
+				</article>
+				<artcle id="pagination" class="pagination">
+			
+				</artcle>
 			</article>
 		</section>
 	</div>

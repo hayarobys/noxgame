@@ -41,11 +41,11 @@ public class FreeboardServiceImpl implements FreeboardService{
 	private CommentService commentService;
 	
 	@Override
-	public PaginationResponse<FreeboardGroupVO> getFreeboardGroupList(PaginationRequest paginationRequest){
-		List<FreeboardGroupVO> list = freeboardDAO.getFreeboardGroupList(paginationRequest);
+	public PaginationResponse<FreeboardGroupDetailVO> getFreeboardGroupList(PaginationRequest paginationRequest){
+		List<FreeboardGroupDetailVO> list = freeboardDAO.getFreeboardGroupList(paginationRequest);
 		int totalRows = freeboardDAO.getFreeboardGroupListTotalRows();
 		
-		return new PaginationResponse<FreeboardGroupVO>(list, totalRows);
+		return new PaginationResponse<FreeboardGroupDetailVO>(list, totalRows);
 	}
 	
 	@Override
@@ -152,6 +152,8 @@ public class FreeboardServiceImpl implements FreeboardService{
 		FreeboardDetailVO freeboardDetailVO = freeboardDAO.selectLastFreeboardDetail(freeboardGroupNo);
 		
 		// TODO: 요청자가 이 게시글의 최소 조회 권한을 통과하는지 확인 할 것
+		
+		// TODO: 작성자 본인이 아니라면 조회수 + 1
 		
 		mav.addObject("freeboardDetailVO", freeboardDetailVO);
 		mav.setViewName("/community/freeboard/detail");

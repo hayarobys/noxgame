@@ -44,4 +44,94 @@ function getNickname(){
 }
 
 
+var PageMaker = {
+	start: 1,
+	page: 0,
+	count: 0,
+	end: 0,
+	prev: false,
+	next: false,
+	getPage: function(){
+		return page;
+	},
+	setPage: function(page){
+		if(page < 1){
+			this.page = 1;
+			return;
+		}
+		
+		this.page = page;
+	},
+	setCount(count){
+		if(count < 1){
+			return;
+		}
+		
+		this.count = count;
+		//console.log("총 컬럼 갯수 = " + count);
+		this.calcPage();
+	},
+	calcPage(){
+		// page변수는 현재 페이지 번호
+		var tempEnd = Math.ceil(this.page / 10.0) * 10;
+		// 현재 페이지번호를 기준으로 끝 페이지를 계산한다.
+				
+		// 시작 페이지 계산
+		this.start = tempEnd - 9;
+		
+		if(tempEnd * 10 > this.count){ // 가상으로 계산한 tempEnd 크기가 실제 count보다 많을 경우
+			this.end = Math.ceil(this.count / 10.0);
+		}else{
+			this.end = tempEnd; // 실제 count가 tempEnd보다 많을 경우
+		}
+				
+		this.prev = this.start != 1;
+		this.next = this.end * 10 < this.count;
+	},
+	/**
+	 * 페이징바를 반환합니다.
+	 * @param param{
+	 *  url: 페이지 버튼에 연결할 링크
+	 *  pagenumParam: 페이지 번호를 넣을 파라미터명
+	 *  pagenum: 현재 페이지 번호. 1부터 시작
+	 *  pagesizeParam: 한 페이지당 출력 개수를 넣을 파라미터명
+	 *  pagesize: 한 페이지당 출력 개수
+	 *  totalRows: 전체 데이터 개수
+	 * }
+	 * @returns 만들어진 페이징 바의 html코드를 텍스트로 반환
+	 */
+	getPagingBar: function(param){
+		var path = param.url + '?' + param.pagesizeParam + '=' + param.pagesize + '&' + param.pagenumParam + '=';
+		
+		PageMaker.setPage(param.pagenum);
+		PageMaker.setCount(param.totalRows); // 페이지 계산
+		
+		var str = '';
+			str +=	'<ul class="paging-bar">';
+		if(PageMaker.prev){
+			str +=	'	<li><a href="#' + (PageMaker.start - 1) + '" class="pageButton" data-pagenum="' + (PageMaker.start - 1) + '">이전</a></li>';
+		}
+		
+		for(idx = PageMaker.start; idx <= PageMaker.end; idx++){
+			str +=	'	<li>';
+			str +=	'		<a href="#' + idx + '" class="pageButton' + ((idx == PageMaker.page) ? ' current' : '') + '" data-pagenum="' + idx + '">' + idx + '</a>';
+			str +=	'	</li>';
+		}
+		
+		if(PageMaker.next){
+			str +=	'	<li><a href="#' + (PageMaker.end + 1) + '" class="pageButton" data-pagenum="' + (PageMaker.end + 1) + '">다음</a></li>';
+		}
+			str +=	'<ul>';
+		
+		return str;
+	}
+}
+
+
+
+
+
+
+
+
 

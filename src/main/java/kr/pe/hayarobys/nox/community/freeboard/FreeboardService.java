@@ -15,7 +15,7 @@ public interface FreeboardService{
 	 * @param paginationRequest 페이징 검색 조건
 	 * @return
 	 */
-	public abstract PaginationResponse<FreeboardGroupVO> getFreeboardGroupList(PaginationRequest paginationRequest);
+	public abstract PaginationResponse<FreeboardGroupDetailVO> getFreeboardGroupList(PaginationRequest paginationRequest);
 	
 	/***
 	 * 임시 저장글 번호를 생성 후 반환 합니다.

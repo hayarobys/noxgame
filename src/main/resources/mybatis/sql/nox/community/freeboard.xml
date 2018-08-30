@@ -3,15 +3,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.pe.hayarobys.nox.community.freeboard.FreeboardDAO">
-	<resultMap type="kr.pe.hayarobys.nox.community.freeboard.FreeboardGroupVO" id="FreeboardGroupVO">
+	<resultMap type="FreeboardGroupDetailVO" id="FreeboardGroupDetailVO">
+		<result column="MEM_SQ_PK" property="memNo"/>
+		<result column="MEM_NICKNM" property="memNickname"/>
+		<result column="MEM_ID" property="memId"/>
+		
 		<result column="FRBRD_GRP_SQ_PK" property="freeboardGroupNo"/>
-		<result column="MEM_FK" property="memNo"/>
-		<result column="CMT_GRP_FK" property="commentGroupNo"/>
-		<result column="AUTH_GRP_FK" property="authgroup"/>
+		<result column="AUTH_GRP_FK" property="openType"/>
 		<result column="FRBRD_GRP_REG_DT" property="freeboardGroupRegDate"/>
+		<result column="HITS" property="hits"/>
+		
+		<result column="FRBRD_TITLE" property="freeboardTitle"/>
 	</resultMap>
 	
-	<resultMap type="kr.pe.hayarobys.nox.community.freeboard.FreeboardDetailVO" id="FreeboardDetailVO">
+	<resultMap type="FreeboardDetailVO" id="FreeboardDetailVO">
 		<result column="MEM_SQ_PK" property="memNo"/>
 		<result column="MEM_NICKNM" property="nickname"/>
 		<result column="MEM_ID" property="id"/>
@@ -29,12 +34,37 @@
 	</resultMap>
 	
 	<!-- 모든 자유게시판 목록을 페이징 처리하여 조회합니다. -->
-	<select id="getFreeboardGroupList" parameterType="PaginationRequest" resultMap="FreeboardGroupVO">
-		SELECT * FROM FRBRD_GRP_TB
+	<select id="getFreeboardGroupList" parameterType="PaginationRequest" resultMap="FreeboardGroupDetailVO">
+		SELECT
+			M.MEM_SQ_PK,
+			M.MEM_NICKNM,
+			M.MEM_ID,
+			FRG.FRBRD_GRP_SQ_PK,
+			FRG.AUTH_GRP_FK,
+			FRG.FRBRD_GRP_REG_DT,
+			FRG.HITS,
+			O_FR.FRBRD_TITLE
+		FROM
+			FRBRD_GRP_TB AS FRG
+			LEFT JOIN MEM_TB AS M ON(FRG.MEM_FK = M.MEM_SQ_PK)
+			LEFT JOIN (
+				SELECT
+					FR.FRBRD_SQ_PK,
+					FR.FRBRD_GRP_FK,
+					FR.FRBRD_TITLE
+				FROM
+					FRBRD_TB AS FR
+					INNER JOIN (
+						SELECT MAX(FRBRD_SQ_PK) AS MAX_SEQ
+						FROM FRBRD_TB
+						GROUP BY FRBRD_GRP_FK
+					) AS M_FR ON(FR.FRBRD_SQ_PK = M_FR.MAX_SEQ)
+			) AS O_FR ON(FRG.FRBRD_GRP_SQ_PK = O_FR.FRBRD_GRP_FK)
+		ORDER BY FRG.FRBRD_GRP_SQ_PK DESC
 		LIMIT ${start}, ${pagesize}
 	</select>
 	
-	<!-- 모든 자유게시판 목록의 개수를 조회 합니다. -->
+	<!-- 자유게시판 그룹의 총 개수를 조회 합니다. -->
 	<select id="getFreeboardGroupListTotalRows" resultType="java.lang.Integer">
 		SELECT COUNT(*) FROM FRBRD_GRP_TB
 	</select>

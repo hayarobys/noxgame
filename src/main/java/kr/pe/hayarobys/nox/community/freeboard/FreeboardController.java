@@ -35,12 +35,12 @@ public class FreeboardController{
 	
 	/** 자유 게시판 글 목록 */
 	@RequestMapping(value="/list", method=RequestMethod.GET)
-	public @ResponseBody PaginationResponse<FreeboardGroupVO> getFreeboardGroupList(
-			@RequestParam(name="pagenum", required=false, defaultValue="0") int pagenum,
+	public @ResponseBody PaginationResponse<FreeboardGroupDetailVO> getFreeboardGroupList(
+			@RequestParam(name="pagenum", required=false, defaultValue="1") int pagenum,
 			@RequestParam(name="pagesize", required=false, defaultValue="20") int pagesize
 	){
 		PaginationRequest paginationRequest = new PaginationRequest();
-		paginationRequest.setPagenum(pagenum);
+		paginationRequest.setPagenum(pagenum-1);
 		paginationRequest.setPagesize(pagesize);
 		
 		return freeboardService.getFreeboardGroupList(paginationRequest);

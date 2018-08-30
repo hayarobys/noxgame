@@ -14,7 +14,7 @@ public interface FreeboardDAO{
 	 * @param paginationRequest
 	 * @return
 	 */
-	public abstract List<FreeboardGroupVO> getFreeboardGroupList(PaginationRequest paginationRequest);
+	public abstract List<FreeboardGroupDetailVO> getFreeboardGroupList(PaginationRequest paginationRequest);
 	
 	/**
 	 * 모든 자유게시판 목록의 개수를 조회 합니다.
