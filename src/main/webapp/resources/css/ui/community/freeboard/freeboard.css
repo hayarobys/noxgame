@@ -21,7 +21,6 @@
 
 .freeboard-contents .write-btn{
 	float: right;
-	margin-right: 28px;
 	border: none;
 	background-color: #ffffff00;
 	padding: 0px;
@@ -45,42 +44,61 @@
 }
 
 .freeboard-contents .freeboard-list{
-	min-height: 600px;
+	min-height: 500px;
+}
+
+.freeboard-contents .freeboard-list .item-list dt{
+	height: 35px;
+	line-height: 35px;
 }
 
 .freeboard-contents .freeboard-list ul{
 	list-style-type: none;
 }
 
-.freeboard-contents .freeboard-list ul > li{
+.freeboard-contents .freeboard-list ul li{
 	clear: both;
 }
 
-.freeboard-contents .freeboard-list ul > li > dl > dt{
+.freeboard-contents .freeboard-list ul li dl dt{
 	float: left;
-	border: 1px solid white;
+	border-bottom: 1px solid gray;
+	box-sizing: border-box;
 }
 
-.freeboard-contents .freeboard-list .contents-title .item-list > dt{
+.freeboard-contents .freeboard-list .contents-title .item-list dt{
+	text-align: center;
+	box-sizing: border-box;
+}
+
+.freeboard-contents .freeboard-list .item-list .group-no{
+	width: 12%;
 	text-align: center;
 }
 
-.freeboard-contents .freeboard-list .item-list > .no{
+.freeboard-contents .freeboard-list .contents-list .item-list .group-no{
+	border-right: 1px solid gray;
+}
+
+.freeboard-contents .freeboard-list .item-list .nickname{
 	width: 15%;
 	text-align: center;
 }
-.freeboard-contents .freeboard-list .item-list > .nick{
-	width: 20%;
+
+.freeboard-contents .freeboard-list .item-list .title{
+	width: 40%;
+}
+
+.freeboard-contents .freeboard-list .item-list  a:link { color: white; text-decoration: none;}
+.freeboard-contents .freeboard-list .item-list  a:visited { color: white; text-decoration: none;}
+.freeboard-contents .freeboard-list .item-list  a:hover { color: gold; font-weight: bold; text-decoration: none;}
+
+.freeboard-contents .freeboard-list .item-list .reg-date{
+	width: 25%;
 	text-align: center;
 }
-.freeboard-contents .freeboard-list .item-list > .title{
-	width: 20%;
-}
-.freeboard-contents .freeboard-list .item-list > .last-date{
-	width: 20%;
-	text-align: center;
-}
-.freeboard-contents .freeboard-list .item-list > .views{
-	width: 20%;
+
+.freeboard-contents .freeboard-list .item-list .hits{
+	width: 8%;
 	text-align: center;
 }

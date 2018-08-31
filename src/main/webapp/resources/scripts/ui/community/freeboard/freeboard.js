@@ -1,5 +1,5 @@
 $(function() {
-	console.log('RxJS included?', !!Rx);
+	/*console.log('RxJS included?', !!Rx);*/
 	
 	// 글쓰기 버튼 클릭 시 작성 페이지로 이동
 	$("#write-btn").on("click", function(){
@@ -9,11 +9,12 @@ $(function() {
 	// 페이징바 클릭 이벤트 부여
 	jQuery(document).on("click", "a[data-pagenum]", function(event){
 		var pagenum = event.target.getAttribute("data-pagenum");
-		reloadFreeboardList(pagenum, 10);
+		console.log("pagenum", pagenum);
+		reloadFreeboardList(pagenum, 15, 5);
 	});
 	
 	// 최초 1회 목록 갱신
-	reloadFreeboardList(1, 10);
+	reloadFreeboardList(1, 15, 5);
 });
 
 
@@ -21,15 +22,20 @@ $(function() {
  * 자유게시판의 게시글 목록과 페이징 바를 갱신합니다.
  * @param pagenum 조회할 페이지 번호. 1부터 시작
  * @param pagesize 한 페이지에 표시할 개수. 기본값은 20
+ * @param pagebarCount 한 페이지 바에 표시할 페이지 개수. 기본값은 10
  * @returns
  */
-function reloadFreeboardList(pagenum, pagesize){
+function reloadFreeboardList(pagenum, pagesize, pagebarCount){
 	if(pagenum == false){
 		pagenum = 1;
 	}
 	
 	if(pagesize == false){
 		pagesize = 20;
+	}
+	
+	if(pagebarCount == false){
+		pagebarCount = 10;
 	}
 	
 	// 게시글 목록 조회	
@@ -42,8 +48,9 @@ function reloadFreeboardList(pagenum, pagesize){
 			xhr.setRequestHeader("X-Ajax-call", "true");	// CustomAccessDeniedHandler에서 Ajax요청을 구분하기 위해 약속한 값
 		},
 		success: function(data, statusText, xhr){
+			//console.log("data", data);
 			replaceFreeboardList(data.rows);
-			replacePagingBar(pagenum, pagesize, data.totalRows);
+			replacePagingBar(pagenum, pagesize, data.totalRows, pagebarCount);
 		},
 		error: function(xhr){
 			console.log("error", xhr);
@@ -57,7 +64,6 @@ function reloadFreeboardList(pagenum, pagesize){
  * @returns
  */
 function replaceFreeboardList(rows){
-	console.log("rows",rows);
 	/*
 	freeboardGroupNo:11
 	freeboardGroupRegDate:1535594290000
@@ -72,11 +78,11 @@ function replaceFreeboardList(rows){
 			<ul class="contents-title">
 				<li>
 					<dl class="item-list">
-						<dt class="no">그룹번호</dt>
-						<dt class="nick">닉네임</dt>
+						<dt class="group-no">그룹번호</dt>
+						<dt class="nickname">닉네임</dt>
 						<dt class="title">제목</dt>
-						<dt class="last-date">등록일</dt>
-						<dt class="views">조회수</dt>
+						<dt class="reg-date">등록일</dt>
+						<dt class="hits">조회수</dt>
 					</dl>
 				</li>
 			</ul>
@@ -84,15 +90,21 @@ function replaceFreeboardList(rows){
 	`;
 	
 	// rows를 루프하며 각 행은 row, 현재 루프 회수(배열번호와 동일)는 index(0부터 시작), 전체 데이터는 array(rows와 동일)에 전달
+	var lastRegDateTitle = "";
+	var freeboardGroupRegDate = "";
 	rows.forEach(function(row, index, array){
+		lastRegDateTitle =  (row.freeboardGroupRegDate != row.freeboardLastRegDate) ? ("마지막 수정일: " + getDateString(row.freeboardLastRegDate)) : "수정 이력이 없습니다.";
+		freeboardGroupRegDate = getDateString(row.freeboardGroupRegDate);
 		str += `
 				<li>
 					<dl class="item-list">
-						<dt class="no">${row.freeboardGroupNo}</dt>
-						<dt class="nick">${row.memNickname}</dt>
-						<dt class="title">${row.freeboardTitle}</dt>	<!-- 30초 전 -->
-						<dt class="last-date">${row.freeboardGroupRegDate}</dt>
-						<dt class="views">${row.hits}</dt>
+						<dt class="group-no">${row.freeboardGroupNo}</dt>
+						<dt class="nickname" title="${row.memNo}">${row.memNickname}</dt>
+						<a href="${CONTEXT_PATH}/community/freeboard/${row.freeboardGroupNo}" id="groupNo${row.freeboardGroupNo}">
+							<dt class="title">${row.freeboardTitle}</dt>
+							<dt class="reg-date" title="${lastRegDateTitle}">${freeboardGroupRegDate}</dt>
+							<dt class="hits">${row.hits}</dt>
+						</a>
 					</dl>
 				</li>
 		`
@@ -109,19 +121,18 @@ function replaceFreeboardList(rows){
  * @param pagenum
  * @param pagesize
  * @param totalRows
+ * @param pagebarCount
  * @returns
  */
-function replacePagingBar(pagenum, pagesize, totalRows){
+function replacePagingBar(pagenum, pagesize, totalRows, pagebarCount){
 	var param = {
-		"url":`${CONTEXT_PATH}/community/freeboard/list`,
-		"pagenumParam":"pagenum",
 		"pagenum":pagenum,
-		"pagesizeParam":"pagesize",
 		"pagesize":pagesize,
-		"totalRows":totalRows
+		"totalRows":totalRows,
+		"pagebarCount":pagebarCount
 	};
-	
-	var pagingBar = PageMaker.getPagingBar(param);
+		
+	var pagingBar = getPagingBar(param);
 	jQuery("#pagination").html(pagingBar);
 }
 

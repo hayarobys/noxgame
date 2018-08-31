@@ -8,7 +8,7 @@
 	<title>자유게시판</title>
 	
 	<link rel="stylesheet" href="<c:url value='/resources/css/ui/community/freeboard/freeboard.css'/>" />
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/4.1.0/rx.all.min.js"></script>
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/4.1.0/rx.all.min.js"></script> -->
 	<script src="<c:url value='/resources/scripts/ui/community/freeboard/freeboard.js'/>"></script>
 </head>
 <body>
@@ -21,7 +21,7 @@
 			<article class="freeboard-title">
 				자유게시판
 			</article>
-			
+			 
 			<article class="freeboard-contents">
 				<button class="write-btn" id="write-btn" type="button">
 					<div class="text">글쓰기</div>
@@ -29,9 +29,9 @@
 				<article id="freeboardList" class="freeboard-list">
 				
 				</article>
-				<artcle id="pagination" class="pagination">
+				<article id="pagination" class="pagination">
 			
-				</artcle>
+				</article>
 			</article>
 		</section>
 	</div>

@@ -10,8 +10,6 @@ public class FreeboardGroupDetailVO{
 	private Integer memNo;
 	/** 자유게시판 그룹 등록 계정의 닉네임 */
 	private String memNickname;
-	/** 자유게시판 그룹 등록 계정의 아이디 */
-	private String memId;
 	
 	/** 자유게시판 그룹 일련 번호 */
 	private Integer freeboardGroupNo;
@@ -24,6 +22,8 @@ public class FreeboardGroupDetailVO{
 	
 	/** 자유게시판 상세 제목 */
 	private String freeboardTitle;
+	/** 마지막 자유게시판 상세 등록일(최종 수정일) */
+	private Date freeboardLastRegDate;
 
 	public Integer getMemNo(){
 		return memNo;
@@ -39,14 +39,6 @@ public class FreeboardGroupDetailVO{
 
 	public void setMemNickname(String memNickname){
 		this.memNickname = memNickname;
-	}
-
-	public String getMemId(){
-		return memId;
-	}
-
-	public void setMemId(String memId){
-		this.memId = memId;
 	}
 
 	public Integer getFreeboardGroupNo(){
@@ -89,10 +81,18 @@ public class FreeboardGroupDetailVO{
 		this.freeboardTitle = freeboardTitle;
 	}
 
+	public Date getFreeboardLastRegDate(){
+		return freeboardLastRegDate;
+	}
+
+	public void setFreeboardLastRegDate(Date freeboardLastRegDate){
+		this.freeboardLastRegDate = freeboardLastRegDate;
+	}
+
 	@Override
 	public String toString(){
-		return "FreeboardGroupDetailVO [memNo=" + memNo + ", memNickname=" + memNickname + ", memId=" + memId + ", freeboardGroupNo="
-				+ freeboardGroupNo + ", openType=" + openType + ", freeboardGroupRegDate=" + freeboardGroupRegDate + ", hits=" + hits
-				+ ", freeboardTitle=" + freeboardTitle + "]";
+		return "FreeboardGroupDetailVO [memNo=" + memNo + ", memNickname=" + memNickname + ", freeboardGroupNo=" + freeboardGroupNo + ", openType="
+				+ openType + ", freeboardGroupRegDate=" + freeboardGroupRegDate + ", hits=" + hits + ", freeboardTitle=" + freeboardTitle
+				+ ", freeboardLastRegDate=" + freeboardLastRegDate + "]";
 	}
 }

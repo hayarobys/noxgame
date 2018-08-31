@@ -6,7 +6,7 @@
 	<resultMap type="FreeboardGroupDetailVO" id="FreeboardGroupDetailVO">
 		<result column="MEM_SQ_PK" property="memNo"/>
 		<result column="MEM_NICKNM" property="memNickname"/>
-		<result column="MEM_ID" property="memId"/>
+		<!-- <result column="MEM_ID" property="memId"/> -->
 		
 		<result column="FRBRD_GRP_SQ_PK" property="freeboardGroupNo"/>
 		<result column="AUTH_GRP_FK" property="openType"/>
@@ -14,6 +14,7 @@
 		<result column="HITS" property="hits"/>
 		
 		<result column="FRBRD_TITLE" property="freeboardTitle"/>
+		<result column="FRBRD_REG_DT" property="freeboardLastRegDate"/>
 	</resultMap>
 	
 	<resultMap type="FreeboardDetailVO" id="FreeboardDetailVO">
@@ -35,15 +36,16 @@
 	
 	<!-- 모든 자유게시판 목록을 페이징 처리하여 조회합니다. -->
 	<select id="getFreeboardGroupList" parameterType="PaginationRequest" resultMap="FreeboardGroupDetailVO">
+		<![CDATA[
 		SELECT
 			M.MEM_SQ_PK,
 			M.MEM_NICKNM,
-			M.MEM_ID,
 			FRG.FRBRD_GRP_SQ_PK,
 			FRG.AUTH_GRP_FK,
 			FRG.FRBRD_GRP_REG_DT,
 			FRG.HITS,
-			O_FR.FRBRD_TITLE
+			O_FR.FRBRD_TITLE,
+			O_FR.FRBRD_REG_DT
 		FROM
 			FRBRD_GRP_TB AS FRG
 			LEFT JOIN MEM_TB AS M ON(FRG.MEM_FK = M.MEM_SQ_PK)
@@ -51,7 +53,8 @@
 				SELECT
 					FR.FRBRD_SQ_PK,
 					FR.FRBRD_GRP_FK,
-					FR.FRBRD_TITLE
+					FR.FRBRD_TITLE,
+					FR.FRBRD_REG_DT
 				FROM
 					FRBRD_TB AS FR
 					INNER JOIN (
@@ -60,13 +63,18 @@
 						GROUP BY FRBRD_GRP_FK
 					) AS M_FR ON(FR.FRBRD_SQ_PK = M_FR.MAX_SEQ)
 			) AS O_FR ON(FRG.FRBRD_GRP_SQ_PK = O_FR.FRBRD_GRP_FK)
+		WHERE FRG.AUTH_GRP_FK <> 'CLOSE'
 		ORDER BY FRG.FRBRD_GRP_SQ_PK DESC
 		LIMIT ${start}, ${pagesize}
+		]]>
 	</select>
 	
 	<!-- 자유게시판 그룹의 총 개수를 조회 합니다. -->
 	<select id="getFreeboardGroupListTotalRows" resultType="java.lang.Integer">
+		<![CDATA[
 		SELECT COUNT(*) FROM FRBRD_GRP_TB
+		WHERE AUTH_GRP_FK <> 'CLOSE'
+		]]>
 	</select>
 	
 	<!-- 자유 게시판 그룹을 등록하고 생성된 일련 번호를 조회합니다. -->
