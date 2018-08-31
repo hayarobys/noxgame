@@ -10,11 +10,11 @@ $(function() {
 	jQuery(document).on("click", "a[data-pagenum]", function(event){
 		var pagenum = event.target.getAttribute("data-pagenum");
 		console.log("pagenum", pagenum);
-		reloadFreeboardList(pagenum, 15, 5);
+		reloadFreeboardList(pagenum, 12, 7);
 	});
 	
 	// 최초 1회 목록 갱신
-	reloadFreeboardList(1, 15, 5);
+	reloadFreeboardList(1, 12, 7);
 });
 
 

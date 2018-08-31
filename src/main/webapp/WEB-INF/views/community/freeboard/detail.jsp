@@ -45,38 +45,52 @@
 						<th>제목</th>
 						<td>${freeboardDetailVO.freeboardTitle}</td>
 					</tr>
-					<tr>
-						<th>본문</th>
-						<td>
-							<p>${freeboardDetailVO.freeboardBody}</p>
-						</td>
-					</tr>
 				</table>
+				<hr />
+				<p>${freeboardDetailVO.freeboardBody}</p>
+				<hr />
 				<p>
-					<button class="btn" id="delete-btn" type="button">
+					<button class="btn float-right" id="delete-btn" type="button">
 						<div class="text">삭제</div>
 					</button>
-					<button class="btn" id="modify-btn" type="button">
+					<button class="btn float-right" id="modify-btn" type="button">
 						<div class="text">수정</div>
+					</button>
+					<button class="btn float-left" id="list-btn" type="button">
+						<div class="text">목록</div>
 					</button>
 				</p>
 			</article>
 			
 			<article class="freeboard-comment">
-				<table>
-					<tr>
-						<th>댓글 그룹 번호</th>
-						<td><span id="commentGroupNo">${freeboardDetailVO.commentGroupNo}</span></td>
-					</tr>
-					<tr>
-						<th>작성자</th>
-						<td>-</td>
-					</tr>
-					<tr>
-						<th>내용</th>
-						<td>-</td>
-					</tr>
-				</table>
+				<div class="comment-reg">
+					<ul>
+						<li class="comment-reg-button">
+							<button class="btn" id="commentRegButton" type="button">
+								<div class="text">작성</div>
+							</button>
+						</li>
+						<li class="comment-reg-textarea">
+							<textarea id="commentRegTextArea"></textarea>
+						</li>
+					</ul>
+				</div>
+				<div class="comment-list">
+					<table>
+						<tr>
+							<th>댓글 그룹 번호</th>
+							<td><span id="commentGroupNo">${freeboardDetailVO.commentGroupNo}</span></td>
+						</tr>
+						<tr>
+							<th>작성자</th>
+							<td>-</td>
+						</tr>
+						<tr>
+							<th>내용</th>
+							<td>-</td>
+						</tr>
+					</table>
+				</div>
 			</article>
 		</section>
 	</div>

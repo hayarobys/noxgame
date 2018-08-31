@@ -24,6 +24,14 @@
 	padding: 0px;
 }
 
+.freeboard-contents .float-left{
+	float: left;
+}
+
+.freeboard-contents .float-right{
+	float: right;
+}
+
 .freeboard-contents .btn:HOVER .text{
 	background-image: url("../../../../image/community/freeboard/btn-hover70x22.png");
 }
@@ -40,3 +48,71 @@
 	color: yellow;
 	font-size: 0.9em;
 }
+
+.freeboard-comment{
+	clear: both;
+	padding-top: 15px;
+}
+
+.freeboard-comment ul li{
+	float: left;
+	box-sizing: border-box;
+	heigth: 50px;
+	line-height: 50px;
+}
+
+.freeboard-comment .comment-reg-button{
+	width: 20%;
+	text-align: center;
+}
+
+.freeboard-comment .comment-reg-textarea{
+	width: 80%;
+	text-align: center;
+}
+
+.freeboard-comment .btn{
+	margin-right: 10px;
+	border: none;
+	background-color: #ffffff00;
+	padding: 0px;
+}
+
+.freeboard-comment .btn:HOVER .text{
+	background-image: url("../../../../image/common/comment/btn-comment-hover178x105.png");
+}
+
+.freeboard-comment .btn:ACTIVE .text{
+	background-image: url("../../../../image/common/comment/btn-comment-active178x105.png");
+}
+
+.freeboard-comment .btn .text{
+	width: 178px;
+	height: 105px;
+	line-height: 105px;
+	background-image: url("../../../../image/common/comment/btn-comment178x105.png");
+	color: yellow;
+	font-size: 0.9em;
+}
+
+.freeboard-comment #commentRegButton{
+	
+}
+
+.freeboard-comment #commentRegTextArea{
+	background-color: transparent;
+	border: 1px solid green;
+	height: 100px;
+	width: 90%;
+}
+
+.freeboard-comment .comment-reg{
+	
+}
+
+.freeboard-comment .comment-list{
+	clear: both;
+}
+
+
+
