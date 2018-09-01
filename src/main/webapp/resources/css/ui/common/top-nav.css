@@ -25,7 +25,7 @@ a:hover {text-decoration:underline;}
 	box-sizing: border-box;
 	background-image: url("../../../image/common/top-nav812x32.png");
 	font-family: 돋움;
-	font-size: 11px;
+	font-size: 12px;
 	letter-spacing: -1px;
 	list-style: none;
 	width: 812px;
@@ -57,7 +57,7 @@ a:hover {text-decoration:underline;}
 	line-height: 32px;
 	padding: 0 15px;
 	color: #fff;
-	font-size: 11px;
+	font-size: 12px;
 	margin-right: 2px;
 }
 

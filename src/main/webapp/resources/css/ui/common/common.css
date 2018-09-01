@@ -3,6 +3,7 @@
 body{
 	background-color: black/* #6b6b6b */;
 	color: white;
+	font-size: 14px;
 }
 
 .pagination{

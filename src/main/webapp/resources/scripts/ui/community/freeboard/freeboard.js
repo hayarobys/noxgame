@@ -9,7 +9,7 @@ $(function() {
 	// 페이징바 클릭 이벤트 부여
 	jQuery(document).on("click", "a[data-pagenum]", function(event){
 		var pagenum = event.target.getAttribute("data-pagenum");
-		console.log("pagenum", pagenum);
+		//console.log("pagenum", pagenum);
 		reloadFreeboardList(pagenum, 12, 7);
 	});
 	
