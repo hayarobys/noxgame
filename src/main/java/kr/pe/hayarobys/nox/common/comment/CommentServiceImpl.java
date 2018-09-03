@@ -16,6 +16,12 @@ public class CommentServiceImpl implements CommentService{
 	private UploadService uploadService;
 	
 	@Override
+	public List<CommentDetailVO> selectCommentDetailListByCommentGroupNo(Integer commentGroupNo){
+		commentDAO.selectCommentDetailListByCommentGroupNo(commentGroupNo);
+		return null;
+	}
+	
+	@Override
 	public Integer insertCommentGroup(Boolean commentGroupNewWriteFlag){
 		CommentGroupVO commentGroupVO = new CommentGroupVO();
 		commentGroupVO.setCommentGroupNewWriteFlag(true);

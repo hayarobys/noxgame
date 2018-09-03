@@ -1,3 +1,6 @@
+var PAGESIZE = 12;
+var PAGEBAR_COUNT = 7;
+
 $(function() {
 	/*console.log('RxJS included?', !!Rx);*/
 	
@@ -10,11 +13,17 @@ $(function() {
 	jQuery(document).on("click", "a[data-pagenum]", function(event){
 		var pagenum = event.target.getAttribute("data-pagenum");
 		//console.log("pagenum", pagenum);
-		reloadFreeboardList(pagenum, 12, 7);
+		reloadFreeboardList(pagenum, PAGESIZE, PAGEBAR_COUNT);
 	});
 	
-	// 최초 1회 목록 갱신
-	reloadFreeboardList(1, 12, 7);
+	// 최초 1회 목록 갱신. URL끝에 #27 과 같은 페이지 번호가 있다면 읽어들입니다.
+	var currentURL = location.href;
+	var pageParameterIndex = currentURL.lastIndexOf("#");
+	if(pageParameterIndex > 0){
+		reloadFreeboardList(currentURL.substring(pageParameterIndex + 1), PAGESIZE, PAGEBAR_COUNT);
+	}else{
+		reloadFreeboardList(1, PAGESIZE, PAGEBAR_COUNT);
+	}
 });
 
 

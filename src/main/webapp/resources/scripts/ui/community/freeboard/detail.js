@@ -1,3 +1,4 @@
+
 $(function() {
 	// 목록 버튼 클릭 시 목록 페이지로 이동
 	$("#list-btn").on("click", function(){

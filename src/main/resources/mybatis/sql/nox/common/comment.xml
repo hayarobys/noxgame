@@ -9,6 +9,28 @@
 		<result column="CMT_GRP_NEW_WRT_FL" property="commentGroupNewWriteFlag" />	댓글 그룹 신규 작성 플래그
 	</resultMap>
 	-->
+	
+	<resultMap type="CommentDetailVO" id="CommentDetailVO">
+		<result column="CMT_SQ_PK" property="commentNo" />
+		
+		<result column="MEM_FK" property="memNo" />
+		<result column="MEM_NICKNM" property="nickname" />
+		
+		<result column="FILE_GRP_FK" property="fileGroupNo" />
+		<result column="AUTH_GRP_FK" property="authgroup" />
+		
+		<result column="CMT_CLS_FK" property="commentClassNo" />
+		<result column="CMT_CLS_DPTH" property="commentClassDepth" />
+		
+		<result column="CMT_REG_DT" property="commentRegDate" />
+		<result column="CMT_MOD_DT" property="commentModDate" />
+		<result column="CMT_BODY" property="commentBody" />
+	</resultMap>
+	
+	<select id="selectCommentDetailListByCommentGroupNo" parameterType="java.lang.Integer" resultMap="CommentDetailVO">
+	
+	</select>
+	
 	<insert id="insertCommentGroup" parameterType="CommentGroupVO">
 		INSERT INTO CMT_GRP_TB(
 			CMT_GRP_NEW_WRT_FL

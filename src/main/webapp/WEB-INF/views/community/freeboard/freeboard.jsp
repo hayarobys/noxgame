@@ -23,7 +23,7 @@
 			</article>
 			 
 			<article class="freeboard-contents">
-				<button class="write-btn" id="write-btn" type="button">
+				<button class="small-button" id="write-btn" type="button">
 					<div class="text">글쓰기</div>
 				</button>
 				<article id="freeboardList" class="freeboard-list">

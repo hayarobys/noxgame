@@ -7,6 +7,13 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CommentDAO{
 	/**
+	 * 여러 테이블을 조인해 특정 댓글 그룹의 상세 댓글 목록을 조회합니다.
+	 * @param commentGroupNo
+	 * @return
+	 */
+	public abstract List<CommentDetailVO> selectCommentDetailListByCommentGroupNo(Integer commentGroupNo);
+	
+	/**
 	 * 댓글 그룹을 생성하고 그 일련번호를 전달받은 객체에 담습니다.
 	 * @param commentGroupVO
 	 */

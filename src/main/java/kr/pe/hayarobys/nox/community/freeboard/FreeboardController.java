@@ -35,7 +35,7 @@ public class FreeboardController{
 	
 	/** 자유 게시판 글 목록 */
 	@RequestMapping(value="/list", method=RequestMethod.GET)
-	public @ResponseBody PaginationResponse<FreeboardGroupDetailVO> getFreeboardGroupList(
+	@ResponseBody public PaginationResponse<FreeboardGroupDetailVO> getFreeboardGroupList(
 			@RequestParam(name="pagenum", required=false, defaultValue="1") int pagenum,
 			@RequestParam(name="pagesize", required=false, defaultValue="20") int pagesize
 	){
@@ -60,7 +60,7 @@ public class FreeboardController{
 	
 	/** 자유 게시판 모든 작성 취소 */
 	@RequestMapping(value="/write-cancel", method=RequestMethod.PUT)
-	public @ResponseBody void writeCancel(){
+	@ResponseBody public void writeCancel(){
 		Integer memberNo = ContextUtil.getMemberInfo().getNo();
 		freeboardService.freeboardWriteCancel(memberNo);
 	}
@@ -85,7 +85,7 @@ public class FreeboardController{
 	
 	/** 자유 게시판 특정 글 수정 */
 	@RequestMapping(value="/{freeboardGroupNo}", method=RequestMethod.PATCH)
-	public @ResponseBody void patchModify(
+	@ResponseBody public void patchModify(
 			@PathVariable(value="freeboardGroupNo", required=true) Integer freeboardGroupNo,
 			@RequestBody TempSaveVO tempSaveVO
 	){
@@ -94,7 +94,7 @@ public class FreeboardController{
 	
 	/** 자유 게시판 모든 수정 취소 */
 	@RequestMapping(value="/edit-cancel", method=RequestMethod.PUT)
-	public @ResponseBody void editCancel(){
+	@ResponseBody public void editCancel(){
 		Integer memberNo = ContextUtil.getMemberInfo().getNo();
 		freeboardService.freeboardModifyCancel(memberNo);
 	}

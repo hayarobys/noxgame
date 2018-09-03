@@ -34,8 +34,12 @@
 		<typeAlias type="kr.pe.hayarobys.nox.common.upload.FileGroupVO" alias="FileGroupVO"/>
 		<!-- 파일 정보를 옮기는데 사용됩니다. -->
 		<typeAlias type="kr.pe.hayarobys.nox.common.upload.FileVO" alias="FileVO"/>
+		
 		<!-- 댓글 묶음 정보를 옮기는데 사용됩니다. -->
 		<typeAlias type="kr.pe.hayarobys.nox.common.comment.CommentGroupVO" alias="CommentGroupVO"/>
+		<!-- 댓글 그룹 내 개별 댓글들의 상세 정보를 옮기는데 사용됩니다. -->
+		<typeAlias type="kr.pe.hayarobys.nox.common.comment.CommentDetailVO" alias="CommentDetailVO"/>
+		
 		<!-- 게시글 임시 저장 정보를 옮기는데 사용됩니다. -->
 		<typeAlias type="kr.pe.hayarobys.nox.common.tempsave.TempSaveVO" alias="TempSaveVO"/>
 		<!-- 자유게시판 그룹, 계정 정보, 자유게시판 상세 테이블을 엮어 자유게시판 목록에 표시할 정보를 옮기는데 사용됩니다. -->

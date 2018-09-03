@@ -1,0 +1,95 @@
+@CHARSET "UTF-8";
+
+.comment-contents{
+	margin-top: 15px;
+}
+
+.comment-contents .comment-registration .comment-registration-button{
+	float: left;
+	border: none;
+	background-color: #ffffff00;
+	padding: 0px;
+	font-size: 14px;
+}
+
+.comment-contents .comment-registration .comment-registration-button:HOVER .text{
+	background-image: url("../../../image/common/comment/button-comment-registration-hover130x100.png");
+}
+
+.comment-contents .comment-registration .comment-registration-button:ACTIVE .text{
+	background-image: url("../../../image/common/comment/button-comment-registration-active130x100.png");
+}
+
+.comment-contents .comment-registration .comment-registration-button .text{
+	width: 130px;
+	height: 100px;
+	line-height: 100px;
+	background-image: url("../../../image/common/comment/button-comment-registration130x100.png");
+	color: yellow;
+	font-size: 12px;
+}
+
+.comment-contents .comment-registration .comment-registration-textarea{
+	background-color: transparent;
+	border: 1px solid green;
+	height: 100px;
+	color: white;
+	box-sizing: border-box;
+	width: 660px;
+	margin-left: 10px;
+	font-size: 14px;
+}
+
+.comment-contents .comment-list{
+	margin-top: 15px;
+}
+
+.comment-contents .comment-list ul{
+	border: 1px solid gray;
+}
+
+.comment-contents .comment-list ul > li:FIRST-CHILD{
+	border-top: 0;
+}
+
+.comment-contents .comment-list ul > li{
+	clear: both;
+	padding: 5px 5px 5px 5px;
+	border-top: 1px solid gray;
+}
+
+.comment-contents .comment-list ul > li > header{
+	display: inline-block;
+	width: 100%;
+	height: 30px;
+	line-height: 30px;
+	border-bottom: 1px solid #696969;
+}
+
+.comment-contents .comment-list ul > li > header > .info-panel{
+	float: left;
+}
+
+.comment-contents .comment-list ul > li > header > .edit-panel{
+	float: right;
+}
+
+.comment-contents .comment-list ul > li > article{
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+
+.comment-contents .comment-list ul > li > article > .comment-body{
+	
+}
+
+
+
+
+
+
+
+
+
+
+

@@ -19,30 +19,6 @@
 	
 }
 
-.freeboard-contents .write-btn{
-	float: right;
-	border: none;
-	background-color: #ffffff00;
-	padding: 0px;
-}
-
-.freeboard-contents .write-btn:HOVER .text{
-	background-image: url("../../../../image/community/freeboard/btn-hover70x22.png");
-}
-
-.freeboard-contents .write-btn:ACTIVE .text{
-	background-image: url("../../../../image/community/freeboard/btn-active70x22.png");
-}
-
-.freeboard-contents .write-btn .text{
-	width: 70px;
-	height: 22px;
-	line-height: 22px;
-	background-image: url("../../../../image/community/freeboard/btn70x22.png");
-	color: yellow;
-	font-size: 12px;
-}
-
 .freeboard-contents .freeboard-list{
 	min-height: 500px;
 }
