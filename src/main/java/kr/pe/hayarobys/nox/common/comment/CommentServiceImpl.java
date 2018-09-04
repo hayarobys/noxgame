@@ -17,8 +17,13 @@ public class CommentServiceImpl implements CommentService{
 	
 	@Override
 	public List<CommentDetailVO> selectCommentDetailListByCommentGroupNo(Integer commentGroupNo){
-		commentDAO.selectCommentDetailListByCommentGroupNo(commentGroupNo);
-		return null;
+		return commentDAO.selectCommentDetailListByCommentGroupNo(commentGroupNo);
+	}
+	
+	@Override
+	public void insertComment(CommentVO commentVO){
+		commentDAO.insertComment(commentVO);
+		
 	}
 	
 	@Override
@@ -53,4 +58,5 @@ public class CommentServiceImpl implements CommentService{
 			uploadService.deleteFileGroupByFileGroupNoList(fileGroupNoList);
 		}
 	}
+	
 }

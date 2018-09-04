@@ -18,19 +18,29 @@
 			<button class="comment-registration-button" id="commentRegistrationButton" type="button">
 				<div class="text">작 성</div>
 			</button>
-			<textarea class="comment-registration-textarea" id="commentRegistrationTextarea"></textarea>
+			<div class="comment-secret-flag-div">
+				<label for="commentSecretFlag" title="댓글 작성자, 덧댓글일 경우 대상 댓글의 작성자, 게시글 작성자, 관리자 에게만 보여집니다.">
+					<input type="checkbox" class="comment-secret-flag" id="commentSecretFlag">
+					비밀댓글
+				</label>
+			</div>
+			<textarea class="comment-registration-textarea" id="commentRegistrationTextarea" placeholder="comment..."></textarea>
+			<div class="comment-file-group">
+				drag & drop file upload
+			</div>			
 		</article>
 		<article class="comment-list">
-			<div>
-				댓글 그룹 번호: <span id="commentGroupNo">${param.commentGroupNo}</span>
+			<div class="comment-group-no">
+				<span title="댓글 그룹 번호">댓글 # <span id="commentGroupNo">${param.commentGroupNo}</span></span>
+				<input type="hidden" id="openType" name="openType" value="${param.openType}" />
 			</div>
-			<ul>
+			<ul id="commentList">
 				<li>
 					<header>
 						<div class="info-panel">
-							<span class="comment-no">1</span>
 							<span class="nickname">홍길동</span>
 							<span class="comment-reg-date">2018.08.31</span>
+							<span class="comment-no-shop" title="댓글 번호"># <span class="comment-no">1</span></span>
 						</div>
 						<div class="edit-panel">
 							<button class="" type="button">
@@ -41,16 +51,21 @@
 							</button>
 						</div>
 					</header>
-					<article>
-						<p class="comment-body">내용입니다22.</p>
+					<article class="comment-body">
+						내용입니다22.
+					</article>
+					<article class="comment-file">
+						<img src="https://localhost:8443/nox/resources/upload/2018/08/31/20180831170923-27acd380-63df-42c7-b486-e6bd05695e1b.jpg" />
+						<img src="https://localhost:8443/nox/resources/upload/2018/08/30/20180830105403-d1a260b4-8422-4de0-baee-41e2bb8690c2.jpg" />
+						<img src="https://localhost:8443/nox/resources/upload/2018/09/04/20180904133458-5c2e1030-a579-4298-904b-8d044d858fb6.png" />
 					</article>
 				</li>
 				<li>
 					<header>
 						<div class="info-panel">
-							<span class="comment-no">2</span>
 							<span class="nickname">김길동</span>
 							<span class="comment-reg-date">2018.09.01</span>
+							<span class="comment-no-shop" title="댓글 번호"># <span class="comment-no">2</span></span>
 						</div>
 						<div class="edit-panel">
 							<button class="" type="button">
@@ -61,8 +76,11 @@
 							</button>
 						</div>
 					</header>
-					<article>
-						<p class="comment-body">내용없음1</p>
+					<article class="comment-body">
+						내용없음1
+					</article>
+					<article class="comment-file">
+						<img src="https://localhost:8443/nox/resources/upload/2018/08/31/20180831170923-27acd380-63df-42c7-b486-e6bd05695e1b.jpg" />
 					</article>
 				</li>
 			</ul>

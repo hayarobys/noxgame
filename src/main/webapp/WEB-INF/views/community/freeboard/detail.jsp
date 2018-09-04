@@ -65,6 +65,7 @@
 			
 			<jsp:include page="/WEB-INF/views/common/comment/comment.jsp" flush="true">
 				<jsp:param name="commentGroupNo" value="${freeboardDetailVO.commentGroupNo}"/>
+				<jsp:param name="openType" value="${freeboardDetailVO.authgroup}"/>
 			</jsp:include>
 		</section>	
 	</div>

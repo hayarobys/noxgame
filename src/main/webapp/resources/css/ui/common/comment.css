@@ -10,6 +10,7 @@
 	background-color: #ffffff00;
 	padding: 0px;
 	font-size: 14px;
+	cursor: pointer;
 }
 
 .comment-contents .comment-registration .comment-registration-button:HOVER .text{
@@ -29,19 +30,47 @@
 	font-size: 12px;
 }
 
+.comment-contents .comment-registration .comment-secret-flag-div{
+	margin-left: 7px;
+	margin-bottom: 5px;
+	display: inline-block;
+}
+
+.comment-contents .comment-registration .comment-secret-flag-div .comment-secret-flag{
+	position: relative;
+	top: 2px;
+}
+
 .comment-contents .comment-registration .comment-registration-textarea{
 	background-color: transparent;
 	border: 1px solid green;
-	height: 100px;
+	min-height: 75px;
+	height: 75px;
 	color: white;
 	box-sizing: border-box;
+	min-width: 660px;
 	width: 660px;
+	max-width: 660px;
 	margin-left: 10px;
 	font-size: 14px;
 }
 
+.comment-contents .comment-registration .comment-file-group{
+	border: 1px solid gray;
+	min-height: 90px;
+	margin-top: 10px;
+	padding: 10px;
+	box-sizing: border-box;
+}
+
 .comment-contents .comment-list{
 	margin-top: 15px;
+}
+
+.comment-contents .comment-list .comment-group-no{
+	font-weight: bold;
+	color: grey;
+	margin-bottom: 5px;
 }
 
 .comment-contents .comment-list ul{
@@ -68,6 +97,11 @@
 
 .comment-contents .comment-list ul > li > header > .info-panel{
 	float: left;
+	color: #ffebcd;
+}
+
+.comment-contents .comment-list ul > li > header > .info-panel .comment-no-shop{
+	color: #778899;
 }
 
 .comment-contents .comment-list ul > li > header > .edit-panel{
@@ -75,14 +109,34 @@
 }
 
 .comment-contents .comment-list ul > li > article{
-	padding-top: 15px;
-	padding-bottom: 15px;
-}
-
-.comment-contents .comment-list ul > li > article > .comment-body{
 	
 }
 
+.comment-contents .comment-list ul > li > article.comment-body{
+	padding-top: 15px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.comment-contents .comment-list ul > li > article.comment-file{
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+	border-radius: 10px;
+}
+
+.comment-contents .comment-list ul > li > article.comment-file img:LAST-CHILD{
+	margin-right: 0;
+}
+
+.comment-contents .comment-list ul > li > article.comment-file img{
+	max-height: 200px;
+	max-width: 240px;
+	border-radius: 10px;
+	border: 1px solid gray;
+	margin-right: 10px;
+}
 
 
 

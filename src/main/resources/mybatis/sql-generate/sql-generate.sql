@@ -231,7 +231,7 @@ CREATE TABLE CMT_TB
     `CMT_SQ_PK`     INT            NOT NULL    AUTO_INCREMENT COMMENT '댓글 시퀀스 기본키', 
     `CMT_GRP_FK`    INT            NOT NULL    COMMENT '댓글 묶음 외래키', 
     `MEM_FK`        INT            NOT NULL    COMMENT '계정 외래키', 
-    `FILE_GRP_FK`   INT            NOT NULL    COMMENT '파일 묶음 외래키', 
+    `FILE_GRP_FK`   INT            NULL        COMMENT '파일 묶음 외래키', 
     `AUTH_GRP_FK`   VARCHAR(45)    NOT NULL    COMMENT '최소 조회 권한', 
     `CMT_CLS_FK`    INT            NULL        COMMENT '댓글 계층 외래키 default 댓글 일련 번호와 동일', 
     `CMT_CLS_ORD`   INT            NOT NULL    DEFAULT 0 COMMENT '댓글 계층 정렬순서 default 0', 

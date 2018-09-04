@@ -64,7 +64,7 @@
 			</li>
 			<li><a href="#">전략포럼</a>
 				<ul>
-					<li><a href="#">전략토론방</a>
+					<li><a href="#">전략토론방 ></a>
 						<ul>
 							<li><a href="#">추천전략</a></li>
 							<li><a href="#">마법세팅</a></li>

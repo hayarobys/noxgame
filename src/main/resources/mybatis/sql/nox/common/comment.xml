@@ -11,25 +11,62 @@
 	-->
 	
 	<resultMap type="CommentDetailVO" id="CommentDetailVO">
+		<result column="CMT_GRP_NEW_WRT_FL" property="commentGroupNewWriteFlag" />
+		
 		<result column="CMT_SQ_PK" property="commentNo" />
-		
-		<result column="MEM_FK" property="memNo" />
-		<result column="MEM_NICKNM" property="nickname" />
-		
-		<result column="FILE_GRP_FK" property="fileGroupNo" />
-		<result column="AUTH_GRP_FK" property="authgroup" />
-		
 		<result column="CMT_CLS_FK" property="commentClassNo" />
 		<result column="CMT_CLS_DPTH" property="commentClassDepth" />
-		
 		<result column="CMT_REG_DT" property="commentRegDate" />
 		<result column="CMT_MOD_DT" property="commentModDate" />
+		<result column="CMT_SCRT_FL" property="commentSecretFlag" />
 		<result column="CMT_BODY" property="commentBody" />
+		
+		<result column="MEM_SQ_PK" property="memNo" />
+		<result column="MEM_NICKNM" property="nickname" />
+		
+		<result column="FILE_GRP_SQ_PK" property="fileGroupNo" />
+		<result column="AUTH_GRP_PK" property="authgroup" />
 	</resultMap>
 	
 	<select id="selectCommentDetailListByCommentGroupNo" parameterType="java.lang.Integer" resultMap="CommentDetailVO">
-	
+		SELECT
+			CG.CMT_GRP_NEW_WRT_FL,
+			C.CMT_SQ_PK,
+			C.CMT_CLS_FK,
+			C.CMT_CLS_DPTH,
+			C.CMT_REG_DT,
+			C.CMT_MOD_DT,
+			C.CMT_SCRT_FL,
+			C.CMT_BODY,
+			M.MEM_SQ_PK,
+			M.MEM_NICKNM,
+			FG.FILE_GRP_SQ_PK,
+			AG.AUTH_GRP_PK
+		FROM
+			CMT_GRP_TB AS CG
+			LEFT JOIN CMT_TB AS C ON (CG.CMT_GRP_SQ_PK = C.CMT_GRP_FK)
+			LEFT JOIN MEM_TB AS M ON (C.MEM_FK = M.MEM_SQ_PK)
+			LEFT JOIN FILE_GRP_TB AS FG ON (C.FILE_GRP_FK = FG.FILE_GRP_SQ_PK)
+			LEFT JOIN AUTH_GRP_TB AS AG ON (C.AUTH_GRP_FK = AG.AUTH_GRP_PK)
+		WHERE
+			CG.CMT_GRP_SQ_PK = 1;
 	</select>
+	
+	<insert id="insertComment" parameterType="CommentVO">
+		INSERT INTO CMT_TB(
+			CMT_GRP_FK,
+			MEM_FK,
+			AUTH_GRP_FK,
+			CMT_SCRT_FL,
+			CMT_BODY
+		)VALUES(
+			#{commentGroupNo},
+			#{memNo},
+			#{authgroup},
+			#{commentSecretFlag},
+			#{commentBody}
+		)
+	</insert>
 	
 	<insert id="insertCommentGroup" parameterType="CommentGroupVO">
 		INSERT INTO CMT_GRP_TB(

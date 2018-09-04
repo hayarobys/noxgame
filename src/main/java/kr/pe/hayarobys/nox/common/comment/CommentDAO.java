@@ -14,6 +14,12 @@ public interface CommentDAO{
 	public abstract List<CommentDetailVO> selectCommentDetailListByCommentGroupNo(Integer commentGroupNo);
 	
 	/**
+	 * 댓글을 등록합니다.
+	 * @param commentVO
+	 */
+	public abstract void insertComment(CommentVO commentVO);
+	
+	/**
 	 * 댓글 그룹을 생성하고 그 일련번호를 전달받은 객체에 담습니다.
 	 * @param commentGroupVO
 	 */

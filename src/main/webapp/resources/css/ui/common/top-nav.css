@@ -92,10 +92,11 @@ a:hover {text-decoration:underline;}
 	top: 32px;
 	display: none;
 	margin-left: 5px;
+	border-bottom: 1px solid gold;
 }
 
 .top-nav .submenu>li>ul>li>ul {
-	left: 108px;	/* 3뎁쓰 위치 */
+	left: 110px;	/* 3뎁쓰 위치 */
 	top: 0px;	/* 3뎁쓰 위치 */
 	display: none;
 	/* border-left: 1px #ffff00 solid;
@@ -106,10 +107,22 @@ a:hover {text-decoration:underline;}
 	background: #000000;	/* 2뎁쓰 배경색 */
 	padding: 0px 10px;
 	position: relative;
+	border-right: 1px solid gold;
 }
 
 .top-nav .submenu>li>ul>li ul {
-	border: 1px solid yellow;
+	border-top: 1px solid gold;
+	border-right: 1px solid gold;
+	border-bottom: 1px solid gold;
+}
+
+.top-nav .submenu>li>ul>li {
+	border-left: 1px solid gold;
+}
+
+.top-nav .submenu>li>ul>li:HOVER {
+	border-left: 1px solid red;
+	border-right: 1px solid black;
 }
 
 .top-nav .submenu>li>ul li>a {
