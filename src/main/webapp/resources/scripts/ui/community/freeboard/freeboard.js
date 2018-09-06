@@ -95,16 +95,22 @@ function replaceFreeboardList(rows){
 					</dl>
 				</li>
 			</ul>
-			<ul class="contents-list">
 	`;
-	
-	// rows를 루프하며 각 행은 row, 현재 루프 회수(배열번호와 동일)는 index(0부터 시작), 전체 데이터는 array(rows와 동일)에 전달
-	var lastRegDateTitle = "";
-	var freeboardGroupRegDate = "";
-	rows.forEach(function(row, index, array){
-		lastRegDateTitle =  (row.freeboardGroupRegDate != row.freeboardLastRegDate) ? ("마지막 수정일: " + getDateString(row.freeboardLastRegDate)) : "수정 이력이 없습니다.";
-		freeboardGroupRegDate = getDateString(row.freeboardGroupRegDate);
+	if(rows.length == 0){
 		str += `
+			<span class="no-contents">등록된 글이  없습니다 ^^;</span>
+		`;
+	}else{
+		str += `
+			<ul class="contents-list">
+		`;
+		// rows를 루프하며 각 행은 row, 현재 루프 회수(배열번호와 동일)는 index(0부터 시작), 전체 데이터는 array(rows와 동일)에 전달
+		var lastRegDateTitle = "";
+		var freeboardGroupRegDate = "";
+		rows.forEach(function(row, index, array){
+			lastRegDateTitle =  (row.freeboardGroupRegDate != row.freeboardLastRegDate) ? ("마지막 수정일: " + getDateString(row.freeboardLastRegDate)) : "수정 이력이 없습니다.";
+			freeboardGroupRegDate = getDateString(row.freeboardGroupRegDate);
+			str += `
 				<li>
 					<dl class="item-list">
 						<dt class="group-no">${row.freeboardGroupNo}</dt>
@@ -116,12 +122,13 @@ function replaceFreeboardList(rows){
 						</a>
 					</dl>
 				</li>
-		`
-	});
-	
-	str += `
+			`
+		});
+		
+		str += `
 			</ul>
-	`;
+		`;
+	}
 	jQuery("#freeboardList").html(str);
 }
 

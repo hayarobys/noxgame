@@ -24,7 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.suph.security.core.enums.Authgroup;
+import com.suph.security.core.enums.OpenType;
 import com.suph.security.core.util.ContextUtil;
 
 import kr.pe.hayarobys.nox.common.exception.ForbiddenException;
@@ -43,18 +43,18 @@ public class UploadServiceImpl implements UploadService{
 	}
 	
 	@Override
-	public void updateAuthgroupOfFileGroupByFileGroupNo(Integer fileGroupNo, Authgroup authgroup){
+	public void updateOpenTypeOfFileGroupByFileGroupNo(Integer fileGroupNo, OpenType openType){
 		FileGroupVO fileGroupVO = new FileGroupVO();
 		fileGroupVO.setFileGroupNo(fileGroupNo);
-		fileGroupVO.setAuthgroup(authgroup);
+		fileGroupVO.setOpenType(openType);
 		uploadDAO.updateAuthgroupOfFileGroupByFileGroupNo(fileGroupVO);
 	}
 	
 	@Override
-	public void updateAuthgroupOfFileGroupByFileGroupNoList(List<Integer> fileGroupNoList, Authgroup authgroup){
-		UpdateAuthgroupByListVO updateAuthgroupByListVO = new UpdateAuthgroupByListVO();
+	public void updateOpenTypeOfFileGroupByFileGroupNoList(List<Integer> fileGroupNoList, OpenType openType){
+		UpdateOpenTypeByListVO updateAuthgroupByListVO = new UpdateOpenTypeByListVO();
 		updateAuthgroupByListVO.setList(fileGroupNoList);
-		updateAuthgroupByListVO.setAuthgroup(authgroup);
+		updateAuthgroupByListVO.setOpenType(openType);
 		uploadDAO.updateAuthgroupOfFileGroupByFileGroupNoList(updateAuthgroupByListVO);
 	}
 	
@@ -131,11 +131,11 @@ public class UploadServiceImpl implements UploadService{
 	}
 	
 	@Override
-	public Integer insertFileGroup(Integer memNo, Authgroup authgroup){
+	public Integer insertFileGroup(Integer memNo, OpenType openType){
 		// TODO: 정합성 검사
 		FileGroupVO fileGroupVO = new FileGroupVO();
 		fileGroupVO.setMemNo(memNo);
-		fileGroupVO.setAuthgroup(authgroup);
+		fileGroupVO.setOpenType(openType);
 		uploadDAO.insertFileGroup(fileGroupVO);
 		return fileGroupVO.getFileGroupNo();
 	}

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.suph.security.core.dao.AuthGroupDAO">
+	<resultMap type="com.suph.security.core.dto.AuthGroupDTO" id="AuthGroupDTO">
+		<result column="AUTH_GRP_PK" property="authGroup"/>	<!-- 권한 그룹 일련 번호 -->
+		<result column="AUTH_GRP_EXPLN" property="authGroupExplanation"/>	<!-- 권한 그룹 설명 -->
+	</resultMap>
+	
+	<!-- 모든 권한 그룹 목록을 페이징 처리하여 조회 -->
+	<select id="getAuthGroupList" parameterType="PaginationRequest" resultMap="AuthGroupDTO">
+		SELECT * FROM AUTH_GRP_TB
+		LIMIT ${start}, ${pagesize}
+	</select>
+	
+	<!-- 모든 권한 그룹 목록의 개수 조회 -->
+	<select id="getAuthGroupListTotalRows" resultType="int">
+		SELECT COUNT(*) FROM AUTH_GRP_TB
+	</select>
+	
+	<!-- 권한 그룹 등록 -->
+	<insert id="insertAuthGroup" parameterType="AuthGroupDTO">
+		INSERT INTO
+			AUTH_GRP_TB(
+				AUTH_GRP_PK,
+				AUTH_GRP_EXPLN
+			)
+			VALUES(
+				#{authGroup},
+				#{authGroupExplanation}
+			)
+	</insert>
+	
+	<!-- 특정 권한 그룹 수정 -->
+	<update id="updateAuthGroupByAuthgGroup" parameterType="AuthGroupDTO">
+		UPDATE
+			AUTH_GRP_TB
+		SET
+			AUTH_GRP_EXPLN = #{authGroupExplanation}
+		WHERE
+			AUTH_GRP_PK = #{authGroup}
+	</update>
+	
+	<!-- 특정 권한 그룹 삭제 -->
+	<delete id="deleteAuthGroupByAuthGroup" parameterType="com.suph.security.core.enums.AuthGroup">
+		DELETE FROM
+			AUTH_GRP_TB
+		WHERE
+			AUTH_GRP_PK = #{authGroup}
+	</delete>
+</mapper>

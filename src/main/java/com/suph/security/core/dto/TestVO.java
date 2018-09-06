@@ -2,14 +2,14 @@ package com.suph.security.core.dto;
 
 import java.util.Date;
 
-import com.suph.security.core.enums.Authgroup;
+import com.suph.security.core.enums.OpenType;
 
 public class TestVO{
 	private Integer fileGroupNo;
 	
 	private Integer memNo;
 	
-	private Authgroup authgroup;
+	private OpenType openType;
 	
 	private Date fileGroupRegDate;
 
@@ -29,12 +29,12 @@ public class TestVO{
 		this.memNo = memNo;
 	}
 
-	public Authgroup getAuthgroup(){
-		return authgroup;
+	public OpenType getOpenType(){
+		return openType;
 	}
 
-	public void setAuthgroup(Authgroup authgroup){
-		this.authgroup = authgroup;
+	public void setOpenType(OpenType openType){
+		this.openType = openType;
 	}
 
 	public Date getFileGroupRegDate(){
@@ -47,6 +47,9 @@ public class TestVO{
 
 	@Override
 	public String toString(){
-		return "TestVO [fileGroupNo=" + fileGroupNo + ", memNo=" + memNo + ", authgroup=" + authgroup + "]";
+		return "TestVO [fileGroupNo=" + fileGroupNo + ", memNo=" + memNo + ", fileGroupRegDate=" + fileGroupRegDate
+				+ "]";
 	}
+
+	
 }

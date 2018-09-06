@@ -20,9 +20,9 @@
 	<!-- 파일 그룹을 추가하고 새로 생성된 파일 그룹 일련 번호를 반환합니다. -->
 	<insert id="insertFileGroup" parameterType="FileGroupVO">
 		INSERT INTO FILE_GRP_TB(
-			MEM_FK, AUTH_GRP_FK, FILE_GRP_REG_DT
+			MEM_FK, OPEN_TYPE_FK, FILE_GRP_REG_DT
 		)VALUES(
-			#{memNo}, #{authgroup}, CURRENT_TIMESTAMP()
+			#{memNo}, #{openType}, CURRENT_TIMESTAMP()
 		)
 		<selectKey resultType="java.lang.Integer" keyProperty="fileGroupNo" order="AFTER">
 			SELECT LAST_INSERT_ID()
@@ -141,14 +141,14 @@
 	<!-- 특정 파일 그룹의 조회 권한(공개 범위)을 수정합니다. -->
 	<update id="updateAuthgroupOfFileGroupByFileGroupNo" parameterType="FileGroupVO">
 		UPDATE FILE_GRP_TB
-		SET AUTH_GRP_FK = #{authgroup}
+		SET OPEN_TYPE_FK = #{openType}
 		WHERE FILE_GRP_SQ_PK = #{fileGroupNo}
 	</update>
 	
 	<!-- 이 파일 그룹 목록의 최소 조회 권한을 일괄 수정 합니다. -->
-	<update id="updateAuthgroupOfFileGroupByFileGroupNoList" parameterType="UpdateAuthgroupByListVO">
+	<update id="updateAuthgroupOfFileGroupByFileGroupNoList" parameterType="UpdateOpenTypeByListVO">
 		UPDATE FILE_GRP_TB
-		SET AUTH_GRP_FK = #{authgroup}
+		SET OPEN_TYPE_FK = #{openType}
 		WHERE FILE_GRP_SQ_PK IN (
 			<foreach collection="list" item="fileGroupNo" separator=",">#{fileGroupNo}</foreach>
 		)

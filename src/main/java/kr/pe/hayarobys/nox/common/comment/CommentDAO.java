@@ -7,6 +7,13 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CommentDAO{
 	/**
+	 * 특정 댓글 그룹을 생성한 계정의 계정 번호를 조회 합니다.
+	 * @param commentGroupNo
+	 * @return
+	 */
+	public abstract Integer selectMemNoFromCommentGroupByCommentGroupNo(Integer commentGroupNo);
+	
+	/**
 	 * 여러 테이블을 조인해 특정 댓글 그룹의 상세 댓글 목록을 조회합니다.
 	 * @param commentGroupNo
 	 * @return

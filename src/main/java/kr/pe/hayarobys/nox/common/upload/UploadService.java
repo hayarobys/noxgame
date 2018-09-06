@@ -2,7 +2,7 @@ package kr.pe.hayarobys.nox.common.upload;
 
 import java.util.List;
 
-import com.suph.security.core.enums.Authgroup;
+import com.suph.security.core.enums.OpenType;
 
 public interface UploadService{
 	/**
@@ -12,21 +12,21 @@ public interface UploadService{
 	public abstract List<FileVO> selectFileByFileGroupNo(Integer fileGroupNo);
 	
 	/**
-	 * 특정 파일 그룹 번호에 해당하는 파일 그룹의 최소 조회 권한을 수정합니다.
+	 * 특정 파일 그룹 번호에 해당하는 파일 그룹의 공개 범위를 수정합니다.
 	 * @param fileGroupNo
-	 * @param authgroup
+	 * @param openType
 	 */
-	public abstract void updateAuthgroupOfFileGroupByFileGroupNo(
-			Integer fileGroupNo, Authgroup authgroup
+	public abstract void updateOpenTypeOfFileGroupByFileGroupNo(
+			Integer fileGroupNo, OpenType openType
 	);
 	
 	/**
-	 * 이 파일 그룹 목록의 최소 조회 권한을 일괄 수정 합니다.
+	 * 이 파일 그룹 목록의 공개 범위를 일괄 수정 합니다.
 	 * @param fileGroupNoList
-	 * @param authgroup
+	 * @param openType
 	 */
-	public abstract void updateAuthgroupOfFileGroupByFileGroupNoList(
-			List<Integer> fileGroupNoList, Authgroup authgroup
+	public abstract void updateOpenTypeOfFileGroupByFileGroupNoList(
+			List<Integer> fileGroupNoList, OpenType openType
 	);
 	
 	/**
@@ -50,12 +50,12 @@ public interface UploadService{
 	public abstract void deleteFileGroupByFileGroupNoList(List<Integer> fileGroupNoList);
 	
 	/**
-	 * 특정 계정과 특정 조회 권한으로 파일 그룹을 생성한 후, 그 일련 번호를 반환합니다.
+	 * 특정 계정과 특정 공개 범위로 파일 그룹을 생성한 후, 그 일련 번호를 반환합니다.
 	 * @param memNo
-	 * @param authgroup
+	 * @param openType
 	 * @return 새롭게 생성한 파일 그룹의 일련 번호
 	 */
-	public abstract Integer insertFileGroup(Integer memNo, Authgroup authgroup);
+	public abstract Integer insertFileGroup(Integer memNo, OpenType openType);
 	
 	/**
 	 * 파일 목록을 저장합니다.

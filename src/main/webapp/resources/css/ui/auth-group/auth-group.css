@@ -31,37 +31,37 @@
 	font-weight: bold;
 }
 
-#data_authgroup{
+#data_authGroup{
 	box-sizing: border-box;
 }
 
-#authgroupFormTable{
+#authGroupFormTable{
 	width: 100%;
 	border: 1px dashed #0be1dc;
 }
 
-#authgroupFormTable tr{
+#authGroupFormTable tr{
 	background-color: #e9e9e9;
 }
 
-#authgroupFormTable tr th{
+#authGroupFormTable tr th{
 	width: 15%;
 	height: 40px;
 }
 
-#authgroupFormTable tr td{
+#authGroupFormTable tr td{
 	width: 85%;
 	height: 40px;
 }
 
-#authgroupFormTable tr td input{
+#authGroupFormTable tr td input{
 	width: 100%;
 	height: 100%;
 	padding-left: 10px;
 	box-sizing: border-box;
 }
 
-#authgroupFormTable tr td select{
+#authGroupFormTable tr td select{
 	width: 100%;
 	height: 100%;
 	padding-left: 10px;

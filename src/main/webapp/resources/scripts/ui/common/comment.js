@@ -45,7 +45,7 @@ function replactCommentList(rows){
 	
 	/* rows:[
 	 *	{
-	 *		authgroup:"PUBLIC"
+	 *		openType:"PUBLIC"
 	 *		commentBody:"댓글1-1"
 	 *		commentClassDepth:1
 	 *		commentClassNo:null
@@ -104,7 +104,7 @@ function postComment(){
 			commentGroupNo: jQuery("#commentGroupNo").text(),
 			commentBody: jQuery("#commentRegistrationTextarea").val(),
 			commentSecretFlag:  jQuery("#commentSecretFlag").is(":checked"),
-			authgroup: jQuery("#openType").val()
+			openType: jQuery("#openType").val()
 	};
 	
 	// 등록 요청 전송

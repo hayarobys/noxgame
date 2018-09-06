@@ -11,7 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.suph.security.core.dto.JsonResultVO;
 import com.suph.security.core.dto.PaginationRequest;
 import com.suph.security.core.dto.PaginationResponse;
-import com.suph.security.core.enums.Authgroup;
+import com.suph.security.core.enums.OpenType;
 import com.suph.security.core.enums.TempSaveCategory;
 import com.suph.security.core.enums.TempSaveUse;
 import com.suph.security.core.userdetails.MemberInfo;
@@ -66,7 +66,7 @@ public class FreeboardServiceImpl implements FreeboardService{
 			mav.addObject("isNew", true);	// 과거 저장 글을 불러온것인지 여부. true면 새로 작성한 것.
 			
 			// 파일 그룹 생성. 기본 공개범위는 '비공개'. 추후 임시저장글 > 글 작성 완료시 설정한 값에 따라 공개범위 수정
-			Integer fileGroupNo = uploadService.insertFileGroup(memNo, Authgroup.SECRET);
+			Integer fileGroupNo = uploadService.insertFileGroup(memNo, OpenType.SECRET);
 			
 			// 임시 저장 생성
 			tempSaveVO = new TempSaveVO();
@@ -108,22 +108,22 @@ public class FreeboardServiceImpl implements FreeboardService{
 		requestTempSaveVO.setFileGroupNo(fileGroupNo);
 		
 		// 공개범위 미 설정 시 기본값은 전체공개
-		Authgroup authgroup = requestTempSaveVO.getOpenType();
-		if(authgroup == null){
-			authgroup = Authgroup.PUBLIC;
+		OpenType openType = requestTempSaveVO.getOpenType();
+		if(openType == null){
+			openType = OpenType.PUBLIC;
 		}
 		
 		// 파일 그룹의 공개 범위를 작성자가 요청한 공개 범위로 수정.
-		uploadService.updateAuthgroupOfFileGroupByFileGroupNo(fileGroupNo, authgroup);
+		uploadService.updateOpenTypeOfFileGroupByFileGroupNo(fileGroupNo, openType);
 		
 		// 댓글 그룹 생성
-		Integer commentGroupNo = commentService.insertCommentGroup(requestTempSaveVO.getAllowComment());
+		Integer commentGroupNo = commentService.insertCommentGroup(memNo, requestTempSaveVO.getAllowComment());
 		
 		// 자유 게시판 그룹 생성
 		FreeboardGroupVO freeboardGroupVO = new FreeboardGroupVO();
 		freeboardGroupVO.setMemNo(memNo);
 		freeboardGroupVO.setCommentGroupNo(commentGroupNo);
-		freeboardGroupVO.setAuthgroup(authgroup);
+		freeboardGroupVO.setOpenType(openType);
 		this.insertFreeboardGroup(freeboardGroupVO);
 		
 		// 자유 게시판 상세 생성
@@ -190,7 +190,7 @@ public class FreeboardServiceImpl implements FreeboardService{
 		}else{
 		// 기존 임시 저장 글이 없는 경우
 			// 신규 파일 그룹 생성. 파일 그룹의 기본 공개범위는 '비공개'. 추후 임시 저장글 > 글 수정 완료 시, 설정한 값에 따라 공개범위 수정
-			Integer fileGroupNo = uploadService.insertFileGroup(memNo, Authgroup.SECRET);
+			Integer fileGroupNo = uploadService.insertFileGroup(memNo, OpenType.SECRET);
 			
 			// 수정 대상글의 파일 상세 레코드 복제. 물리적 파일은 복제 없이 그대로 유지
 			List<FileVO> originalFileVOList = uploadService.selectFileByFileGroupNo(freeboardDetailVO.getFileGroupNo());
@@ -216,7 +216,7 @@ public class FreeboardServiceImpl implements FreeboardService{
 		}
 		
 		// 최소 조회 권한과 댓글 허용 여부 입력
-		tempSaveVO.setOpenType(freeboardDetailVO.getAuthgroup());
+		tempSaveVO.setOpenType(freeboardDetailVO.getOpenType());
 		tempSaveVO.setAllowComment(freeboardDetailVO.getAllowComment());
 		
 		// 생성한 레코드 정보 MODEL에 담아 VIEW로 반환
@@ -244,7 +244,7 @@ public class FreeboardServiceImpl implements FreeboardService{
 		Integer fileGroupNo = tempSaveService.selectFileGroupNoFromTempSaveByTempSaveNo(tempSaveVO.getTempSaveNo());
 		
 		// 자유 게시판 그룹의 최소 조회 권한 수정
-		updateAuthgroupOfFreeboardGroupByFreeboardGroupNo(freeboardGroupNo, tempSaveVO.getOpenType());
+		updateOpenTypeOfFreeboardGroupByFreeboardGroupNo(freeboardGroupNo, tempSaveVO.getOpenType());
 		
 		// 원본 임시 저장 제거. 단, 연결된 파일은 제외
 		tempSaveService.deleteTempSaveByTempSaveNo(tempSaveVO.getTempSaveNo());
@@ -261,7 +261,7 @@ public class FreeboardServiceImpl implements FreeboardService{
 		List<Integer> fileGroupNoList = freeboardDAO.selectFileGroupFromFreeboardGroupByFreeobardGroupNo(freeboardGroupNo);
 		
 		// 이 파일 그룹 목록의 최소 조회 권한 일괄 수정
-		uploadService.updateAuthgroupOfFileGroupByFileGroupNoList(fileGroupNoList, tempSaveVO.getOpenType());
+		uploadService.updateOpenTypeOfFileGroupByFileGroupNoList(fileGroupNoList, tempSaveVO.getOpenType());
 		
 		// 연결된 파일들 임시 플래그를 false로 일괄 변경
 		uploadService.updateTempFlagOfFileByFileGroupNo(fileGroupNo, false);
@@ -274,10 +274,10 @@ public class FreeboardServiceImpl implements FreeboardService{
 	}
 	
 	@Override
-	public void updateAuthgroupOfFreeboardGroupByFreeboardGroupNo(Integer freeboardGroupNo, Authgroup authgroup){
+	public void updateOpenTypeOfFreeboardGroupByFreeboardGroupNo(Integer freeboardGroupNo, OpenType openType){
 		FreeboardGroupVO freeboardGroupVO = new FreeboardGroupVO();
 		freeboardGroupVO.setFreeboardGroupNo(freeboardGroupNo);
-		freeboardGroupVO.setAuthgroup(authgroup);
+		freeboardGroupVO.setOpenType(openType);
 		freeboardDAO.updateAuthgroupOfFreeboardGroupByFreeboardGroupNo(freeboardGroupVO);
 	}
 	

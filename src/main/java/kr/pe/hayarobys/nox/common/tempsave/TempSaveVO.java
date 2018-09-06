@@ -2,7 +2,7 @@ package kr.pe.hayarobys.nox.common.tempsave;
 
 import java.util.Date;
 
-import com.suph.security.core.enums.Authgroup;
+import com.suph.security.core.enums.OpenType;
 import com.suph.security.core.enums.TempSaveCategory;
 import com.suph.security.core.enums.TempSaveUse;
 
@@ -25,8 +25,8 @@ public class TempSaveVO{
 	private String tempSaveBody;
 	/** TEMP_SAVE_MOD_DT 마지막 수정 일 */
 	private Date tempSaveModDt;
-	/** AUTH_GRP_FK 최소 조회 권한 (공개범위) */
-	private Authgroup openType;
+	/** OPEN_TYPE_FK 최소 조회 권한 (공개범위) */
+	private OpenType openType;
 	/** CMT_GRP_NEW_WRT_FL 댓글 신규 작성 허용 여부 */
 	private Boolean allowComment;
 	
@@ -94,14 +94,14 @@ public class TempSaveVO{
 		this.tempSaveModDt = tempSaveModDt;
 	}
 	
-	public Authgroup getOpenType(){
+	public OpenType getOpenType(){
 		return openType;
 	}
 
-	public void setOpenType(Authgroup openType){
+	public void setOpenType(OpenType openType){
 		this.openType = openType;
 	}
-	
+
 	public Boolean getAllowComment(){
 		return allowComment;
 	}
@@ -112,8 +112,9 @@ public class TempSaveVO{
 
 	@Override
 	public String toString(){
-		return "TempSaveVO [tempSaveNo=" + tempSaveNo + ", memNo=" + memNo + ", tempSaveCategory=" + tempSaveCategory + ", tempSaveUse=" + tempSaveUse
-				+ ", fileGroupNo=" + fileGroupNo + ", tempSaveTitle=" + tempSaveTitle + ", tempSaveBody=" + tempSaveBody + ", tempSaveModDt="
-				+ tempSaveModDt + ", openType=" + openType + ", allowComment=" + allowComment + "]";
+		return "TempSaveVO [tempSaveNo=" + tempSaveNo + ", memNo=" + memNo + ", tempSaveCategory=" + tempSaveCategory
+				+ ", tempSaveUse=" + tempSaveUse + ", fileGroupNo=" + fileGroupNo + ", tempSaveTitle=" + tempSaveTitle
+				+ ", tempSaveBody=" + tempSaveBody + ", tempSaveModDt=" + tempSaveModDt + ", openType=" + openType
+				+ ", allowComment=" + allowComment + "]";
 	}
 }

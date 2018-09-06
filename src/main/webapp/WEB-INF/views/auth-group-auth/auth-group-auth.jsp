@@ -7,10 +7,10 @@
 	<title>AUTHGROUP-AUTH 관리</title>
 	
 	<link rel="stylesheet" href="<c:url value='/resources/scripts/jqwidgets/styles/jqx.base.css'/>" />
-	<link rel="stylesheet" href="<c:url value='/resources/css/ui/authgroup-auth/authgroup-auth.css'/>" />
+	<link rel="stylesheet" href="<c:url value='/resources/css/ui/auth-group-auth/auth-group-auth.css'/>" />
 	
 	<script src="<c:url value='/resources/scripts/jqwidgets/jqx-all.js'/>"></script>
-	<script src="<c:url value='/resources/scripts/ui/authgroup-auth/authgroup-auth.js'/>"></script>
+	<script src="<c:url value='/resources/scripts/ui/auth-group-auth/auth-group-auth.js'/>"></script>
 </head>
 <body>
 	
@@ -26,11 +26,11 @@
 					<span class="title_font">AUTHGROUP</span>
 				</header>
 				
-				<section id="data_authgroup" class="data_body">
+				<section id="data_authGroup" class="data_body">
 					
 				</section>
 				
-				<input type="button" value="reload" onclick="javascript:reloadAuthgroupGrid();" />
+				<input type="button" value="reload" onclick="javascript:reloadAuthGroupGrid();" />
 			</div>
 			
 			<div class="data_box">

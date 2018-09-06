@@ -6,7 +6,7 @@
 	<resultMap type="com.suph.security.core.dto.TestVO" id="TestVO">
 		<result column="FILE_GRP_SQ_PK" property="fileGroupNo"/>
 		<result column="MEM_FK" property="memNo"/>
-		<result column="AUTH_GRP_FK" property="authgroup"/>
+		<result column="OPEN_TYPE_FK" property="openType"/>
 		<result column="FILE_GRP_REG_DT" property="fileGroupRegDate"/>
 	</resultMap>
 	
@@ -14,11 +14,11 @@
 	<insert id="insertTestFile" parameterType="com.suph.security.core.dto.TestVO">
 		INSERT INTO FILE_GRP_TB(
 			MEM_FK,
-			AUTH_GRP_FK,
+			OPEN_TYPE_FK,
 			FILE_GRP_REG_DT
 		)VALUES(
 			1,
-			#{authgroup},
+			#{openType},
 			CURRENT_TIMESTAMP()
 		)
 	</insert>

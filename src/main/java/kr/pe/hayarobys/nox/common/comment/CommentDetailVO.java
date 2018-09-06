@@ -2,7 +2,7 @@ package kr.pe.hayarobys.nox.common.comment;
 
 import java.util.Date;
 
-import com.suph.security.core.enums.Authgroup;
+import com.suph.security.core.enums.OpenType;
 
 /**
  * 각각의 댓글 정보를 종합해 CommentGroupDetailVO에 담기 위한 클래스 입니다.
@@ -34,7 +34,7 @@ public class CommentDetailVO{
 	/** 파일 그룹 번호 */
 	private Integer fileGroupNo;
 	/** 최소 조회 권한 */
-	private Authgroup authgroup;
+	private OpenType openType;
 
 	public Boolean getCommentGroupNewWriteFlag(){
 		return commentGroupNewWriteFlag;
@@ -124,19 +124,20 @@ public class CommentDetailVO{
 		this.fileGroupNo = fileGroupNo;
 	}
 
-	public Authgroup getAuthgroup(){
-		return authgroup;
+	public OpenType getOpenType(){
+		return openType;
 	}
 
-	public void setAuthgroup(Authgroup authgroup){
-		this.authgroup = authgroup;
+	public void setOpenType(OpenType openType){
+		this.openType = openType;
 	}
 
 	@Override
 	public String toString(){
-		return "CommentDetailVO [commentGroupNewWriteFlag=" + commentGroupNewWriteFlag + ", commentNo=" + commentNo + ", commentClassNo="
-				+ commentClassNo + ", commentClassDepth=" + commentClassDepth + ", commentRegDate=" + commentRegDate + ", commentModDate="
-				+ commentModDate + ", commentSecretFlag=" + commentSecretFlag + ", commentBody=" + commentBody + ", memNo=" + memNo + ", nickname="
-				+ nickname + ", fileGroupNo=" + fileGroupNo + ", authgroup=" + authgroup + "]";
+		return "CommentDetailVO [commentGroupNewWriteFlag=" + commentGroupNewWriteFlag + ", commentNo=" + commentNo
+				+ ", commentClassNo=" + commentClassNo + ", commentClassDepth=" + commentClassDepth
+				+ ", commentRegDate=" + commentRegDate + ", commentModDate=" + commentModDate + ", commentSecretFlag="
+				+ commentSecretFlag + ", commentBody=" + commentBody + ", memNo=" + memNo + ", nickname=" + nickname
+				+ ", fileGroupNo=" + fileGroupNo + ", openType=" + openType + "]";
 	}
 }

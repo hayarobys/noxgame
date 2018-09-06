@@ -24,12 +24,12 @@
 		<!-- 리소스 정보를 옮기는데 사용됩니다. -->
 		<typeAlias type="com.suph.security.core.dto.ResourceDTO" alias="ResourceDTO"/>
 		<!-- 권한 그룹 정보를 옮기는데 사용됩니다. -->
-		<typeAlias type="com.suph.security.core.dto.AuthgroupDTO" alias="AuthgroupDTO"/>
+		<typeAlias type="com.suph.security.core.dto.AuthGroupDTO" alias="AuthGroupDTO"/>
 		<!-- 권한 그룹 접근에 필요한 권한을 옮기는데 사용됩니다. -->
-		<typeAlias type="com.suph.security.core.dto.AuthgroupAuthDTO" alias="AuthgroupAuthDTO"/>
+		<typeAlias type="com.suph.security.core.dto.AuthGroupAuthDTO" alias="AuthGroupAuthDTO"/>
 		
-		<!-- 번호 목록으로 최소 조회권한을 일괄 수정하는데 사용됩니다. -->
-		<typeAlias type="kr.pe.hayarobys.nox.common.upload.UpdateAuthgroupByListVO" alias="UpdateAuthgroupByListVO"/>
+		<!-- 번호 목록으로 공개 범위를 일괄 수정하는데 사용됩니다. -->
+		<typeAlias type="kr.pe.hayarobys.nox.common.upload.UpdateOpenTypeByListVO" alias="UpdateOpenTypeByListVO"/>
 		<!-- 파일 묶음 정보를 옮기는데 사용됩니다. -->
 		<typeAlias type="kr.pe.hayarobys.nox.common.upload.FileGroupVO" alias="FileGroupVO"/>
 		<!-- 파일 정보를 옮기는데 사용됩니다. -->

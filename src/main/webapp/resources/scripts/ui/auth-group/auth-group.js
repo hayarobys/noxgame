@@ -1,18 +1,18 @@
-/** AUTHGROUP이 저장될 jqxGrid id */
-var authgroupGridId = "#data_authgroup";
-/** 등록할 AUTHGROUP 정보가 있는 form id */
-var authgroupFormId = "#authgroupForm";
+/** AUTH_GROUP이 저장될 jqxGrid id */
+var authGroupGridId = "#data_authGroup";
+/** 등록할 AUTH_GROUP 정보가 있는 form id */
+var authGroupFormId = "#authGroupForm";
 
 $(document).ready(function(){	
 	// 그리드 생성
-	initAuthgroupGrid();
+	initAuthGroupGrid();
 });
 
 /**
-* 권한그룹(AUTHGROUP) 그리드를 초기화 합니다.
+* 권한그룹(AUTH_GROUP) 그리드를 초기화 합니다.
 * (권한그룹 그리드를 생성)
 */
-function initAuthgroupGrid(){
+function initAuthGroupGrid(){
 	
 	function cellValueChanging(row, column, columntype, oldvalue, newvalue){
 		// new value가 공백이라면 old value로 재설정
@@ -25,10 +25,10 @@ function initAuthgroupGrid(){
 	var source = {
 		datatype: "json",
 		datafields: [
-			{name: 'authgroup', type: 'string'},
-			{name: 'authgroupExplanation', type: 'string'}
+			{name: 'authGroup', type: 'string'},
+			{name: 'authGroupExplanation', type: 'string'}
 		],
-		url: CONTEXT_PATH + '/authgroup',
+		url: CONTEXT_PATH + '/auth-group',
 		root: 'rows',
 		cache: false,
 		beforeprocessing: function(data){
@@ -39,7 +39,7 @@ function initAuthgroupGrid(){
 	
 	var dataAdapter = new $.jqx.dataAdapter(source);
 	
-	$(authgroupGridId).jqxGrid({
+	$(authGroupGridId).jqxGrid({
 		width: '100%',
 		height: '400px',  
 		
@@ -60,26 +60,26 @@ function initAuthgroupGrid(){
 		editable: true,
 		editmode: 'dblclick',
 		columns: [
-			{text: '권한 그룹 명', dataField: 'authgroup', cellsalign: 'center', align: 'center', editable: false, width: '30%'},
-			{text: '권한 그룹 설명', dataField: 'authgroupExplanation', cellsalign: 'left', align: 'center', editable: true, cellvaluechanging: cellValueChanging, width: '70%'}
+			{text: '권한 그룹 명', dataField: 'authGroup', cellsalign: 'center', align: 'center', editable: false, width: '30%'},
+			{text: '권한 그룹 설명', dataField: 'authGroupExplanation', cellsalign: 'left', align: 'center', editable: true, cellvaluechanging: cellValueChanging, width: '70%'}
 		]
 	});
 	
 	// Cell Begin Edit
-	$(authgroupGridId).on('cellbeginedit', function(event){
+	$(authGroupGridId).on('cellbeginedit', function(event){
 		
-		$(authgroupGridId).jqxGrid("clearselection"); // AUTHGROUP 그리드의 선택 효과 제거
-		$(authgroupGridId).jqxGrid('selectrow', event.args.rowindex);	// 편집에 들어간 행에 선택 효과 부여
+		$(authGroupGridId).jqxGrid("clearselection"); // AUTH_GROUP 그리드의 선택 효과 제거
+		$(authGroupGridId).jqxGrid('selectrow', event.args.rowindex);	// 편집에 들어간 행에 선택 효과 부여
 		
 	});
 	
 	// Cell End Edit
-	$(authgroupGridId).on('cellendedit', function(event){
+	$(authGroupGridId).on('cellendedit', function(event){
 		
 		/** 편집한 행 번호 */
 		var rowIndex = event.args.rowindex;
 		/** 편집한 권한 일련 번호 */
-		var authgroup = event.args.row.authgroup;
+		var authGroup = event.args.row.authGroup;
 		/** 편집한 컬럼명 */
 		var dataField = event.args.datafield;
 		
@@ -110,7 +110,7 @@ function initAuthgroupGrid(){
 		var jsonData = JSON.stringify(data);
 		
 		// 출력
-		console.log("전송할 json 데이터", authgroup, jsonData);
+		console.log("전송할 json 데이터", authGroup, jsonData);
 		
 		// 수정 요청 전송
 		var token = $("meta[name='_csrf']").attr("content");
@@ -118,7 +118,7 @@ function initAuthgroupGrid(){
 		
 		$.ajax({
 			type: "PATCH",
-			url: CONTEXT_PATH + "/authgroup/" + authgroup,
+			url: CONTEXT_PATH + "/auth-group/" + authGroup,
 			data: jsonData,
 			contentType: 'application/json',
 			dataType: "json",	// 서버에서 응답한 데이터를 클라이언트에서 읽는 방식
@@ -130,29 +130,29 @@ function initAuthgroupGrid(){
 				if(data.result == 'success'){
 					console.log("data", data);
 				}else{
-					console.log("AUTHGROUP 수정에 실패했습니다.");
+					console.log("AUTH_GROUP 수정에 실패했습니다.");
 					console.log(data.result);
 					console.log("message", data.message);
 					
 					// 수정 전 값으로 복원
-					$(authgroupGridId).jqxGrid('setcellvalue', rowIndex, dataField, oldValue);
+					$(authGroupGridId).jqxGrid('setcellvalue', rowIndex, dataField, oldValue);
 				}
 			},
 			error: function(xhr){
 				console.log("error", xhr);
 				// 수정 전 값으로 복원
-				$(authgroupGridId).jqxGrid('setcellvalue', rowIndex, dataField, oldValue);
+				$(authGroupGridId).jqxGrid('setcellvalue', rowIndex, dataField, oldValue);
 			}
 		});
 	});
 }
 
 /**
-* 서버로부터 authgroup목록을 조회해 jqxGrid를 갱신 합니다.
+* 서버로부터 authGroup목록을 조회해 jqxGrid를 갱신 합니다.
 */
-function reloadAuthgroupGrid(){
-	$(authgroupGridId).jqxGrid("clearselection"); // AUTHGROUP 그리드의 선택 효과 제거
-	$(authgroupGridId).jqxGrid("updatebounddata");
+function reloadAuthGroupGrid(){
+	$(authGroupGridId).jqxGrid("clearselection"); // AUTH_GROUP 그리드의 선택 효과 제거
+	$(authGroupGridId).jqxGrid("updatebounddata");
 }
 
 /**

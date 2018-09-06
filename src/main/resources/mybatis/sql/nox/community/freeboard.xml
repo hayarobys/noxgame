@@ -9,7 +9,7 @@
 		<!-- <result column="MEM_ID" property="memId"/> -->
 		
 		<result column="FRBRD_GRP_SQ_PK" property="freeboardGroupNo"/>
-		<result column="AUTH_GRP_FK" property="openType"/>
+		<result column="OPEN_TYPE_FK" property="openType"/>
 		<result column="FRBRD_GRP_REG_DT" property="freeboardGroupRegDate"/>
 		<result column="HITS" property="hits"/>
 		
@@ -25,7 +25,7 @@
 		<result column="FRBRD_GRP_SQ_PK" property="freeboardGroupNo"/>
 		<result column="FILE_GRP_FK" property="fileGroupNo"/>
 		<result column="CMT_GRP_FK" property="commentGroupNo"/>
-		<result column="AUTH_GRP_FK" property="authgroup"/>
+		<result column="OPEN_TYPE_FK" property="openType"/>
 		<result column="CMT_GRP_NEW_WRT_FL" property="allowComment"/>
 		
 		<result column="FRBRD_SQ_PK" property="freeboardNo"/>
@@ -41,7 +41,7 @@
 			M.MEM_SQ_PK,
 			M.MEM_NICKNM,
 			FRG.FRBRD_GRP_SQ_PK,
-			FRG.AUTH_GRP_FK,
+			FRG.OPEN_TYPE_FK,
 			FRG.FRBRD_GRP_REG_DT,
 			FRG.HITS,
 			O_FR.FRBRD_TITLE,
@@ -63,7 +63,7 @@
 						GROUP BY FRBRD_GRP_FK
 					) AS M_FR ON(FR.FRBRD_SQ_PK = M_FR.MAX_SEQ)
 			) AS O_FR ON(FRG.FRBRD_GRP_SQ_PK = O_FR.FRBRD_GRP_FK)
-		WHERE FRG.AUTH_GRP_FK <> 'CLOSE'
+		WHERE FRG.OPEN_TYPE_FK <> 'CLOSE'
 		ORDER BY FRG.FRBRD_GRP_SQ_PK DESC
 		LIMIT ${start}, ${pagesize}
 		]]>
@@ -73,7 +73,7 @@
 	<select id="getFreeboardGroupListTotalRows" resultType="java.lang.Integer">
 		<![CDATA[
 		SELECT COUNT(*) FROM FRBRD_GRP_TB
-		WHERE AUTH_GRP_FK <> 'CLOSE'
+		WHERE OPEN_TYPE_FK <> 'CLOSE'
 		]]>
 	</select>
 	
@@ -82,11 +82,11 @@
 		INSERT INTO FRBRD_GRP_TB(
 			MEM_FK,
 			CMT_GRP_FK,
-			AUTH_GRP_FK
+			OPEN_TYPE_FK
 		)VALUES(
 			#{memNo},
 			#{commentGroupNo},
-			#{authgroup}
+			#{openType}
 		)
 		<selectKey resultType="java.lang.Integer" keyProperty="freeboardGroupNo" order="AFTER">
 			SELECT LAST_INSERT_ID()
@@ -121,7 +121,7 @@
 				
 				FG.FRBRD_GRP_SQ_PK,
 				FG.CMT_GRP_FK,
-				FG.AUTH_GRP_FK,
+				FG.OPEN_TYPE_FK,
 				CG.CMT_GRP_NEW_WRT_FL,
 				
 				F.FRBRD_SQ_PK,
@@ -158,7 +158,7 @@
 	<!-- 특정 자유게시판 그룹의 최소 조회 권한을 변경합니다. -->
 	<update id="updateAuthgroupOfFreeboardGroupByFreeboardGroupNo" parameterType="FreeboardGroupVO">
 		UPDATE FRBRD_GRP_TB
-		SET AUTH_GRP_FK = #{authgroup}
+		SET OPEN_TYPE_FK = #{openType}
 		WHERE FRBRD_GRP_SQ_PK = #{freeboardGroupNo}
 	</update>
 	

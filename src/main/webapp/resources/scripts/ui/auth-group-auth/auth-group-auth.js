@@ -1,13 +1,13 @@
-/** AUTHGROUP가 저장될 jqxGrid id */
-var authgroupGridId = "#data_authgroup";
+/** AUTH_GROUP이 저장될 jqxGrid id */
+var authGroupGridId = "#data_authGroup";
 /** AUTH가 저장될 jqxGrid id */
 var authGridId = "#data_auth";
-/** 서버로부터 최초 한 번 받아올 전체 권한 목록. 이 권한 목록과 특정 AUTHGROUP의 권한 목록을 비교하여 일치하는 경우, jqxGrid의 해당 row를 select처리 하는데 사용 */
+/** 서버로부터 최초 한 번 받아올 전체 권한 목록. 이 권한 목록과 특정 AUTH_GROUP의 권한 목록을 비교하여 일치하는 경우, jqxGrid의 해당 row를 select처리 하는데 사용 */
 var everyAuthList = null;
 
 $(document).ready(function(){
 	// 그리드 생성
-	initAuthgroupGrid();
+	initAuthGroupGrid();
 	initAuthGrid();
 	
 	// 변수 everyAuthList 갱신
@@ -18,13 +18,13 @@ $(document).ready(function(){
 * 권한 그룹 그리드를 초기화 합니다.
 * (권한 그룹 그리드를 생성 & 클릭 이벤트 부여)
 */
-function initAuthgroupGrid(){
+function initAuthGroupGrid(){
 	var source = {
 		datatype: "json",
 		datafields: [
-			{name: 'authgroup', type: 'string'}
+			{name: 'authGroup', type: 'string'}
 		],
-		url: CONTEXT_PATH + '/authgroup',
+		url: CONTEXT_PATH + '/auth-group',
 		root: 'rows',
 		cache: false,
 		beforeprocessing: function(data){
@@ -35,7 +35,7 @@ function initAuthgroupGrid(){
 	
 	var dataAdapter = new $.jqx.dataAdapter(source);
 	
-	$("#data_authgroup").jqxGrid({
+	$("#data_authGroup").jqxGrid({
 		width: '100%',
 		height: '400px',
 		source: dataAdapter,
@@ -55,21 +55,21 @@ function initAuthgroupGrid(){
 		handlekeyboardnavigation: function(event){
 			var key = event.charCode ? event.charCode : event.keyCode ? event.keyCode : 0;
 			if(key == 13){	// key 13 = enter
-				var row = $(authgroupGridId).jqxGrid('getselectedrowindex');
-				var rowData = $(authgroupGridId).jqxGrid("getrowdata", row);
-				reloadAuthGridByNo(rowData.authgroup);
+				var row = $(authGroupGridId).jqxGrid('getselectedrowindex');
+				var rowData = $(authGroupGridId).jqxGrid("getrowdata", row);
+				reloadAuthGridByNo(rowData.authGroup);
 				return true;
 			}
 		},
 		columns: [
-			{text: '권한 그룹', dataField: 'authgroup', cellsalign: 'center', align: 'center', editable: false, width: '100%'}
+			{text: '권한 그룹', dataField: 'authGroup', cellsalign: 'center', align: 'center', editable: false, width: '100%'}
 		]
 	});
 	
-	$(authgroupGridId).on("rowclick", function(event){
+	$(authGroupGridId).on("rowclick", function(event){
 		var row = event.args.rowindex;
-		var rowData = $(authgroupGridId).jqxGrid("getrowdata", row);
-		reloadAuthGridByNo(rowData.authgroup);
+		var rowData = $(authGroupGridId).jqxGrid("getrowdata", row);
+		reloadAuthGridByNo(rowData.authGroup);
 	});
 }
 
@@ -126,27 +126,27 @@ function getEveryAuthList(){
 }
 
 /**
-* 서버로부터 AUTHGROUP목록을 조회해 jqxGrid를 갱신 합니다.
+* 서버로부터 AUTH_GROUP목록을 조회해 jqxGrid를 갱신 합니다.
 */
-function reloadAuthgroupGrid(){
-	$(authgroupGridId).jqxGrid("clearselection"); // AUTHGROUP 그리드의 선택 효과 제거
+function reloadAuthGroupGrid(){
+	$(authGroupGridId).jqxGrid("clearselection"); // AUTH_GROUP 그리드의 선택 효과 제거
 	$(authGridId).jqxGrid("clearselection"); // AUTH 그리드의 선택 효과 제거
-	$(authgroupGridId).jqxGrid("clear"); // AUTHGROUP 그리드의 데이터 제거
+	$(authGroupGridId).jqxGrid("clear"); // AUTH_GROUP 그리드의 데이터 제거
 	$(authGridId).jqxGrid("clear"); // AUTH 그리드의 데이터 제거
 	
-	$(authgroupGridId).jqxGrid("updatebounddata");
+	$(authGroupGridId).jqxGrid("updatebounddata");
 }
 
 /**
 * 서버로부터 특정 URL패턴의 auth목록을 불러와 jqxGrid를 갱신 합니다.
 */
-function reloadAuthGridByNo(authgroup){
+function reloadAuthGridByNo(authGroup){
 	var token = $("meta[name='_csrf']").attr("content");
 	var header = $("meta[name='_csrf_header']").attr("content");
 	
 	$.ajax({
 		type: "GET",
-		url: CONTEXT_PATH + "/authgroup/" + authgroup + "/auth",
+		url: CONTEXT_PATH + "/auth-group/" + authGroup + "/auth",
 		dataType: "json",	// 서버에서 응답한 데이터를 클라이언트에서 읽는 방식
 		beforeSend: function(xhr){
 			xhr.setRequestHeader("X-Ajax-call", "true");	// CustomAccessDeniedHandler에서 Ajax요청을 구분하기 위해 약속한 값
@@ -223,12 +223,12 @@ function selectRowByValueList(jqxGridSelector, searchValueList){
  */
 function save(){
 	// 현재 선택한 권한그룹과 권한의 일련 번호 구하기
-	var selectedAuthgroupNoArray = getSelectedNoArray(authgroupGridId, 'authgroup');
+	var selectedAuthGroupNoArray = getSelectedNoArray(authGroupGridId, 'authGroup');
 	var selectedAuthNoArray = getSelectedNoArray(authGridId, 'authSqPk');
 	
 	// 전송할 json 데이터 생성
 	var data = {};
-	//data.authgroupNo = Number(selectedAuthgroupNoArray[0]);	// String to Number
+	//data.authGroupNo = Number(selectedAuthGroupNoArray[0]);	// String to Number
 	data.authSqPkList = selectedAuthNoArray;
 	data = JSON.stringify(data);
 	
@@ -241,7 +241,7 @@ function save(){
 	
 	$.ajax({
 		type: "PATCH",
-		url: CONTEXT_PATH + "/authgroup/" + selectedAuthgroupNoArray[0] + "/auth",
+		url: CONTEXT_PATH + "/auth-group/" + selectedAuthGroupNoArray[0] + "/auth",
 		data: data,
 		contentType: 'application/json',
 		dataType: "json",	// 서버에서 응답한 데이터를 클라이언트에서 읽는 방식

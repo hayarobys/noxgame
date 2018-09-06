@@ -9,28 +9,28 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
-import com.suph.security.core.dao.AuthgroupAuthDAO;
-import com.suph.security.core.dto.AuthgroupAuthDTO;
-import com.suph.security.core.service.AuthgroupAuthService;
+import com.suph.security.core.dao.AuthGroupAuthDAO;
+import com.suph.security.core.dto.AuthGroupAuthDTO;
+import com.suph.security.core.service.AuthGroupAuthService;
 
 @Service("authgroupAuthService")
-public class AuthgroupAuthServiceImpl implements AuthgroupAuthService{
+public class AuthGroupAuthServiceImpl implements AuthGroupAuthService{
 	//private static final Logger logger = LoggerFactory.getLogger(ResourceAuthServiceImpl.class);
 
 	@Autowired
-	private AuthgroupAuthDAO authgroupAuthDAO;
+	private AuthGroupAuthDAO authGroupAuthDAO;
 	
 	@Override
 	@Transactional
-	public Map<String, Object> changeAuthgroupAuth(AuthgroupAuthDTO authgroupAuthDTO){
+	public Map<String, Object> changeAuthGroupAuth(AuthGroupAuthDTO authGroupAuthDTO){
 		Map<String, Object> returnMap = new HashMap<String, Object>();
 		
 		try{
-			authgroupAuthDAO.deleteAuthListByAuthgroup(authgroupAuthDTO.getAuthgroup());
-			if(		authgroupAuthDTO.getAuthSqPkList() != null
-				&&	authgroupAuthDTO.getAuthSqPkList().size() > 0
+			authGroupAuthDAO.deleteAuthListByAuthGroup(authGroupAuthDTO.getAuthGroup());
+			if(		authGroupAuthDTO.getAuthSqPkList() != null
+				&&	authGroupAuthDTO.getAuthSqPkList().size() > 0
 			){
-				authgroupAuthDAO.insertAuthListByAuthgroup(authgroupAuthDTO);
+				authGroupAuthDAO.insertAuthListByAuthGroup(authGroupAuthDTO);
 			}
 			returnMap.put("result", "success");
 		}catch(DataAccessException e){

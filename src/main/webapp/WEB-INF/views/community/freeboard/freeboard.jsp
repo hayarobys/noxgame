@@ -27,7 +27,7 @@
 					<div class="text">글쓰기</div>
 				</button>
 				<article id="freeboardList" class="freeboard-list">
-				
+					
 				</article>
 				<article id="pagination" class="pagination">
 			

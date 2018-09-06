@@ -2,7 +2,7 @@ package kr.pe.hayarobys.nox.community.freeboard;
 
 import java.util.Date;
 
-import com.suph.security.core.enums.Authgroup;
+import com.suph.security.core.enums.OpenType;
 
 /**
  * 자유 게시판 그룹 테이블과 자유 게시판 상세 테이블을 조인해 게시글 상세 화면 출력에 필요한 정보만 옮기는데 사용됩니다.
@@ -24,7 +24,7 @@ public class FreeboardDetailVO{
 	/** 댓글 그룹 번호 */
 	private Integer commentGroupNo;
 	/** 최소 조회 권한 그룹(공개 범위) */
-	private Authgroup authgroup;
+	private OpenType openType;
 	/** 댓글 신규 작성 가능 여부 */
 	private Boolean allowComment;
 	
@@ -86,14 +86,14 @@ public class FreeboardDetailVO{
 		this.commentGroupNo = commentGroupNo;
 	}
 
-	public Authgroup getAuthgroup(){
-		return authgroup;
+	public OpenType getOpenType(){
+		return openType;
 	}
 
-	public void setAuthgroup(Authgroup authgroup){
-		this.authgroup = authgroup;
+	public void setOpenType(OpenType openType){
+		this.openType = openType;
 	}
-	
+
 	public Boolean getAllowComment(){
 		return allowComment;
 	}
@@ -136,9 +136,12 @@ public class FreeboardDetailVO{
 
 	@Override
 	public String toString(){
-		return "FreeboardDetailVO [memNo=" + memNo + ", nickname=" + nickname + ", id=" + id + ", freeboardGroupNo=" + freeboardGroupNo
-				+ ", fileGroupNo=" + fileGroupNo + ", commentGroupNo=" + commentGroupNo + ", authgroup=" + authgroup + ", allowComment="
-				+ allowComment + ", freeboardNo=" + freeboardNo + ", freeboardRegDate=" + freeboardRegDate + ", freeboardTitle=" + freeboardTitle
-				+ ", freeboardBody=" + freeboardBody + "]";
+		return "FreeboardDetailVO [memNo=" + memNo + ", nickname=" + nickname + ", id=" + id + ", freeboardGroupNo="
+				+ freeboardGroupNo + ", fileGroupNo=" + fileGroupNo + ", commentGroupNo=" + commentGroupNo
+				+ ", openType=" + openType + ", allowComment=" + allowComment + ", freeboardNo=" + freeboardNo
+				+ ", freeboardRegDate=" + freeboardRegDate + ", freeboardTitle=" + freeboardTitle + ", freeboardBody="
+				+ freeboardBody + "]";
 	}
+
+	
 }

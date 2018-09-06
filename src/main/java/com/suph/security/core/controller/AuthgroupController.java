@@ -13,33 +13,33 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.suph.security.core.dto.AuthgroupDTO;
+import com.suph.security.core.dto.AuthGroupDTO;
 import com.suph.security.core.dto.PaginationRequest;
-import com.suph.security.core.enums.Authgroup;
-import com.suph.security.core.service.AuthgroupService;
+import com.suph.security.core.enums.AuthGroup;
+import com.suph.security.core.service.AuthGroupService;
 
 
 @Controller
-public class AuthgroupController{
+public class AuthGroupController{
 	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
-	private AuthgroupService authgroupService;
+	private AuthGroupService authGroupService;
 	
 	/**
 	 * 권한 그룹 관리 페이지로 이동
 	 */
-	@RequestMapping(value="/authgroup/edit", method=RequestMethod.GET)
-	public String getAuthgroupEdit(){
-		return "authgroup/authgroup";
+	@RequestMapping(value="/auth-group/edit", method=RequestMethod.GET)
+	public String getAuthGroupEdit(){
+		return "auth-group/auth-group";
 	}
 
 	/**
 	 * 모든 권한 그룹 목록을 조회합니다.
 	 * @return
 	 */
-	@RequestMapping(value="/authgroup", method=RequestMethod.GET)
-	public @ResponseBody Map<String, Object> getAuthgroup(
+	@RequestMapping(value="/auth-group", method=RequestMethod.GET)
+	public @ResponseBody Map<String, Object> getAuthGroup(
 			@RequestParam(name="pagenum", required=false, defaultValue="0") int pagenum,
 			@RequestParam(name="pagesize", required=false, defaultValue="20") int pagesize
 	){
@@ -47,7 +47,7 @@ public class AuthgroupController{
 		paginationRequest.setPagenum(pagenum);
 		paginationRequest.setPagesize(pagesize);
 		
-		return authgroupService.getAuthgroupList(paginationRequest);
+		return authGroupService.getAuthGroupList(paginationRequest);
 	}
 	
 	/**
@@ -55,34 +55,34 @@ public class AuthgroupController{
 	 * @return
 	 */
 	/*	
-	@RequestMapping(value="/authgroup", method=RequestMethod.POST)
-	public @ResponseBody Map<String, Object> postAuthgroup(@RequestBody AuthgroupDTO authgroupDTO){
-		return authgroupService.postAuthgroup(authgroupDTO);
+	@RequestMapping(value="/auth-group", method=RequestMethod.POST)
+	public @ResponseBody Map<String, Object> postAuthGroup(@RequestBody AuthGroupDTO authGroupDTO){
+		return authGroupService.postAuthGroup(authGroupDTO);
 	}
 	*/
 	/**
 	 * 특정 권한 그룹을 수정합니다.
-	 * @param authgroup
-	 * @param authgroupExplanation
+	 * @param authGroup
+	 * @param authGroupExplanation
 	 * @return
 	 */
-	@RequestMapping(value="/authgroup/{authgroup}", method=RequestMethod.PATCH)
-	public @ResponseBody Map<String, Object> patchAuthgroupByAuthgroup(
-			@PathVariable(required=true) Authgroup authgroup,
-			@RequestBody AuthgroupDTO authgroupDTO
+	@RequestMapping(value="/auth-group/{authGroup}", method=RequestMethod.PATCH)
+	public @ResponseBody Map<String, Object> patchAuthGroupByAuthgroup(
+			@PathVariable(required=true) AuthGroup authGroup,
+			@RequestBody AuthGroupDTO authGroupDTO
 	){
-		authgroupDTO.setAuthgroup(authgroup);
-		logger.debug("전달받은 문자열: {}", authgroupDTO);
-		return authgroupService.patchAuthgroupByAuthgroup(authgroupDTO);
+		authGroupDTO.setAuthGroup(authGroup);
+		logger.debug("전달받은 문자열: {}", authGroupDTO);
+		return authGroupService.patchAuthGroupByAuthGroup(authGroupDTO);
 	}
 	
 	/**
 	 * 요청받은 특정 권한 그룹을 삭제 합니다.
 	 */
 	/*
-	@RequestMapping(value="/authgroup/{authgroup}", method=RequestMethod.DELETE)
-	public @ResponseBody Map<String, Object> deleteAuthgroupByAuthgroupNo(@PathVariable(required=true) Authgroup authgroup){
-		return authgroupService.deleteAuthgroupByAuthgroupNo(authgroup);
+	@RequestMapping(value="/auth-group/{authGroup}", method=RequestMethod.DELETE)
+	public @ResponseBody Map<String, Object> deleteAuthGroupByAuthgroupNo(@PathVariable(required=true) AuthGroup authGroup){
+		return authGroupService.deleteAuthGroupByAuthGroupNo(authGroup);
 	}
 	*/
 }

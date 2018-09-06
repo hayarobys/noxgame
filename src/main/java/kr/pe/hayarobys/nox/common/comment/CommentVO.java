@@ -1,12 +1,12 @@
 package kr.pe.hayarobys.nox.common.comment;
 
-import com.suph.security.core.enums.Authgroup;
+import com.suph.security.core.enums.OpenType;
 
 public class CommentVO{
 	private Integer commentGroupNo;
 	private Integer memNo;
 	private Integer fileGroupNo;
-	private Authgroup authgroup;
+	private OpenType openType;
 	private Boolean commentSecretFlag;
 	private String commentBody;
 	
@@ -28,11 +28,12 @@ public class CommentVO{
 	public void setFileGroupNo(Integer fileGroupNo){
 		this.fileGroupNo = fileGroupNo;
 	}
-	public Authgroup getAuthgroup(){
-		return authgroup;
+	
+	public OpenType getOpenType(){
+		return openType;
 	}
-	public void setAuthgroup(Authgroup authgroup){
-		this.authgroup = authgroup;
+	public void setOpenType(OpenType openType){
+		this.openType = openType;
 	}
 	public Boolean getCommentSecretFlag(){
 		return commentSecretFlag;
@@ -48,7 +49,7 @@ public class CommentVO{
 	}
 	@Override
 	public String toString(){
-		return "CommentVO [commentGroupNo=" + commentGroupNo + ", memNo=" + memNo + ", fileGroupNo=" + fileGroupNo + ", authgroup=" + authgroup
+		return "CommentVO [commentGroupNo=" + commentGroupNo + ", memNo=" + memNo + ", fileGroupNo=" + fileGroupNo
 				+ ", commentSecretFlag=" + commentSecretFlag + ", commentBody=" + commentBody + "]";
 	}
 }

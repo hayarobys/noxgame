@@ -5,7 +5,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.suph.security.core.dto.JsonResultVO;
 import com.suph.security.core.dto.PaginationRequest;
 import com.suph.security.core.dto.PaginationResponse;
-import com.suph.security.core.enums.Authgroup;
+import com.suph.security.core.enums.OpenType;
 
 import kr.pe.hayarobys.nox.common.tempsave.TempSaveVO;
 
@@ -59,11 +59,11 @@ public interface FreeboardService{
 	public abstract void patchFreeboard(Integer freeboardGroupNo, TempSaveVO tempSaveVO);
 	
 	/**
-	 * 특정 자유게시판 그룹의 최소 조회 권한을 변경합니다.
+	 * 특정 자유게시판 그룹의 공개 범위를 변경합니다.
 	 * @param freeboardGroupNo
-	 * @param authgroup
+	 * @param openType
 	 */
-	public abstract void updateAuthgroupOfFreeboardGroupByFreeboardGroupNo(Integer freeboardGroupNo, Authgroup authgroup);
+	public abstract void updateOpenTypeOfFreeboardGroupByFreeboardGroupNo(Integer freeboardGroupNo, OpenType openType);
 	
 	/**
 	 * 특정 계정이 자유 게시판에서 진행중인 모든 수정을 취소합니다.

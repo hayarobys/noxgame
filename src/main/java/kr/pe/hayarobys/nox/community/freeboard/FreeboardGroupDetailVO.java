@@ -2,7 +2,7 @@ package kr.pe.hayarobys.nox.community.freeboard;
 
 import java.util.Date;
 
-import com.suph.security.core.enums.Authgroup;
+import com.suph.security.core.enums.OpenType;
 
 /** 자유게시판 목록에서 개별 항목을 상세히 표시하기 위한 VO 입니다. */
 public class FreeboardGroupDetailVO{
@@ -14,7 +14,7 @@ public class FreeboardGroupDetailVO{
 	/** 자유게시판 그룹 일련 번호 */
 	private Integer freeboardGroupNo;
 	/** 자유게시판 그룹의 최소 조회 권한 */
-	private Authgroup openType;
+	private OpenType openType;
 	/** 자유게시판 그룹 등록 날짜 */
 	private Date freeboardGroupRegDate;
 	/** 자유게시판 그룹 조회수 */
@@ -49,11 +49,13 @@ public class FreeboardGroupDetailVO{
 		this.freeboardGroupNo = freeboardGroupNo;
 	}
 
-	public Authgroup getOpenType(){
+	
+
+	public OpenType getOpenType(){
 		return openType;
 	}
 
-	public void setOpenType(Authgroup openType){
+	public void setOpenType(OpenType openType){
 		this.openType = openType;
 	}
 
@@ -91,8 +93,10 @@ public class FreeboardGroupDetailVO{
 
 	@Override
 	public String toString(){
-		return "FreeboardGroupDetailVO [memNo=" + memNo + ", memNickname=" + memNickname + ", freeboardGroupNo=" + freeboardGroupNo + ", openType="
-				+ openType + ", freeboardGroupRegDate=" + freeboardGroupRegDate + ", hits=" + hits + ", freeboardTitle=" + freeboardTitle
-				+ ", freeboardLastRegDate=" + freeboardLastRegDate + "]";
+		return "FreeboardGroupDetailVO [memNo=" + memNo + ", memNickname=" + memNickname + ", freeboardGroupNo="
+				+ freeboardGroupNo + ", freeboardGroupRegDate=" + freeboardGroupRegDate + ", hits=" + hits
+				+ ", freeboardTitle=" + freeboardTitle + ", freeboardLastRegDate=" + freeboardLastRegDate + "]";
 	}
+
+	
 }

@@ -7,10 +7,10 @@
 	<title>AUTH 관리</title>
 	
 	<link rel="stylesheet" href="<c:url value='/resources/scripts/jqwidgets/styles/jqx.base.css'/>" />
-	<link rel="stylesheet" href="<c:url value='/resources/css/ui/authgroup/authgroup.css'/>" />
+	<link rel="stylesheet" href="<c:url value='/resources/css/ui/auth-group/auth-group.css'/>" />
 	
 	<script src="<c:url value='/resources/scripts/jqwidgets/jqx-all.js'/>"></script>
-	<script src="<c:url value='/resources/scripts/ui/authgroup/authgroup.js'/>"></script>
+	<script src="<c:url value='/resources/scripts/ui/auth-group/auth-group.js'/>"></script>
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
@@ -21,38 +21,38 @@
 		<section id="box" class="box">
 			<div class="data_box">
 				<header class="title">
-					<span class="title_font">AUTHGROUP</span>
+					<span class="title_font">AUTH_GROUP</span>
 				</header>
 				
-				<section id="data_authgroup" class="data_body">
+				<section id="data_authGroup" class="data_body">
 					
 				</section>
 				
-				<input type="button" value="새로고침" onclick="javascript:reloadAuthgroupGrid();" />
-				<%-- <input type="button" value="선택 항목 제거" onclick="javascript:deleteSelectedAuthgroup();" /> --%>
+				<input type="button" value="새로고침" onclick="javascript:reloadAuthGroupGrid();" />
+				<%-- <input type="button" value="선택 항목 제거" onclick="javascript:deleteSelectedAuthGroup();" /> --%>
 			</div>
 			<%-- 
 			<div class="data_box">
-				<form method="post" id="authgroupForm" >
-					<table id="authgroupFormTable">
+				<form method="post" id="authGroupForm" >
+					<table id="authGroupFormTable">
 						<tr>
 							<th>
-								<label for="authgroupName">권한 그룹 명</label>
+								<label for="authGroupName">권한 그룹 명</label>
 							</th>
 							<td>
-								<input id="authgroupName" name="authgroupName" type="text" placeholder="관리자만 보기" />
+								<input id="authGroupName" name="authGroupName" type="text" placeholder="관리자만 보기" />
 							</td>
 						</tr>
 						<tr>
 							<th>
-								<label for="authgroupExplanation">권한 그룹 설명</label>
+								<label for="authGroupExplanation">권한 그룹 설명</label>
 							</th>
 							<td>
-								<input id="authgroupExplanation" name="authgroupExplanation" type="text" placeholder="권한 그룹에 대한 설명을 적어주세요." />
+								<input id="authGroupExplanation" name="authGroupExplanation" type="text" placeholder="권한 그룹에 대한 설명을 적어주세요." />
 							</td>
 						</tr>
 					</table>
-					<input type="button" value="리소스 등록" onclick="javascript:insertAuthgroup();">
+					<input type="button" value="리소스 등록" onclick="javascript:insertAuthGroup();">
 				</form>
 			</div>
 			--%>

@@ -104,8 +104,8 @@
 							<li><a href="<c:url value='/auth/edit' />" >AUTH 관리</a></li>
 							<li><a href="<c:url value='/member-auth/edit' />" >MEMBER-AUTH 관리</a></li>
 							<li><a href="<c:url value='/member/edit' />" >MEMBER 관리</a></li>
-							<li><a href="<c:url value='/authgroup/edit' />" >AUTHGROUP 관리</a></li>
-							<li><a href="<c:url value='/authgroup-auth/edit' />" >AUTHGROUP-AUTH 관리</a></li>
+							<li><a href="<c:url value='/auth-group/edit' />" >AUTH-GROUP 관리</a></li>
+							<li><a href="<c:url value='/auth-group-auth/edit' />" >AUTH-GROUP-AUTH 관리</a></li>
 						</ul>
 					</li>
 				</sec:authorize>

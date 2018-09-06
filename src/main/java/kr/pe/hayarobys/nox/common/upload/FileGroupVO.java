@@ -1,6 +1,6 @@
 package kr.pe.hayarobys.nox.common.upload;
 
-import com.suph.security.core.enums.Authgroup;
+import com.suph.security.core.enums.OpenType;
 
 /**
  * FILE_GRP_TB 파일 묶음 테이블
@@ -13,7 +13,7 @@ public class FileGroupVO{
 	/** MEM_FK 계정 외래키 */
 	private Integer memNo;
 	/** AUTH_GRP_FK 권한 묶음 외래키(공개범위, 최소 조회 권한) */
-	private Authgroup authgroup;
+	private OpenType openType;
 	
 	public Integer getFileGroupNo(){
 		return fileGroupNo;
@@ -31,16 +31,16 @@ public class FileGroupVO{
 		this.memNo = memNo;
 	}
 
-	public Authgroup getAuthgroup(){
-		return authgroup;
+	public OpenType getOpenType(){
+		return openType;
 	}
 
-	public void setAuthgroup(Authgroup authgroup){
-		this.authgroup = authgroup;
+	public void setOpenType(OpenType openType){
+		this.openType = openType;
 	}
 
 	@Override
 	public String toString(){
-		return "FileGroupVO [fileGroupNo=" + fileGroupNo + ", memNo=" + memNo + ", authgroup=" + authgroup + "]";
+		return "FileGroupVO [fileGroupNo=" + fileGroupNo + ", memNo=" + memNo + "]";
 	}
 }

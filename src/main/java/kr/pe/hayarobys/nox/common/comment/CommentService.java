@@ -18,10 +18,11 @@ public interface CommentService{
 	
 	/**
 	 * 댓글 그룹을 생성하고, 생성한 댓글 그룹 번호를 반환합니다.
+	 * @param memNo 댓글 그룹 생성자
 	 * @param commentGroupNewWriteFlag 댓글 그룹내 신규 작성 허용 여부
 	 * @return 생성한 댓글 그룹의 일련 번호
 	 */
-	public abstract Integer insertCommentGroup(Boolean commentGroupNewWriteFlag);
+	public abstract Integer insertCommentGroup(Integer memNo, Boolean commentGroupNewWriteFlag);
 	
 	/**
 	 * 특정 댓글 그룹의 신규 작성 가능 여부를 변경합니다.

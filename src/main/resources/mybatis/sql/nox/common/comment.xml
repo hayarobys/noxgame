@@ -25,9 +25,17 @@
 		<result column="MEM_NICKNM" property="nickname" />
 		
 		<result column="FILE_GRP_SQ_PK" property="fileGroupNo" />
-		<result column="AUTH_GRP_PK" property="authgroup" />
+		<result column="OPEN_TYPE_PK" property="openType" />
 	</resultMap>
 	
+	<!-- 특정 댓글 그룹을 생성한 계정의 계정 번호 조회 -->
+	<select id="selectMemNoFromCommentGroupByCommentGroupNo" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		SELECT MEM_FK
+		FROM CMT_GRP_TB
+		WHERE CMT_GRP_SQ_PK = #{commentGroupNo}
+	</select>
+	
+	<!-- 댓글 목록 조회 -->
 	<select id="selectCommentDetailListByCommentGroupNo" parameterType="java.lang.Integer" resultMap="CommentDetailVO">
 		SELECT
 			CG.CMT_GRP_NEW_WRT_FL,
@@ -41,13 +49,13 @@
 			M.MEM_SQ_PK,
 			M.MEM_NICKNM,
 			FG.FILE_GRP_SQ_PK,
-			AG.AUTH_GRP_PK
+			OT.OPEN_TYPE_PK
 		FROM
 			CMT_GRP_TB AS CG
 			LEFT JOIN CMT_TB AS C ON (CG.CMT_GRP_SQ_PK = C.CMT_GRP_FK)
 			LEFT JOIN MEM_TB AS M ON (C.MEM_FK = M.MEM_SQ_PK)
 			LEFT JOIN FILE_GRP_TB AS FG ON (C.FILE_GRP_FK = FG.FILE_GRP_SQ_PK)
-			LEFT JOIN AUTH_GRP_TB AS AG ON (C.AUTH_GRP_FK = AG.AUTH_GRP_PK)
+			LEFT JOIN OPEN_TYPE_TB AS OT ON (C.OPEN_TYPE_FK = OT.OPEN_TYPE_PK)
 		WHERE
 			CG.CMT_GRP_SQ_PK = 1;
 	</select>
@@ -56,13 +64,13 @@
 		INSERT INTO CMT_TB(
 			CMT_GRP_FK,
 			MEM_FK,
-			AUTH_GRP_FK,
+			OPEN_TYPE_FK,
 			CMT_SCRT_FL,
 			CMT_BODY
 		)VALUES(
 			#{commentGroupNo},
 			#{memNo},
-			#{authgroup},
+			#{openType},
 			#{commentSecretFlag},
 			#{commentBody}
 		)
@@ -70,9 +78,11 @@
 	
 	<insert id="insertCommentGroup" parameterType="CommentGroupVO">
 		INSERT INTO CMT_GRP_TB(
-			CMT_GRP_NEW_WRT_FL
+			CMT_GRP_NEW_WRT_FL,
+			MEM_FK
 		)VALUES(
-			CMT_GRP_NEW_WRT_FL = #{commentGroupNewWriteFlag}
+			#{commentGroupNewWriteFlag},
+			#{memNo}
 		)
 		<selectKey resultType="java.lang.Integer" keyProperty="commentGroupNo" order="AFTER">
 			SELECT LAST_INSERT_ID()
@@ -85,7 +95,7 @@
 			FIG.FILE_GRP_SQ_PK
 		FROM
 			CMT_GRP_TB AS CR
-			INNER JOIN CMT_TB AS C			ON(CR.CMT_GRP_SQ_PK = C.CMT_GRP_FK)
+			INNER JOIN CMT_TB AS C		ON(CR.CMT_GRP_SQ_PK = C.CMT_GRP_FK)
 			INNER JOIN FILE_GRP_TB AS FIG	ON(C.FILE_GRP_FK = FIG.FILE_GRP_SQ_PK)
 		WHERE
 			CR.CMT_GRP_SQ_PK = #{commentGroupNo}

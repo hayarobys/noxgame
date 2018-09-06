@@ -2,7 +2,7 @@ package kr.pe.hayarobys.nox.community.freeboard;
 
 import java.util.Date;
 
-import com.suph.security.core.enums.Authgroup;
+import com.suph.security.core.enums.OpenType;
 
 /** 자유게시판 묶음 테이블 */
 public class FreeboardGroupVO{
@@ -13,7 +13,7 @@ public class FreeboardGroupVO{
 	/** 자유게시판 댓글 묶음 일련 번호 */
 	private Integer commentGroupNo;
 	/** 자유게시판 권한 묶음 일련 번호(공개범위, 최소 조회 권한) */
-	private Authgroup authgroup;
+	private OpenType openType;
 	/** 자유게시판 그룹 등록 날짜 */
 	private Date freeboardGroupRegDate;
 
@@ -41,12 +41,12 @@ public class FreeboardGroupVO{
 		this.commentGroupNo = commentGroupNo;
 	}
 
-	public Authgroup getAuthgroup(){
-		return authgroup;
+	public OpenType getOpenType(){
+		return openType;
 	}
 
-	public void setAuthgroup(Authgroup authgroup){
-		this.authgroup = authgroup;
+	public void setOpenType(OpenType openType){
+		this.openType = openType;
 	}
 
 	public Date getFreeboardGroupRegDate(){
@@ -59,7 +59,7 @@ public class FreeboardGroupVO{
 
 	@Override
 	public String toString(){
-		return "FreeboardGroupVO [freeboardGroupNo=" + freeboardGroupNo + ", memNo=" + memNo + ", commentGroupNo=" + commentGroupNo + ", authgroup="
-				+ authgroup + ", freeboardGroupRegDate=" + freeboardGroupRegDate + "]";
+		return "FreeboardGroupVO [freeboardGroupNo=" + freeboardGroupNo + ", memNo=" + memNo + ", commentGroupNo="
+				+ commentGroupNo + ", openType=" + openType + ", freeboardGroupRegDate=" + freeboardGroupRegDate + "]";
 	}
 }

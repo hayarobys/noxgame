@@ -170,27 +170,22 @@ INSERT INTO res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES
 ,(31,5)
 ;
 
-INSERT INTO auth_grp_tb (AUTH_GRP_PK,AUTH_GRP_EXPLN) VALUES 
+INSERT INTO auth_grp_tb (AUTH_GRP_PK,AUTH_GRP_EXPLN) VALUES
+('MEMBER','이용자, 관리자 포함 로그인 한 모든 회원을 의미합니다.')
+,('SYSTEM_OPERATOR','매니저, 어드민과 같은 관리 주체를 의미 합니다.')
+;
+
+INSERT INTO auth_grp_auth_tb (AUTH_GRP_FK_PK,AUTH_FK_PK) VALUES 
+('MEMBER',1)
+,('SYSTEM_OPERATOR',1)
+,('MEMBER',2)
+,('MEMBER',3)
+,('SYSTEM_OPERATOR',3)
+;
+
+INSERT INTO open_type_tb (OPEN_TYPE_PK,OPEN_TYPE_EXPLN) VALUES 
 ('PUBLIC','전체공개-비회원 조회가 가능합니다.')
 ,('MEMBER','회원공개-로그인 한 계정의 조회가 가능합니다.')
 ,('SECRET','비밀글-작성자와 답글의 경우 대상글의 작성자, 매니저, 어드민만 조회 할 수 있습니다.')
 ,('CLOSE','비공개-작성자와 매니저, 어드민만 조회 할 수 있습니다.')
 ;
-
-INSERT INTO auth_grp_auth_tb (AUTH_GRP_FK_PK,AUTH_FK_PK) VALUES 
-('PUBLIC',1)
-,('MEMBER',1)
-,('SECRET',1)
-,('CLOSE',1)
-,('PUBLIC',2)
-,('MEMBER',2)
-,('PUBLIC',3)
-,('MEMBER',3)
-,('SECRET',3)
-,('CLOSE',3)
-;
-INSERT INTO auth_grp_auth_tb (AUTH_GRP_FK_PK,AUTH_FK_PK) VALUES 
-('PUBLIC',4)
-,('PUBLIC',5)
-;
-

@@ -23,6 +23,13 @@
 	min-height: 500px;
 }
 
+.freeboard-contents .freeboard-list .no-contents{
+	display: inline-block;
+	text-align: center;
+	width: 100%;
+	margin-top: 40px;
+}
+
 .freeboard-contents .freeboard-list .item-list dt{
 	height: 35px;
 	line-height: 35px;
