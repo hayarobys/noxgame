@@ -16,7 +16,8 @@
 
 	<header class="header middle">
 		<a href="<c:url value='/main' />" >
-			<img id="banner" alt="배너" src="" />
+			<!-- <img id="banner" alt="배너" src="" /> -->
+			메인
 		</a>
 	</header>
 	

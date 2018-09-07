@@ -15,7 +15,8 @@
 <body>
 	
 	<footer class="footer middle">
-		<img id="footer" alt="정보" src="<c:url value='/resources/image/common/footer699x47.png'/>" />
+		<%-- <img id="footer" alt="정보" src="<c:url value='/resources/image/common/footer699x47.png'/>" /> --%>
+		하단 배너
 	</footer>
 	
 </body>
