@@ -45,6 +45,7 @@
 	background-color: transparent;
 	border: 1px solid green;
 	min-height: 75px;
+	max-height: 440px;
 	height: 75px;
 	color: white;
 	box-sizing: border-box;
@@ -131,13 +132,60 @@
 }
 
 .comment-contents .comment-list ul > li > article.comment-file img{
-	max-height: 200px;
+	max-height: 130px;
 	max-width: 240px;
 	border-radius: 10px;
 	border: 1px solid gray;
 	margin-right: 10px;
 }
 
+/* popup */
+.pop{display: none}
+
+.popup-mask{
+    position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.3);
+}
+
+.pop-content{
+    position: fixed; bottom:0px; left:0; right:0; margin:0 auto 200px auto;
+    border: 1px solid #556b2f;
+}
+
+.pop-ani {
+    opacity: 1;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+
+@keyframes animatetop {
+    from {bottom: 300px; opacity: 0}
+    to {bottom: 0; opacity: 1}
+}
+
+.pop-head{
+    background:#4b4d0b; color:#fff; height:25px;
+    text-align: center; position: relative;
+    cursor: pointer;
+}
+
+.pop-head h2{
+    color:#ffebcd; font-size:14px; padding:8px; line-height:1;
+}
+
+.pop-head .btn-x{
+    height:30px; width:30px; border:0;
+    position: absolute; right:0px; top:0px;
+    background: url('../../../image/common/comment/popup_ico_close.png') no-repeat center center;
+    background-size: 15px 15px;
+}
+
+.pop-body{
+    padding:15px 15px 15px;
+    background: #292929;
+    max-height: 630px; /*resize*/
+    overflow-y: auto;
+}
 
 
 

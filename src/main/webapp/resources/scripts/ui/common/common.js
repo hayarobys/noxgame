@@ -104,7 +104,71 @@ function getDateString(longValue){
 	}
 }
 
+/**
+ * 지정한 아이디의 레이어 팝업을 숨김 처리 합니다.
+ * 사용방법은 이러합니다.
+ * 
+ * 콜백 이벤트로서 사용하는 법
+ * 	$('~~').click({
+ * 		before: function(){},	// 팝업 닫기 전 수행 동작. 작성하지 않아도 무방합니다.
+ * 		target: "#myPopupId",
+ * 		after: function(){}		// 팝업 닫은 후 수행 동작. 작성하지 않아도 무방합니다.
+ * 	}, closeLayerPopup);
+ * 
+ * 함수 직접 호출로 사용하는 법
+ * 	closeLayerPopup({
+ * 		before: function(){},
+ * 		target: "#myPopupId",	// 타겟은 필수값 입니다.
+ * 		after: function(){}
+ * 	});
+ * 
+ * @param data {before, target, after} 숨길 팝업의 선택자와 콜백 함수를 지정합니다.
+ */
+function closeLayerPopup(param) {
+    // $("selector").click({target:"selector2"}, closeLayerPopup);
+    // closeLayerPopup({target:"selector2"})
+    // 위와 같이 이벤트에 의해 호출될때와 직접 호출될때의 파라미터 위치가 다릅니다. 따라서 아래와 같이 삼항 연산자로 파라미터 존재 여부를 확인후에 그에 따른 처리를 해줍니다.
+    handlesPopup((param.data ? param.data : param), true);
+}
 
+/**
+ * 지정한 아이디의 레이어 팝업을 노출 시킵니다.
+ * 사용방법은 이러합니다.
+ * 
+ *  콜백 이벤트로서 사용하는 법
+ * 	$('~~').click({
+ * 		before: function(){},	// 팝업 열기 전 수행 동작. 작성하지 않아도 무방합니다.
+ * 		target: "#myPopupId",
+ * 		after: function(){}		// 팝업 열은 후 수행 동작. 작성하지 않아도 무방합니다.
+ * 	}, openLayerPopup);
+ * 
+ *  함수 직접 호출로 사용하는 법
+ * 	openLayerPopup({
+ * 		before: function(){},
+ * 		target: "#myPopupId",	// 타겟은 필수값 입니다.
+ * 		after: function(){}
+ * 	});
+ * @param data {before, target, after} 노출시킬 팝업의 선택자와 콜백 함수를 지정합니다.
+ */
+function openLayerPopup(param) {
+    handlesPopup((param.data ? param.data : param), false);
+}
+
+/**
+ * 레이어 팝업을 숨기거나 노출하고 그에 따른 콜백함수를 호출합니다.
+ * 이 함수를 직접 호출하지 말고 위의 closeLayerPopup 또는 openLayerPopup을 경유하십시오.
+ * @param data{before, target, after} 팝업의 선택자와 콜백 함수를 지정합니다.
+ * @param isHidden 팝업의 숨김여부를 지정합니다. true: 숨김, false: 노출
+ */
+function handlesPopup(data, isHidden) {
+    if (data.before) {
+        data.before();
+    }
+    $(data.target).css("display", (isHidden ? "none" : "block"));
+    if (data.after) {
+        data.after();
+    }
+}
 
 
 

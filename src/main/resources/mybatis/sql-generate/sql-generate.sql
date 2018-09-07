@@ -64,6 +64,7 @@ ALTER TABLE AUTH_TB
 CREATE TABLE CMT_GRP_TB
 (
     `CMT_GRP_SQ_PK`       INT        NOT NULL    AUTO_INCREMENT COMMENT '댓글 묶음 시퀀스 기본키', 
+    `MEM_FK`              INT        NOT NULL    COMMENT '계정 외래키', 
     `CMT_GRP_NEW_WRT_FL`  TINYINT    NOT NULL    DEFAULT true COMMENT '댓글 그룹 신규 작성 플래그 true면 신규 작성 가능', 
     PRIMARY KEY (CMT_GRP_SQ_PK)
 );

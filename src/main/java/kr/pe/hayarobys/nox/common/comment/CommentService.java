@@ -17,6 +17,12 @@ public interface CommentService{
 	public abstract void insertComment(CommentVO commentVO);
 	
 	/**
+	 * 댓글의 답글을 등록합니다.
+	 * @param commentVO
+	 */
+	public abstract void insertCommentReply(CommentVO commentVO);
+	
+	/**
 	 * 댓글 그룹을 생성하고, 생성한 댓글 그룹 번호를 반환합니다.
 	 * @param memNo 댓글 그룹 생성자
 	 * @param commentGroupNewWriteFlag 댓글 그룹내 신규 작성 허용 여부

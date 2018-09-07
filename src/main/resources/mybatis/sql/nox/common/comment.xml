@@ -28,6 +28,12 @@
 		<result column="OPEN_TYPE_PK" property="openType" />
 	</resultMap>
 	
+	<resultMap type="CommentVO" id="CommentVO">
+		<result column="CMT_CLS_FK" property="commentClassNo" />
+		<result column="CMT_CLS_ORD" property="commentClassOrder" />
+		<result column="CMT_CLS_DPTH" property="commentClassDepth" />
+	</resultMap>
+	
 	<!-- 특정 댓글 그룹을 생성한 계정의 계정 번호 조회 -->
 	<select id="selectMemNoFromCommentGroupByCommentGroupNo" parameterType="java.lang.Integer" resultType="java.lang.Integer">
 		SELECT MEM_FK
@@ -57,9 +63,57 @@
 			LEFT JOIN FILE_GRP_TB AS FG ON (C.FILE_GRP_FK = FG.FILE_GRP_SQ_PK)
 			LEFT JOIN OPEN_TYPE_TB AS OT ON (C.OPEN_TYPE_FK = OT.OPEN_TYPE_PK)
 		WHERE
-			CG.CMT_GRP_SQ_PK = 1;
+			CG.CMT_GRP_SQ_PK = 1
+		ORDER BY
+			C.CMT_CLS_FK ASC, C.CMT_CLS_ORD ASC
 	</select>
 	
+	<select id="selectCommentClass" parameterType="java.lang.Integer" resultMap="CommentVO">
+		SELECT	CMT_CLS_FK,
+			CMT_CLS_ORD,
+			CMT_CLS_DPTH
+		FROM	CMT_TB
+		WHERE	CMT_SQ_PK = #{commentNo}
+	</select>
+	
+	<!-- 특정 댓글 바로 밑에 달린 답글의 개수를 조회합니다. 댓글의 댓글과 같은 2뎁쓰 이상의 값은 무시합니다. -->
+	<select id="selectCommentReplyCountByCommentNo" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		SELECT	COUNT(CMT_SQ_PK)
+		FROM	CMT_TB
+		WHERE	CMT_CLS_DPTH = (
+				SELECT	CMT_CLS_DPTH
+				FROM	CMT_TB
+				WHERE	CMT_SQ_PK = #{commentNo}
+			) + 1
+	</select>
+	
+	<!--  -->
+	<select id="selectMaxCommentClassOrderByCommentNo" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		/* 대상글이 가진 모든 답글들 중 CLASS_ORDER의 최대값*/
+		SELECT	MAX(CMT_CLS_ORD) AS MAX_COMMENT_CLASS_NO
+		FROM	CMT_TB
+		WHERE
+			/* 대상글과 같은 계층으로 범위 제한 */
+			CMT_CLS_FK = (
+				SELECT	TARGET_CLASS_NO_SECOND_TB.CMT_CLS_FK
+				FROM(
+					/* 대상글의 계층 번호 조회 */
+					SELECT	CMT_CLS_FK
+					FROM	CMT_TB
+					WHERE	CMT_SQ_PK = #{commentNo}
+				) AS TARGET_CLASS_NO_SECOND_TB
+			)
+		AND
+			/* 대상글의 답글들로 범위 제한 */
+			CMT_CLS_DPTH > (
+				/* 대상글의 뎁쓰 조회 */
+				SELECT	CMT_CLS_DPTH
+				FROM	CMT_TB
+				WHERE	CMT_SQ_PK = #{commentNo}
+			)
+	</select>
+	
+	<!-- 댓글을 등록합니다. -->
 	<insert id="insertComment" parameterType="CommentVO">
 		INSERT INTO CMT_TB(
 			CMT_GRP_FK,
@@ -73,6 +127,34 @@
 			#{openType},
 			#{commentSecretFlag},
 			#{commentBody}
+		)
+		<selectKey resultType="java.lang.Integer" keyProperty="commentNo" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<!-- 댓글의 답글을 등록합니다. -->
+	<insert id="insertCommentReply">
+		INSERT INTO CMT_TB(
+			CMT_GRP_FK,
+			MEM_FK,
+			OPEN_TYPE_FK,
+			CMT_SCRT_FL,
+			CMT_BODY,
+			
+			CMT_CLS_FK,
+			CMT_CLS_ORD,
+			CMT_CLS_DPTH
+		)VALUES(
+			#{commentGroupNo},
+			#{memNo},
+			#{openType},
+			#{commentSecretFlag},
+			#{commentBody},
+			
+			#{commentClassNo},
+			#{commentClassOrder},
+			#{commentClassDepth}
 		)
 	</insert>
 	
@@ -100,6 +182,51 @@
 		WHERE
 			CR.CMT_GRP_SQ_PK = #{commentGroupNo}
 	</select>
+	
+	<!-- 특정 댓글이 속한 계층에서 그 댓글과 뎁쓰가 크거나 같은 댓글들의 계층내 순서 값을 +1씩 증가시킵니다. -->
+	<update id="updateCommentClass" parameterType="java.lang.Integer">
+		UPDATE	CMT_TB
+		SET		CMT_CLS_ORD = CMT_CLS_ORD + 1
+		WHERE
+			CMT_CLS_FK = (
+				SELECT	TARGET_CLASS_NO_TB.CMT_CLS_FK
+				FROM(
+					/* 대상글의 계층 번호 조회 */
+					SELECT	CMT_CLS_FK
+					FROM	CMT_TB
+					WHERE	CMT_SQ_PK = #{commentNo}
+				) AS TARGET_CLASS_NO_TB
+			)
+			AND CMT_CLS_ORD > (
+				SELECT	TARGET_REPLY_MAX_CLASS_ORDER_TB.MAX_COMMENT_CLASS_NO
+				FROM(
+					/* 대상글이 가진 모든 답글들 중 CLASSORDER의 최대값*/
+					SELECT	MAX(CMT_CLS_ORD) AS MAX_COMMENT_CLASS_NO
+					FROM	CMT_TB
+					WHERE	CMT_CLS_FK = (
+							SELECT	TARGET_CLASS_NO_SECOND_TB.CMT_CLS_FK
+							FROM(
+								/* 대상글의 계층 번호 조회 */
+								SELECT	CMT_CLS_FK
+								FROM	CMT_TB
+								WHERE	CMT_SQ_PK = #{commentNo}
+							) AS TARGET_CLASS_NO_SECOND_TB
+						)
+						AND CMT_CLS_DPTH > (
+							/* 대상글의 뎁쓰 조회 */
+							SELECT	CMT_CLS_DPTH
+							FROM	CMT_TB
+							WHERE	CMT_SQ_PK = #{commentNo}
+						)
+				) TARGET_REPLY_MAX_CLASS_ORDER_TB
+			)
+	</update>
+	
+	<update id="updateCommentClassNoByCommentNo" parameterType="java.lang.Integer">
+		UPDATE	CMT_TB
+		SET	CMT_CLS_FK = #{commentNo}
+		WHERE	CMT_SQ_PK = #{commentNo}
+	</update>
 	
 	<!-- 특정 댓글 그룹의 신규 작성 가능 여부를 변경합니다. -->
 	<update id="updateAllowCommentOfCommentGroupByCommentGroupNo">

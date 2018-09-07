@@ -58,7 +58,26 @@ public class CommentServiceImpl implements CommentService{
 	@Override
 	public void insertComment(CommentVO commentVO){
 		commentDAO.insertComment(commentVO);
+		commentDAO.updateCommentClassNoByCommentNo(commentVO.getCommentNo());
+	}
+	
+	@Override
+	public void insertCommentReply(CommentVO commentVO){
+		// 대상글의 댓글 계층 번호로 commentClassOrder 업데이트 시작
+		CommentVO targetCommentVO = commentDAO.selectCommentClass(commentVO.getCommentNo());
 		
+		// 넣고자 하는 댓글 계층 내 순서 최대값 조회
+		Integer commentClassOrderMaxValue = commentDAO.selectMaxCommentClassOrderByCommentNo(commentVO.getCommentNo());
+		
+		// 넣고자 하는 위치 이후 댓글들에 대한 같은 계층 내 순서 +1
+		commentDAO.updateCommentClass(commentVO.getCommentNo());
+		
+		commentVO.setCommentClassNo(targetCommentVO.getCommentClassNo());
+		commentVO.setCommentClassOrder(commentClassOrderMaxValue + 1);
+		commentVO.setCommentClassDepth(targetCommentVO.getCommentClassDepth() + 1);
+		
+		// 답글 등록
+		commentDAO.insertCommentReply(commentVO);
 	}
 	
 	@Override
@@ -94,5 +113,4 @@ public class CommentServiceImpl implements CommentService{
 			uploadService.deleteFileGroupByFileGroupNoList(fileGroupNoList);
 		}
 	}
-	
 }

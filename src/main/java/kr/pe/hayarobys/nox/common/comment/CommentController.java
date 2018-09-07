@@ -43,4 +43,26 @@ public class CommentController{
 		// 댓글 등록
 		commentService.insertComment(commentVO);
 	}
+	
+	/**
+	 * 댓글의 답글 등록 요청
+	 * @param commentVO
+	 */
+	@RequestMapping(value="/comment/{commentNo}/reply", method=RequestMethod.POST)
+	public @ResponseBody void postComment(
+			@PathVariable("commentNo") Integer commentNo,
+			@RequestBody CommentVO commentVO
+	){
+		// 대상 댓글의 댓글 번호 저장
+		commentVO.setCommentNo(commentNo);
+		
+		// 댓글 등록 요청자 확인
+		MemberInfo memberInfo = ContextUtil.getMemberInfo();
+		if(memberInfo != null){
+			commentVO.setMemNo(memberInfo.getNo());
+		}
+		
+		// 댓글 등록
+		commentService.insertCommentReply(commentVO);
+	}
 }
