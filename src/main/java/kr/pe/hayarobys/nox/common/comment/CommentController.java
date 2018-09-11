@@ -29,7 +29,7 @@ public class CommentController{
 	}
 	
 	/**
-	 * 댓글 등록 요청
+	 * 신규 댓글 등록 요청
 	 * @param commentVO
 	 */
 	@RequestMapping(value="/comment", method=RequestMethod.POST)
@@ -45,7 +45,7 @@ public class CommentController{
 	}
 	
 	/**
-	 * 댓글의 답글 등록 요청
+	 * 대댓글(댓글의 답글) 등록 요청
 	 * @param commentVO
 	 */
 	@RequestMapping(value="/comment/{commentNo}/reply", method=RequestMethod.POST)

@@ -65,6 +65,7 @@ function refreshCommentGroup(){
  */
 function replactCommentList(rows){
 	var commentListString = "";
+	var paddingLeft = 0;
 	var commentRegDate = "";
 	var commentModDate = "";
 	var commentSecretIcon = "";
@@ -88,11 +89,12 @@ function replactCommentList(rows){
 	 */
 	
 	rows.forEach(function(row, index, array){
+		paddingLeft = (row.commentClassDepth - 1) * 20;
 		commentRegDate = getDateString(row.commentRegDate);
 		commentModDate = (row.commentRegDate != row.commentModDate) ? ("마지막 수정일: " + getDateString(row.commentModDate)) : "수정 이력이 없습니다.";
 		commentSecretIcon = (row.commentSecretFlag == true) ? "비밀글" : "";
 		commentListString += `
-			<li>
+			<li style="padding-left: ${paddingLeft}px;">
 				<header>
 					<div class="info-panel">
 						<span class="nickname" title="${row.memNo}">${row.nickname}</span>

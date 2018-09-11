@@ -22,17 +22,21 @@ public class OpenTypeServiceImpl implements OpenTypeService{
 	
 	@Override
 	public boolean canIView(
-			MemberInfo memberInfo,
-			OpenType openType,
-			List<Integer> memNoList
+			MemberInfo memberInfo, OpenType openType, List<Integer> memNoList
 	){
 		if(OpenType.PUBLIC.equals(openType)){
 		// 권한 검사X, 통과
 			return true;
+		}
+		
+		if(memberInfo == null){
+		// 미인증자 접근 거부
+			return false;
+		}
 			
-		}else if(OpenType.MEMBER.equals(openType)){
+		if(OpenType.MEMBER.equals(openType)){
 		// 요청자가 AuthGroup.MEMBER에 해당하는지 확인
-		// 또는 요청자가 memNoList 목록에 존재하는지 확인 <- 무조건 위 셋 중 하나에 걸리기에 확인 할 필요가 있나 싶다.
+		// 또는 요청자가 memNoList 목록에 존재하는지 확인 <- 무조건 위 셋 중 하나에 걸리기에 확인 할 필요가 있나 싶다.			
 			List<AuthDTO> authList = authGroupService.getAuthListByAuthGroup(AuthGroup.MEMBER);
 			
 			for(GrantedAuthority authority : memberInfo.getAuthorities()){

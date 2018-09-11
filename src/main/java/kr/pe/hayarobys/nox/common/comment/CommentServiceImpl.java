@@ -29,7 +29,7 @@ public class CommentServiceImpl implements CommentService{
 		// 1. 비밀글에 대한 화이트 리스트 생성
 		// 	ㄱ. 댓글 목록 요청자 조회
 		MemberInfo memberInfo = ContextUtil.getMemberInfo();
-		Integer memNo = memberInfo.getNo();
+		Integer memNo = (memberInfo == null) ? null : memberInfo.getNo();
 		
 		// 	ㄴ. 댓글 그룹 등록자 조회
 		Integer commentRegMemNo = commentDAO.selectMemNoFromCommentGroupByCommentGroupNo(commentGroupNo);
@@ -39,8 +39,10 @@ public class CommentServiceImpl implements CommentService{
 		
 		// 	ㄹ. 리스트화
 		List<Integer> whiteMemNoList = new ArrayList<Integer>();
-		whiteMemNoList.add(memNo);
 		whiteMemNoList.add(commentRegMemNo);
+		if(memNo != null){
+			whiteMemNoList.add(memNo);
+		}
 		
 		// 2. 댓글 목록 조회
 		List<CommentDetailVO> commentDetailList = commentDAO.selectCommentDetailListByCommentGroupNo(commentGroupNo);
@@ -63,17 +65,23 @@ public class CommentServiceImpl implements CommentService{
 	
 	@Override
 	public void insertCommentReply(CommentVO commentVO){
-		// 대상글의 댓글 계층 번호로 commentClassOrder 업데이트 시작
+		// 대상글의 CMT_CLS_FK, CMT_CLS_ORD, CMT_CLS_DPTH 조회
 		CommentVO targetCommentVO = commentDAO.selectCommentClass(commentVO.getCommentNo());
 		
-		// 넣고자 하는 댓글 계층 내 순서 최대값 조회
-		Integer commentClassOrderMaxValue = commentDAO.selectMaxCommentClassOrderByCommentNo(commentVO.getCommentNo());
+		// 이 결과가 NULL이면 맨 밑으로 가는거고, NULL이 아니면 중간에 끼어 들어가는 형태입니다.
+		Integer commentClassOrder = commentDAO.selectMinCommentClassOrderByCommentClassInfo(targetCommentVO);
 		
-		// 넣고자 하는 위치 이후 댓글들에 대한 같은 계층 내 순서 +1
-		commentDAO.updateCommentClass(commentVO.getCommentNo());
+		if(commentClassOrder == null){
+			// 대상글의 그룹내에서 max(commentClassOrder) + 1 값을 구합니다.
+			commentClassOrder = commentDAO.selectCommentCountInCommentClass(targetCommentVO.getCommentClassNo()) + 1;
+		}else{
+			// 대상글의 그룹내에서 새롭게 끼어들어갈 댓글을 위해 commentClassOrder를 + 1 씩 업데이트 합니다.
+			targetCommentVO.setCommentClassOrder(commentClassOrder);
+			commentDAO.updateCommentClassInTargetCommentClass(targetCommentVO);
+		}
 		
 		commentVO.setCommentClassNo(targetCommentVO.getCommentClassNo());
-		commentVO.setCommentClassOrder(commentClassOrderMaxValue + 1);
+		commentVO.setCommentClassOrder(commentClassOrder);
 		commentVO.setCommentClassDepth(targetCommentVO.getCommentClassDepth() + 1);
 		
 		// 답글 등록

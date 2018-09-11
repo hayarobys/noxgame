@@ -67,6 +67,7 @@ INSERT INTO res_tb (HTTP_METHOD_PK,RES_ORD,RES_TYPE,RES_NM_UNQ,RES_PATTERN) VALU
 ,('GET',120200,'url','자유게시판 특정 글 수정 페이지','/community/freeboard/*/edit')
 ,('PATCH',120000,'url','자유게시판 특정 글 수정','/community/freeboard/*')
 ,('GET',120500,'url','자유 게시판 수정 취소','/community/freeboard/edit-cancel')
+,('POST',130000,'url','대댓글(댓글의 답글) 등록','/comment/*/reply')
 ;
 
 INSERT INTO mem_auth_tb (MEM_FK_PK,AUTH_FK_PK) VALUES 
@@ -96,25 +97,27 @@ INSERT INTO res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES
 ,(42,1)
 ,(43,1)
 ,(44,1)
+,(45,1)
 ,(2,2)
 ,(3,2)
 ,(31,2)
-,(39,2)
 ;
 INSERT INTO res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES 
-(40,2)
+(39,2)
+,(40,2)
 ,(41,2)
 ,(42,2)
 ,(43,2)
 ,(44,2)
+,(45,2)
 ,(1,3)
 ,(2,3)
 ,(3,3)
-,(4,3)
-,(5,3)
 ;
 INSERT INTO res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES 
-(6,3)
+(4,3)
+,(5,3)
+,(6,3)
 ,(7,3)
 ,(8,3)
 ,(9,3)
@@ -122,11 +125,11 @@ INSERT INTO res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES
 ,(11,3)
 ,(12,3)
 ,(13,3)
-,(14,3)
-,(15,3)
 ;
 INSERT INTO res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES 
-(16,3)
+(14,3)
+,(15,3)
+,(16,3)
 ,(17,3)
 ,(18,3)
 ,(19,3)
@@ -134,11 +137,11 @@ INSERT INTO res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES
 ,(25,3)
 ,(26,3)
 ,(27,3)
-,(28,3)
-,(29,3)
 ;
 INSERT INTO res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES 
-(31,3)
+(28,3)
+,(29,3)
+,(31,3)
 ,(32,3)
 ,(33,3)
 ,(34,3)
@@ -146,23 +149,24 @@ INSERT INTO res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES
 ,(36,3)
 ,(37,3)
 ,(38,3)
-,(39,3)
-,(40,3)
 ;
 INSERT INTO res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES 
-(41,3)
+(39,3)
+,(40,3)
+,(41,3)
 ,(42,3)
 ,(43,3)
 ,(44,3)
+,(45,3)
 ,(2,4)
 ,(3,4)
 ,(21,4)
-,(22,4)
-,(23,4)
-,(24,4)
 ;
 INSERT INTO res_auth_tb (RES_FK_PK,AUTH_FK_PK) VALUES 
-(30,4)
+(22,4)
+,(23,4)
+,(24,4)
+,(30,4)
 ,(31,4)
 ,(41,4)
 ,(2,5)
