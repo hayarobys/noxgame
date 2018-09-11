@@ -2,6 +2,7 @@ package kr.pe.hayarobys.nox.common.comment;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -16,9 +17,22 @@ public interface CommentDAO{
 	/**
 	 * 여러 테이블을 조인해 특정 댓글 그룹의 상세 댓글 목록을 조회합니다.
 	 * @param commentGroupNo
+	 * @param pagenum
+	 * @param pagesize
 	 * @return
 	 */
-	public abstract List<CommentDetailVO> selectCommentDetailListByCommentGroupNo(Integer commentGroupNo);
+	public abstract List<CommentDetailVO> selectCommentDetailListByCommentGroupNo(
+			@Param("commentGroupNo") Integer commentGroupNo,
+			@Param("start") Integer pagenum,
+			@Param("pagesize") Integer pagesize
+	);
+	
+	/**
+	 * 특정 댓글 그룹에 속한 댓글들의 수를 조회합니다. 
+	 * @param commentGroupNo
+	 * @return
+	 */
+	public abstract Integer selectCommentTotalRowsByCommentGroupNo(Integer commentGroupNo);
 	
 	/**
 	 * 특정 댓글의 계층 정보를 조회합니다.

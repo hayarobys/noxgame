@@ -88,6 +88,10 @@
 			</ul>
 		</article>
 		
+		<article id="pagination" class="pagination">
+			
+		</article>
+		
 		<!-- 댓글 답글 팝업 -->
 		<article id="commentReplyPopup" class="pop">
 			<div class="popup-mask"></div>

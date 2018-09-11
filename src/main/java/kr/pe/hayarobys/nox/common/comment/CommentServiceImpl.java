@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.suph.security.core.dto.PaginationRequest;
+import com.suph.security.core.dto.PaginationResponse;
 import com.suph.security.core.userdetails.MemberInfo;
 import com.suph.security.core.util.ContextUtil;
 
@@ -24,8 +26,9 @@ public class CommentServiceImpl implements CommentService{
 	private OpenTypeService openTypeService;
 	
 	@Override
-	public List<CommentDetailVO> selectCommentDetailListByCommentGroupNo(Integer commentGroupNo){
-		
+	public PaginationResponse<CommentDetailVO> selectCommentDetailListByCommentGroupNo(
+			Integer commentGroupNo, PaginationRequest paginationRequest
+	){
 		// 1. 비밀글에 대한 화이트 리스트 생성
 		// 	ㄱ. 댓글 목록 요청자 조회
 		MemberInfo memberInfo = ContextUtil.getMemberInfo();
@@ -45,7 +48,12 @@ public class CommentServiceImpl implements CommentService{
 		}
 		
 		// 2. 댓글 목록 조회
-		List<CommentDetailVO> commentDetailList = commentDAO.selectCommentDetailListByCommentGroupNo(commentGroupNo);
+		List<CommentDetailVO> commentDetailList = commentDAO.selectCommentDetailListByCommentGroupNo(
+				commentGroupNo, paginationRequest.getStart(), paginationRequest.getPagesize()
+		);
+		
+		// 3. 댓글 개수 조회
+		Integer totalRows = commentDAO.selectCommentTotalRowsByCommentGroupNo(commentGroupNo);
 		
 		// 3. 댓글 본문 비밀 처리
 		for(CommentDetailVO vo : commentDetailList){
@@ -54,7 +62,7 @@ public class CommentServiceImpl implements CommentService{
 			}
 		}
 		
-		return commentDetailList;
+		return new PaginationResponse<CommentDetailVO>(commentDetailList, totalRows);
 	}
 	
 	@Override

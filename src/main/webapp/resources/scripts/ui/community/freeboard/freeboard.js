@@ -35,15 +35,15 @@ $(function() {
  * @returns
  */
 function reloadFreeboardList(pagenum, pagesize, pagebarCount){
-	if(pagenum == false){
+	if(!pagenum){
 		pagenum = 1;
 	}
 	
-	if(pagesize == false){
+	if(!pagesize){
 		pagesize = 20;
 	}
 	
-	if(pagebarCount == false){
+	if(!pagebarCount){
 		pagebarCount = 10;
 	}
 	

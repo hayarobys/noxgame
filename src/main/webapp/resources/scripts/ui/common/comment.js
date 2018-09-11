@@ -1,6 +1,23 @@
+/** 한 페이지에 표시할 댓글의 개수 */
+var PAGESIZE = 5;
+/** 한번에 보여줄 페이지 번호의 개수 */
+var PAGEBAR_COUNT = 7;
 
 $(function() {
-	refreshCommentGroup();
+	// 페이징바 클릭 이벤트 부여
+	jQuery(document).on("click", "a[data-pagenum]", function(event){
+		var pagenum = event.target.getAttribute("data-pagenum");
+		refreshCommentGroup(pagenum, PAGESIZE, PAGEBAR_COUNT);
+	});
+		
+	// 최초 1회 목록 갱신. URL끝에 #27 과 같은 페이지 번호가 있다면 읽어들입니다.
+	var currentURL = location.href;
+	var pageParameterIndex = currentURL.lastIndexOf("#");
+	if(pageParameterIndex > 0){
+		refreshCommentGroup(currentURL.substring(pageParameterIndex + 1), PAGESIZE, PAGEBAR_COUNT);
+	}else{
+		refreshCommentGroup(1, PAGESIZE, PAGEBAR_COUNT);
+	}
 	
 	// 댓글 신규 작성 버튼 클릭 이벤트
 	jQuery("#commentRegistrationButton").on("click", function(event){
@@ -37,20 +54,36 @@ $(function() {
 
 /**
  * 댓글 목록을 새로고침 합니다.
+ * @param pagenum 조회할 페이지 번호. 1부터 시작
+ * @param pagesize 한 페이지에 표시할 개수. 기본값은 20
+ * @param pagebarCount 한 페이지 바에 표시할 페이지 개수. 기본값은 10
  * @returns
  */
-function refreshCommentGroup(){
+function refreshCommentGroup(pagenum, pagesize, pagebarCount){
+	if(!pagenum){
+		pagenum = 1;
+	}
+	
+	if(!pagesize){
+		pagesize = PAGESIZE;
+	}
+	
+	if(!pagebarCount){
+		pagebarCount = PAGEBAR_COUNT;
+	}
+	
 	jQuery.ajax({
 		type: "GET",
-		url: CONTEXT_PATH + '/comment-group/' + jQuery("#commentGroupNo").text(),
+		url: CONTEXT_PATH + '/comment-group/' + jQuery("#commentGroupNo").text() + `?pagenum=${pagenum}&pagesize=${pagesize}`,
 		contentType: 'application/json',
 		dataType: "json",	// 서버에서 응답한 데이터를 클라이언트에서 읽는 방식
 		beforeSend: function(xhr){
 			xhr.setRequestHeader("X-Ajax-call", "true");	// CustomAccessDeniedHandler에서 Ajax요청을 구분하기 위해 약속한 값
 		},
 		success: function(data, statusText, xhr){
-			console.log("응답값: ", data);
-			replactCommentList(data);
+			//console.log("응답값: ", data);
+			replactCommentList(data.rows);
+			replacePagingBar(pagenum, pagesize, data.totalRows, pagebarCount);
 		},
 		error: function(xhr){
 			console.log("error", xhr);
@@ -203,11 +236,37 @@ function replyComment(commentNo){
 		},
 		success: function(data, statusText, xhr){
 			console.log("응답값: ", data);
-			refreshCommentGroup();
+			var currentURL = location.href;
+			var pageParameterIndex = currentURL.lastIndexOf("#");
+			if(pageParameterIndex > 0){
+				refreshCommentGroup(currentURL.substring(pageParameterIndex + 1), PAGESIZE, PAGEBAR_COUNT);
+			}else{
+				refreshCommentGroup(1, PAGESIZE, PAGEBAR_COUNT);
+			}
 			
 		},
 		error: function(xhr){
 			console.log("error", xhr);
 		}
 	});
+}
+
+/**
+ * 페이징바를 교체합니다.
+ * @param pagenum
+ * @param pagesize
+ * @param totalRows
+ * @param pagebarCount
+ * @returns
+ */
+function replacePagingBar(pagenum, pagesize, totalRows, pagebarCount){
+	var param = {
+		"pagenum":pagenum,
+		"pagesize":pagesize,
+		"totalRows":totalRows,
+		"pagebarCount":pagebarCount
+	};
+		
+	var pagingBar = getPagingBar(param);
+	jQuery("#pagination").html(pagingBar);
 }

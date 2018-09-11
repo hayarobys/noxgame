@@ -2,13 +2,19 @@ package kr.pe.hayarobys.nox.common.comment;
 
 import java.util.List;
 
+import com.suph.security.core.dto.PaginationRequest;
+import com.suph.security.core.dto.PaginationResponse;
+
 public interface CommentService{
 	/**
 	 * 댓글 목록 조회
 	 * @param commentGroupNo
+	 * @param paginationRequest
 	 * @return
 	 */
-	public abstract List<CommentDetailVO> selectCommentDetailListByCommentGroupNo(Integer commentGroupNo);
+	public abstract PaginationResponse<CommentDetailVO> selectCommentDetailListByCommentGroupNo(
+			Integer commentGroupNo, PaginationRequest paginationRequest
+	);
 	
 	/**
 	 * 댓글을 등록합니다.
