@@ -26,7 +26,7 @@
 			</div>
 			<textarea class="comment-registration-textarea" id="commentRegistrationTextarea" placeholder="comment..."></textarea>
 			<div class="comment-file-group">
-				drag & drop file upload
+				<span>drag &#38; drop file upload</span>
 			</div>			
 		</article>
 		<article class="comment-list">

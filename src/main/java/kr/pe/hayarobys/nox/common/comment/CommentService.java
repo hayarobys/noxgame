@@ -1,7 +1,5 @@
 package kr.pe.hayarobys.nox.common.comment;
 
-import java.util.List;
-
 import com.suph.security.core.dto.PaginationRequest;
 import com.suph.security.core.dto.PaginationResponse;
 

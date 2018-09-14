@@ -33,7 +33,7 @@
 	</insert>
 	
 	<!-- 특정 권한 그룹 수정 -->
-	<update id="updateAuthGroupByAuthgGroup" parameterType="AuthGroupDTO">
+	<update id="updateAuthGroupByAuthGroup" parameterType="AuthGroupDTO">
 		UPDATE
 			AUTH_GRP_TB
 		SET

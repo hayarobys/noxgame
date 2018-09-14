@@ -15,7 +15,11 @@ import com.suph.security.core.dto.PaginationRequest;
 import com.suph.security.core.dto.PaginationResponse;
 import com.suph.security.core.userdetails.MemberInfo;
 import com.suph.security.core.util.ContextUtil;
-
+/**
+ * 댓글과 관련한 API를 정의하는 컨트롤러 클래스 입니다.
+ * @author hayarobys@gmail.com
+ * @date 20180914
+ */
 @Controller
 public class CommentController{
 	protected final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -75,3 +79,6 @@ public class CommentController{
 		commentService.insertCommentReply(commentVO);
 	}
 }
+
+
+
