@@ -44,29 +44,43 @@
 	<!-- 댓글 목록 조회 -->
 	<select id="selectCommentDetailListByCommentGroupNo" resultMap="CommentDetailVO">
 		SELECT
-			CG.CMT_GRP_NEW_WRT_FL,
+			CG.CMT_GRP_SQ_PK,
+			M.MEM_SQ_PK,
+			M.MEM_NICKNM,
+			FG.FILE_GRP_SQ_PK,
+			OT.OPEN_TYPE_PK,
 			C.CMT_SQ_PK,
 			C.CMT_CLS_FK,
 			C.CMT_CLS_DPTH,
 			C.CMT_REG_DT,
 			C.CMT_MOD_DT,
 			C.CMT_SCRT_FL,
-			C.CMT_BODY,
-			M.MEM_SQ_PK,
-			M.MEM_NICKNM,
-			FG.FILE_GRP_SQ_PK,
-			OT.OPEN_TYPE_PK
-		FROM
-			CMT_GRP_TB AS CG
-			LEFT JOIN CMT_TB AS C ON (CG.CMT_GRP_SQ_PK = C.CMT_GRP_FK)
-			LEFT JOIN MEM_TB AS M ON (C.MEM_FK = M.MEM_SQ_PK)
-			LEFT JOIN FILE_GRP_TB AS FG ON (C.FILE_GRP_FK = FG.FILE_GRP_SQ_PK)
-			LEFT JOIN OPEN_TYPE_TB AS OT ON (C.OPEN_TYPE_FK = OT.OPEN_TYPE_PK)
-		WHERE
-			CG.CMT_GRP_SQ_PK = #{commentGroupNo}
-		ORDER BY
-			C.CMT_CLS_FK DESC, CMT_CLS_ORD ASC
-		LIMIT #{start}, #{pagesize}
+			C.CMT_BODY
+		FROM(
+			SELECT
+				CMT_GRP_FK,
+				MEM_FK,
+				CMT_SQ_PK,
+				CMT_CLS_FK,
+				CMT_CLS_DPTH,
+				CMT_REG_DT,
+				CMT_MOD_DT,
+				CMT_SCRT_FL,
+				CMT_BODY,
+				FILE_GRP_FK,
+				OPEN_TYPE_FK
+			FROM
+				CMT_TB
+			WHERE
+				CMT_GRP_FK = #{commentGroupNo}
+			ORDER BY
+				CMT_CLS_FK ASC, CMT_CLS_ORD ASC
+			LIMIT #{start}, #{pagesize}
+		) AS C
+		LEFT JOIN CMT_GRP_TB AS CG ON (C.CMT_GRP_FK = CG.CMT_GRP_SQ_PK)
+		LEFT JOIN MEM_TB AS M ON (C.MEM_FK = M.MEM_SQ_PK)
+		LEFT JOIN FILE_GRP_TB AS FG ON (C.FILE_GRP_FK = FG.FILE_GRP_SQ_PK)
+		LEFT JOIN OPEN_TYPE_TB AS OT ON (C.OPEN_TYPE_FK = OT.OPEN_TYPE_PK)
 	</select>
 	
 	<select id="selectCommentTotalRowsByCommentGroupNo" parameterType="java.lang.Integer" resultType="java.lang.Integer">
@@ -181,10 +195,10 @@
 			CMT_CLS_ORD >= #{commentClassOrder}
 	</update>
 	
-	<!-- 특정 댓글의 계층 번호를 댓글 번호와 동일하게 변경합니다. -->
+	<!-- 특정 댓글의 계층 번호를 댓글 번호와 동일하게 변경합니다. 단, MySQL/MariaDB에서의 ASC 인덱싱을 위해 cmt_cls_fk는 음수로 변환합니다. -->
 	<update id="updateCommentClassNoByCommentNo" parameterType="java.lang.Integer">
 		UPDATE	CMT_TB
-		SET	CMT_CLS_FK = #{commentNo}
+		SET	CMT_CLS_FK = (-1 * #{commentNo})
 		WHERE	CMT_SQ_PK = #{commentNo}
 	</update>
 	

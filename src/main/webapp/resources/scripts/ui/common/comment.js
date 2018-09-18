@@ -1,7 +1,7 @@
 /** 한 페이지에 표시할 댓글의 개수 */
-var PAGESIZE = 5;
+var PAGESIZE = 20;
 /** 한번에 보여줄 페이지 번호의 개수 */
-var PAGEBAR_COUNT = 7;
+var PAGEBAR_COUNT = 10;
 
 $(function() {
 	// 페이징바 클릭 이벤트 부여
