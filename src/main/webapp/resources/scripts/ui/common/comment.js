@@ -1,5 +1,5 @@
 /** 한 페이지에 표시할 댓글의 개수 */
-var PAGESIZE = 20;
+var PAGESIZE = 15;
 /** 한번에 보여줄 페이지 번호의 개수 */
 var PAGEBAR_COUNT = 10;
 

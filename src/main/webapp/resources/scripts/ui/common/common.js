@@ -72,14 +72,16 @@ function getPagingBar(param){
 	var html = "";
 	html +=	`<ul class="paging-bar">`;
 	if(prev > 0){
-		html +=	`<li><a href="#${prev}" class="pageButton" data-pagenum="${prev}"><</a></li>`;
+		html +=	`<li><a href="#1" class="pageButton" data-pagenum="1">≪</a></li>`;
+		html +=	`<li><a href="#${prev}" class="pageButton" data-pagenum="${prev}">＜</a></li>`;
 	}
 	for(var idx = first; idx <= last; idx++){
 		var currentClass = ((idx == currentPage) ? " current" : "");
 		html +=	`<li><a href="#${idx}" class="pageButton${currentClass}" data-pagenum="${idx}">${idx}</a></li>`;
 	}
 	if(last < totalPage){
-		html +=	`<li><a href="#${next}" class="pageButton" data-pagenum="${next}">></a></li>`;
+		html +=	`<li><a href="#${next}" class="pageButton" data-pagenum="${next}">＞</a></li>`;
+		html +=	`<li><a href="#${totalPage}" class="pageButton" data-pagenum="${totalPage}">≫</a></li>`;
 	}
 	html +=	`<ul>`;
 	return html;

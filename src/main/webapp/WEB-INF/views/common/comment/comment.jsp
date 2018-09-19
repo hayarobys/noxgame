@@ -24,10 +24,15 @@
 					비밀댓글
 				</label>
 			</div>
+			<div class="comment-file-div">
+				<input type="file" class="comment-file-input" />
+			</div>
 			<textarea class="comment-registration-textarea" id="commentRegistrationTextarea" placeholder="comment..."></textarea>
+			<!-- 
 			<div class="comment-file-group">
 				<span>drag &#38; drop file upload</span>
-			</div>			
+			</div>
+			-->
 		</article>
 		<article class="comment-list">
 			<div class="comment-group-no">

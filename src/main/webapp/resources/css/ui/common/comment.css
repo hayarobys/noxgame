@@ -41,6 +41,15 @@
 	top: 2px;
 }
 
+.comment-contents .comment-registration .comment-file-div{
+	margin-left: 10px;
+	display: inline-block;
+}
+
+.comment-contents .comment-registration .comment-file-div .comment-file-input{
+	font-size: 12px;
+}
+
 .comment-contents .comment-registration .comment-registration-textarea{
 	background-color: transparent;
 	border: 1px solid green;
