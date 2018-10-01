@@ -80,6 +80,13 @@
 			<version>${org.spring-security-version}</version>
 		</dependency>
 
+		<!-- Proj4j - 좌표변환 라이브러리. The Apache License, Version 2.0 -->
+		<dependency>
+			<groupId>org.osgeo</groupId>
+			<artifactId>proj4j</artifactId>
+			<version>0.1.0</version>
+		</dependency>
+
 		<!-- Jackson -->
 		<!-- com.fasterxml.jackson은 org.codehaus.jackson을 승계한 프로젝트 -->
 		<!-- com.fasterxml.jackson은 MappingJackson2HttpMessageConverter와 바인딩 -->
