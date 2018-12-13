@@ -17,7 +17,7 @@ public class ProjTestController{
 	@Autowired
 	private ProjTestService projTestService;
 	
-	/** 자유 게시판 글 목록 */
+	/** 좌표 변환 샘플 */
 	@RequestMapping(value="/test", method=RequestMethod.GET)
 	@ResponseBody public String getFreeboardGroupList(
 			@RequestParam(name="longitude") double longitude,
