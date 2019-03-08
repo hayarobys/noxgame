@@ -76,7 +76,8 @@ function initResourceGrid(){
 	
 	$(resourceGridId).on("rowclick", function(event){
 		var row = event.args.rowindex;
-		var rowData = $(resourceGridId).jqxGrid("getrowdata", row);console.log("데: ", rowData);
+		var rowData = $(resourceGridId).jqxGrid("getrowdata", row);
+		console.log("클릭한 리소스 정보: ", rowData);
 		reloadAuthGridByNo(rowData.resSqPk);
 	});
 }
@@ -94,14 +95,38 @@ function initAuthGrid(){
 		sortable: false,
 		altrows: true,
 		enabletooltips: true,
-		editable: false,
+		editable: true,
 		selectionmode: 'multiplerows',
 		columns: [
 			{text: '일련 번호', dataField: 'authSqPk', cellsalign: 'center', align: 'center', editable: false, width: '15%'},
 			{text: '권한 명', dataField: 'authNmUnq', cellsalign: 'left', align: 'center', editable: false, width: '30%'},
-			{text: '권한 설명', dataField: 'authExplanation', cellsalign: 'left', align: 'center', editable: false, width: '55%'}
+			{text: '권한 설명', dataField: 'authExplanation', cellsalign: 'left', align: 'center', editable: false, width: '40%'},
+			{text: '우선순위', dataField: 'priority', cellsalign: 'center', align: 'center', editable: true, width: '15%',
+				columntype: 'numberinput',
+				/*createeditor: function(row, cellvalue, editor){
+					editor.jqxNumberInput({decimalDigits: 0, digits: 3});
+				},*/
+				cellvaluechanging: cellValueChanging,
+			}
 		]
 	});
+}
+
+/**
+ * jqGrid에서 cell 값이 변경되었을때 호출되는 함수 입니다. 신규 입력값이 공백일시 기존 값으로 되돌리는 역할을 수행합니다.
+ * @param row
+ * @param column
+ * @param columntype
+ * @param oldvalue
+ * @param newvalue
+ * @returns
+ */
+function cellValueChanging(row, column, columntype, oldvalue, newvalue){
+	// new value가 공백이라면 old value로 재설정
+	if(newvalue == ""){
+		console.log('공백이 입력되었으므로, 기존값으로 복원합니다.');
+		return oldvalue;
+	}
 }
 
 /**
@@ -146,8 +171,8 @@ function reloadResourceGrid(){
 }
 
 /**
-* 서버로부터 특정 URL패턴의 auth목록을 불러와 jqxGrid를 갱신 합니다.
-*/
+ * 서버로부터 특정 URL패턴의 auth목록을 불러와 jqxGrid를 갱신 합니다.
+ */
 function reloadAuthGridByNo(resourceNo){
 	var token = $("meta[name='_csrf']").attr("content");
 	var header = $("meta[name='_csrf_header']").attr("content");
@@ -174,8 +199,8 @@ function reloadAuthGridByNo(resourceNo){
 }
 
 /**
-* json배열 형식의 권한목록을 gridId에 반영 합니다. ( 인자로 들어온 데이터와 일치하는 row들을 select상태로 변경 )
-*/
+ * json배열 형식의 권한목록을 gridId에 반영 합니다. ( 인자로 들어온 데이터와 일치하는 row들을 select상태로 변경 )
+ */
 function changeAuthGrid(listData){
 	$(authGridId).jqxGrid("clearselection"); // 선택 효과 제거
 	$(authGridId).jqxGrid("clear"); // row제거
@@ -187,7 +212,8 @@ function changeAuthGrid(listData){
 		datafields: [
 			{name: 'authSqPk', type: 'int'},
 			{name: 'authNmUnq', type: 'string'},
-			{name: 'authExplanation', type: 'string'}
+			{name: 'authExplanation', type: 'string'},
+			{name: 'priority', type: 'int'}
 		]
 	};
 	
@@ -206,10 +232,12 @@ function changeAuthGrid(listData){
 
 /**
 * 해당 jqxGrid의 no 열 에서 value값이 일치하는 row를 select상태로 만듭니다.
+* 일치하는 row의 priority 값을 전달받은 데이터로 갱신합니다.
 * @param jqxGridSelector jqxGrid 선택자
 * @param searchValue 선택할 값 들의 목록
 */
 function selectRowByValueList(jqxGridSelector, searchValueList){
+	console.log("서치밸류목록:", searchValueList);
 	var rows = $(jqxGridSelector).jqxGrid('getrows');
 	var rowsCount = rows.length;
 	var searchValueCount = searchValueList.length;
@@ -220,6 +248,7 @@ function selectRowByValueList(jqxGridSelector, searchValueList){
 		for(var k = 0; k < searchValueCount; k++){
 			if(value == searchValueList[k].authSqPk){
 				$(jqxGridSelector).jqxGrid('selectrow', i);
+				$(jqxGridSelector).jqxGrid('setcellvalue', i, 'priority', searchValueList[k].priority);
 			}
 		}
 	}
@@ -232,12 +261,14 @@ function selectRowByValueList(jqxGridSelector, searchValueList){
 function save(){
 	// 현재 선택한 리소스와 권한의 일련 번호 구하기
 	var selectedResourceNoArray = getSelectedNoArray(resourceGridId, 'resSqPk');
-	var selectedAuthNoArray = getSelectedNoArray(authGridId, 'authSqPk');
+	//var selectedAuthNoArray = getSelectedNoArray(authGridId, 'authSqPk');
+	var selectedAuthNoArray = getVariadicSelectedNoArray(authGridId, 'authSqPk', 'priority');
 	
 	// 전송할 json 데이터 생성
 	var data = {};
 	//data.resourceNo = Number(selectedResourceNoArray[0]);	// String to Number
-	data.authSqPkList = selectedAuthNoArray;
+	//data.authSqPkList = selectedAuthNoArray;
+	data.authPrioritySetArray = selectedAuthNoArray;
 	data = JSON.stringify(data);
 	
 	// 출력
@@ -272,6 +303,7 @@ function save(){
  * @param jqxGridId 검색할 jqxGrid 셀렉터
  * @param returnColumnStr 검색할 column 명
  * @returns 현재 선택 상태인 row의 column value 목록
+ * @deprecated 2019y3M8d 멀티 컬럼에 대한 value 추출 필요성이 생겨 getVariadicSelectedNoArray 으로 대체
  */
 function getSelectedNoArray(jqxGridId, returnColumnStr){
 	var selectedRowIndexes = $(jqxGridId).jqxGrid('getselectedrowindexes');
@@ -281,6 +313,34 @@ function getSelectedNoArray(jqxGridId, returnColumnStr){
 		selectedRowData[i] = Number($(jqxGridId).jqxGrid('getcellvalue', selectedRowIndexes[i], returnColumnStr));
 	}
 	
+	return selectedRowData;
+}
+
+/**
+ * 특정 jqxGrid로부터 현재 선택된 행의 특정 column value 목록을 object array 형식으로 반환합니다.
+ * 이때 검색할 column들의 value는 반드시 Number 타입이어야 하며, 두번째 인자는 가변인자로 입력합니다.
+ * ex) getVariadicSelectedNoArray('#data_auth', 'authSqPk', 'priority')
+ * === [{authSqPk: 5, priority: 0}, {authSqPk: 3, priority: 1}, {authSqPk: 2, priority: -3}]
+ * @param jqxGridId 검색할 jqxGrid 셀렉터
+ * @param variadicReturnColumnStr 검색할 column 명(가변인자)
+ * @returns 현재 선택 상태인 row의 column value 객체 목록
+ */
+function getVariadicSelectedNoArray(jqxGridId, variadicReturnColumnStr){
+	/*
+	if(!jqxGridId){
+		jqxGridId = "#data_auth";
+	}
+	*/
+	var selectedRowIndexes = $(jqxGridId).jqxGrid('getselectedrowindexes');
+	var selectedRowData = [];
+	
+	for(var i=0; i<selectedRowIndexes.length; i++){
+		var dataSet = {};
+		for(var k=1; k<arguments.length; k++){
+			dataSet[arguments[k]] = Number($(jqxGridId).jqxGrid('getcellvalue', selectedRowIndexes[i], arguments[k]));
+		}
+		selectedRowData[i] = dataSet;
+	}
 	return selectedRowData;
 }
 

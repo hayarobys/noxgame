@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.suph.security.core.dto.AuthDTO;
 import com.suph.security.core.dto.ResourceAuthDTO;
+import com.suph.security.core.dto.ResourceAuthPriorityDTO;
 
 @Repository
 public interface ResourceAuthDAO{
@@ -32,7 +33,7 @@ public interface ResourceAuthDAO{
 	
 	/**
 	 * 특정 RESOURCE에 AUTH 목록을 연결합니다.
-	 * @param resourceAuthDTO
+	 * @param resourceAuthPriorityDTO
 	 */
-	public abstract void insertAuthListByResourceNo(ResourceAuthDTO resourceAuthDTO);
+	public abstract void insertAuthListByResourceNo(ResourceAuthPriorityDTO resourceAuthPriorityDTO);
 }

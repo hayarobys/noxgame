@@ -7,7 +7,7 @@ import java.util.Map;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
-import com.suph.security.core.dto.ResourceAuthDTO;
+import com.suph.security.core.dto.ResourceAuthPriorityDTO;
 
 public interface ResourceAuthService{
 	/**
@@ -33,9 +33,9 @@ public interface ResourceAuthService{
 	
 	/**
 	 * 특정 RESOURCE 접근에 필요한 AUTH 목록을 변경합니다.
-	 * @param resourceAuthDTO
+	 * @param resourceAuthPriorityDTO
 	 * @return
 	 */
-	public abstract Map<String, Object> changeResourceAuth(ResourceAuthDTO resourceAuthDTO);
+	public abstract Map<String, Object> changeResourceAuth(ResourceAuthPriorityDTO resourceAuthPriorityDTO);
 	
 }

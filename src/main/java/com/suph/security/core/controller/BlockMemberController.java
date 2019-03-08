@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.suph.security.core.dto.BlockMemberDTO;
 import com.suph.security.core.dto.SearchBlockMemberDTO;
 import com.suph.security.core.service.BlockMemberService;
+import com.suph.security.core.userdetails.MemberInfo;
+import com.suph.security.core.util.ContextUtil;
 
 @Controller
 public class BlockMemberController{
@@ -111,6 +113,9 @@ public class BlockMemberController{
 		String blockCause = blockData.get("blockCause");
 		String blockStartDate = blockData.get("setStartDt");
 		String blockExpireDate = blockData.get("setExpireDt");
+		
+		MemberInfo memberInfo = ContextUtil.getMemberInfo();
+		blockMemberDTO.setBlockRegMemNo(memberInfo.getNo());
 		
 		if(StringUtils.hasText(memSqPk)){
 			try{

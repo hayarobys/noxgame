@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.suph.security.core.dto.ResourceAuthDTO;
+import com.suph.security.core.dto.ResourceAuthPriorityDTO;
 import com.suph.security.core.service.RealTimeReflectableService;
 import com.suph.security.core.service.ResourceAuthService;
 import com.suph.security.core.service.ResourceService;
@@ -49,15 +49,16 @@ public class ResourceAuthController{
 	
 	/**
 	 * 특정 리소스의 접근에 필요한 권한을 재지정 합니다.
+	 * [{authSqPk: 5, priority: 0}, {authSqPk: 3, priority: 1}, {authSqPk: 2, priority: -3}]
 	 * @return
 	 */
 	@RequestMapping(value="/resource/{resSqPk}/auth", method=RequestMethod.PATCH)
 	public @ResponseBody Map<String, Object> changeResourceAuth(
 			@PathVariable(required=true) Integer resSqPk,
-			@RequestBody ResourceAuthDTO resourceAuthDTO
+			@RequestBody ResourceAuthPriorityDTO resourceAuthPriorityDTO
 	){
-		resourceAuthDTO.setResSqPk(resSqPk);
-		return resourceAuthService.changeResourceAuth(resourceAuthDTO);
+		resourceAuthPriorityDTO.setResSqPk(resSqPk);
+		return resourceAuthService.changeResourceAuth(resourceAuthPriorityDTO);
 	}
 	
 	/**

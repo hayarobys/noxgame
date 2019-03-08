@@ -15,6 +15,8 @@ import com.suph.security.core.dto.PaginationRequest;
 import com.suph.security.core.dto.PaginationResponse;
 import com.suph.security.core.userdetails.MemberInfo;
 import com.suph.security.core.util.ContextUtil;
+
+import kr.pe.hayarobys.nox.common.exception.UnauthorizedException;
 /**
  * 댓글과 관련한 API를 정의하는 컨트롤러 클래스 입니다.
  * @author hayarobys@gmail.com
@@ -42,17 +44,32 @@ public class CommentController{
 	}
 	
 	/**
+	 * 특정 댓글 삭제 요청
+	 * @param commentNo 삭제할 댓글의 번호
+	 */
+	@RequestMapping(value="/comment/{commentNo}", method=RequestMethod.DELETE)
+	public void deleteComment(@PathVariable("commentNo") Integer commentNo){
+		// 댓글 삭제 요청자 확인
+		MemberInfo memberInfo = ContextUtil.getMemberInfo();
+		if(memberInfo == null){
+			throw new UnauthorizedException("로그인이 필요한 기능입니다.");
+		}
+		commentService.deleteComment(commentNo, memberInfo.getNo());
+		
+	}
+	
+	/**
 	 * 신규 댓글 등록 요청
 	 * @param commentVO
 	 */
 	@RequestMapping(value="/comment", method=RequestMethod.POST)
-	public @ResponseBody void postComment(@RequestBody CommentVO commentVO){		
+	public void postComment(@RequestBody CommentVO commentVO){		
 		// 댓글 등록 요청자 확인
 		MemberInfo memberInfo = ContextUtil.getMemberInfo();
 		if(memberInfo != null){
 			commentVO.setMemNo(memberInfo.getNo());
 		}
-				
+		
 		// 댓글 등록
 		commentService.insertComment(commentVO);
 	}
@@ -62,7 +79,7 @@ public class CommentController{
 	 * @param commentVO
 	 */
 	@RequestMapping(value="/comment/{commentNo}/reply", method=RequestMethod.POST)
-	public @ResponseBody void postComment(
+	public void postComment(
 			@PathVariable("commentNo") Integer commentNo,
 			@RequestBody CommentVO commentVO
 	){

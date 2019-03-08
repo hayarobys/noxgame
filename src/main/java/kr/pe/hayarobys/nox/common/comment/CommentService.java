@@ -15,6 +15,13 @@ public interface CommentService{
 	);
 	
 	/**
+	 * 댓글 삭제 요청자의 권한이 대상 댓글 작성자보다 높을경우 해당 댓글을 제거합니다.
+	 * @param commentNo 제거할 댓글 번호
+	 * @param memNo 댓글 삭제 요청자
+	 */
+	public abstract void deleteComment(Integer commentNo, Integer memNo);
+	
+	/**
 	 * 댓글을 등록합니다.
 	 * @param commentVO
 	 */

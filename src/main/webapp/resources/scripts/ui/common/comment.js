@@ -1,5 +1,5 @@
 /** 한 페이지에 표시할 댓글의 개수 */
-var PAGESIZE = 15;
+var PAGESIZE = 10;
 /** 한번에 보여줄 페이지 번호의 개수 */
 var PAGEBAR_COUNT = 10;
 
@@ -50,6 +50,14 @@ $(function() {
 		},
 		target: "#commentReplyPopup"
 	}, closeLayerPopup);
+	
+	
+	// 삭제 버튼 클릭 시 팝업 출력
+	jQuery("#commentList").on("click", "#commentDeleteButton", function(event){
+		event.preventDefault();
+		var deleteCommentNo = event.currentTarget.getAttribute("data-comment-no");
+		deleteComment(deleteCommentNo);
+	});
 });
 
 /**
@@ -82,7 +90,7 @@ function refreshCommentGroup(pagenum, pagesize, pagebarCount){
 		},
 		success: function(data, statusText, xhr){
 			//console.log("응답값: ", data);
-			replactCommentList(data.rows);
+			replaceCommentList(data.rows);
 			replacePagingBar(pagenum, pagesize, data.totalRows, pagebarCount);
 		},
 		error: function(xhr){
@@ -96,7 +104,7 @@ function refreshCommentGroup(pagenum, pagesize, pagebarCount){
  * @param commentList
  * @returns
  */
-function replactCommentList(rows){
+function replaceCommentList(rows){
 	var commentListString = "";
 	var paddingLeft = 0;
 	var commentRegDate = "";
@@ -122,7 +130,7 @@ function replactCommentList(rows){
 	 */
 	
 	rows.forEach(function(row, index, array){
-		paddingLeft = (row.commentClassDepth - 1) * 20;
+		paddingLeft = 5 + (row.commentClassDepth - 1) * 20;
 		commentRegDate = getDateString(row.commentRegDate);
 		commentModDate = (row.commentRegDate != row.commentModDate) ? ("마지막 수정일: " + getDateString(row.commentModDate)) : "수정 이력이 없습니다.";
 		commentSecretIcon = (row.commentSecretFlag == true) ? "비밀글" : "";
@@ -142,7 +150,7 @@ function replactCommentList(rows){
 						<button class="" type="button">
 							<div class="text">수정</div>
 						</button>
-						<button class="" type="button">
+						<button id="commentDeleteButton" class="" type="button" data-comment-no="${row.commentNo}">
 							<div class="text">삭제</div>
 						</button>
 					</div>
@@ -249,6 +257,15 @@ function replyComment(commentNo){
 			console.log("error", xhr);
 		}
 	});
+}
+
+/**
+ * 특정 댓글을 삭제합니다.
+ * @param deleteCommentNo 대상 댓글의 번호
+ */
+function deleteComment(deleteCommentNo){
+	
+	
 }
 
 /**

@@ -89,6 +89,13 @@
 		WHERE	CMT_GRP_FK = #{commentGroupNo}
 	</select>
 	
+	<!-- 특정 댓글 작성자의 계정 번호 조회 -->
+	<select id="selectMemNoFromCommentsByCommentNo" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		SELECT	MEM_FK
+		FROM	CMT_TB
+		WHERE	CMT_SQ_PK = #{commentNo}
+	</select>
+	
 	<!-- 특정 댓글의 계층 정보 조회 -->
 	<select id="selectCommentClass" parameterType="java.lang.Integer" resultMap="CommentVO">
 		SELECT	CMT_CLS_FK,

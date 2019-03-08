@@ -45,4 +45,9 @@
 		WHERE
 			MEM_FK_PK = #{memFkPk}
 	</delete>
+	
+	<!-- 두 계정의 권한 우위를 비교하여, my>target은 1, my<target은 -1, my=target은 0을 반환합니다. -->
+	<select id="comparePermissions" parameterType="map" resultType="java.lang.Integer">
+		
+	</select>
 </mapper>

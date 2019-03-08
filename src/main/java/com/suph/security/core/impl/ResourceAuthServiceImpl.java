@@ -21,6 +21,7 @@ import org.springframework.util.StringUtils;
 
 import com.suph.security.core.dao.ResourceAuthDAO;
 import com.suph.security.core.dto.ResourceAuthDTO;
+import com.suph.security.core.dto.ResourceAuthPriorityDTO;
 import com.suph.security.core.service.ResourceAuthService;
 
 @Service("resourceAuthService")
@@ -174,15 +175,15 @@ public class ResourceAuthServiceImpl implements ResourceAuthService{
 
 	@Override
 	@Transactional
-	public Map<String, Object> changeResourceAuth(ResourceAuthDTO resourceAuthDTO){
+	public Map<String, Object> changeResourceAuth(ResourceAuthPriorityDTO resourceAuthPriorityDTO){
 		Map<String, Object> returnMap = new HashMap<String, Object>();
 		
 		try{
-			resourceAuthDAO.deleteAuthListByResourceNo(resourceAuthDTO.getResFkPk());
-			if(		resourceAuthDTO.getAuthSqPkList() != null
-				&&	resourceAuthDTO.getAuthSqPkList().size() > 0
+			resourceAuthDAO.deleteAuthListByResourceNo(resourceAuthPriorityDTO.getResSqPk());
+			if(		resourceAuthPriorityDTO.getAuthPrioritySetArray() != null
+				&&	resourceAuthPriorityDTO.getAuthPrioritySetArray().size() > 0
 			){
-				resourceAuthDAO.insertAuthListByResourceNo(resourceAuthDTO);
+				resourceAuthDAO.insertAuthListByResourceNo(resourceAuthPriorityDTO);
 			}
 			returnMap.put("result", "success");
 		}catch(DataAccessException e){

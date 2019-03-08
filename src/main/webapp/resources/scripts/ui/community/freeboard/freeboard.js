@@ -116,7 +116,7 @@ function replaceFreeboardList(rows){
 						<dt class="group-no">${row.freeboardGroupNo}</dt>
 						<dt class="nickname" title="${row.memNo}">${row.memNickname}</dt>
 						<a href="${CONTEXT_PATH}/community/freeboard/${row.freeboardGroupNo}" id="groupNo${row.freeboardGroupNo}">
-							<dt class="title">${row.freeboardTitle}</dt>
+							<dt class="title">${row.freeboardTitle} <span class="comment-count">(${row.commentCount})</span></dt>
 							<dt class="reg-date" title="${lastRegDateTitle}">${freeboardGroupRegDate}</dt>
 							<dt class="hits">${row.hits}</dt>
 						</a>

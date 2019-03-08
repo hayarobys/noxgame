@@ -5,12 +5,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.suph.security.core.dto.PaginationRequest;
 import com.suph.security.core.dto.PaginationResponse;
 import com.suph.security.core.userdetails.MemberInfo;
 import com.suph.security.core.util.ContextUtil;
 
+import kr.pe.hayarobys.nox.common.exception.BadRequestException;
 import kr.pe.hayarobys.nox.common.opentype.OpenTypeService;
 import kr.pe.hayarobys.nox.common.upload.UploadService;
 
@@ -67,12 +69,20 @@ public class CommentServiceImpl implements CommentService{
 	
 	@Override
 	public void insertComment(CommentVO commentVO){
+		if(StringUtils.isEmpty(commentVO.getCommentBody()) == true){
+			throw new BadRequestException("댓글 내용이 비어있습니다.");
+		}
+		
 		commentDAO.insertComment(commentVO);
 		commentDAO.updateCommentClassNoByCommentNo(commentVO.getCommentNo());
 	}
 	
 	@Override
 	public void insertCommentReply(CommentVO commentVO){
+		if(StringUtils.isEmpty(commentVO.getCommentBody()) == true){
+			throw new BadRequestException("댓글 내용이 비어있습니다.");
+		}
+		
 		// 대상글의 CMT_CLS_FK, CMT_CLS_ORD, CMT_CLS_DPTH 조회
 		CommentVO targetCommentVO = commentDAO.selectCommentClass(commentVO.getCommentNo());
 		
@@ -128,5 +138,17 @@ public class CommentServiceImpl implements CommentService{
 		if(fileGroupNoList.size() > 0){
 			uploadService.deleteFileGroupByFileGroupNoList(fileGroupNoList);
 		}
+	}
+
+	@Override
+	public void deleteComment(Integer commentNo, Integer memNo){
+		// 대상 댓글의 작성자 조회
+		Integer writerNo = commentDAO.selectMemNoFromCommentsByCommentNo(commentNo);
+	
+		// 삭제 요청자와의 권한 비교
+		
+		
+		// 댓글 삭제
+		
 	}
 }

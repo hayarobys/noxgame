@@ -13,6 +13,7 @@
 		<result column="AUTH_SQ_PK" property="authSqPk" />
 		<result column="AUTH_NM_UNQ" property="authNmUnq" />
 		<result column="AUTH_EXPLN" property="authExplanation" />
+		<result column="PRIORITY" property="priority" />
 	</resultMap>
 
 	<!-- url/method/pointcut 형식인 리소스 패턴 - 권한 매핑 정보를 조회합니다 -->
@@ -37,28 +38,28 @@
 		SELECT
 			A.AUTH_SQ_PK,
 			A.AUTH_NM_UNQ,
-			A.AUTH_EXPLN
+			A.AUTH_EXPLN,
+			RA.PRIORITY
 		FROM
 			RES_TB AS R
 			INNER JOIN RES_AUTH_TB AS RA ON (RA.RES_FK_PK = R.RES_SQ_PK)
 			INNER JOIN AUTH_TB AS A ON (RA.AUTH_FK_PK = A.AUTH_SQ_PK)
 		WHERE
-				R.RES_TYPE = LCASE(#{type})
-			AND
-				R.RES_SQ_PK = #{resSqPk}
+			R.RES_TYPE = LCASE(#{type})
+			AND R.RES_SQ_PK = #{resSqPk}
 		ORDER BY
 			A.AUTH_SQ_PK
 	</select>
 	
 	<!-- 특정 리소스에 새 권한들을 부여합니다. -->
-	<insert id="insertAuthListByResourceNo" parameterType="ResourceAuthDTO">
+	<insert id="insertAuthListByResourceNo" parameterType="ResourceAuthPriorityDTO">
 		INSERT INTO
 			RES_AUTH_TB(
-				RES_FK_PK, AUTH_FK_PK
+				RES_FK_PK, AUTH_FK_PK, PRIORITY
 			)
 		VALUES
-		<foreach collection="authSqPkList" item="authNo" separator=",">
-			(#{resFkPk}, #{authNo})
+		<foreach collection="authPrioritySetArray" item="authPrioritySet" separator=",">
+			(#{resSqPk}, #{authPrioritySet.authSqPk}, #{authPrioritySet.priority})
 		</foreach>
 	</insert>
 	

@@ -72,6 +72,10 @@
 	width: 40%;
 }
 
+.freeboard-contents .freeboard-list .item-list .title .comment-count{
+	width: 40%;
+}
+
 .freeboard-contents .freeboard-list .item-list  a:link { color: white; text-decoration: none;}
 .freeboard-contents .freeboard-list .item-list  a:visited { color: white; text-decoration: none;}
 .freeboard-contents .freeboard-list .item-list  a:hover { color: gold; font-weight: bold; text-decoration: none;}

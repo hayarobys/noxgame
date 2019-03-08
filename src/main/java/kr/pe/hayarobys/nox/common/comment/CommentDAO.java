@@ -35,6 +35,13 @@ public interface CommentDAO{
 	public abstract Integer selectCommentTotalRowsByCommentGroupNo(Integer commentGroupNo);
 	
 	/**
+	 * 특정 댓글의 작성자를 조회합니다.
+	 * @param commentNo
+	 * @return 해당 댓글 작성자의 계정 번호
+	 */
+	public abstract Integer selectMemNoFromCommentsByCommentNo(Integer commentNo);
+	
+	/**
 	 * 특정 댓글의 계층 정보를 조회합니다.
 	 * @param commentNo
 	 * @return

@@ -24,6 +24,9 @@ public class FreeboardGroupDetailVO{
 	private String freeboardTitle;
 	/** 마지막 자유게시판 상세 등록일(최종 수정일) */
 	private Date freeboardLastRegDate;
+	
+	/** 댓글 개수 */
+	private Integer commentCount;
 
 	public Integer getMemNo(){
 		return memNo;
@@ -48,8 +51,6 @@ public class FreeboardGroupDetailVO{
 	public void setFreeboardGroupNo(Integer freeboardGroupNo){
 		this.freeboardGroupNo = freeboardGroupNo;
 	}
-
-	
 
 	public OpenType getOpenType(){
 		return openType;
@@ -91,12 +92,19 @@ public class FreeboardGroupDetailVO{
 		this.freeboardLastRegDate = freeboardLastRegDate;
 	}
 
+	public Integer getCommentCount(){
+		return commentCount;
+	}
+
+	public void setCommentCount(Integer commentCount){
+		this.commentCount = commentCount;
+	}
+
 	@Override
 	public String toString(){
 		return "FreeboardGroupDetailVO [memNo=" + memNo + ", memNickname=" + memNickname + ", freeboardGroupNo="
-				+ freeboardGroupNo + ", freeboardGroupRegDate=" + freeboardGroupRegDate + ", hits=" + hits
-				+ ", freeboardTitle=" + freeboardTitle + ", freeboardLastRegDate=" + freeboardLastRegDate + "]";
-	}
-
-	
+				+ freeboardGroupNo + ", openType=" + openType + ", freeboardGroupRegDate=" + freeboardGroupRegDate
+				+ ", hits=" + hits + ", freeboardTitle=" + freeboardTitle + ", freeboardLastRegDate="
+				+ freeboardLastRegDate + ", commentCount=" + commentCount + "]";
+	}	
 }
