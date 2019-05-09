@@ -1,3 +1,5 @@
+/* 34e9155 커밋에서 이 프로시저를 MyBatis 쿼리로 대체하였습니다. 더이상 사용되지 않으니 실행하지 마십시오. */
+
 CREATE PROCEDURE `insert_freeboard_group`(
 	IN _MEM_NO INT,
 	IN _COMMENT_GROUP_NO INT,

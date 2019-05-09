@@ -18,7 +18,10 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import com.suph.security.core.dao.MemberAuthDAO;
 import com.suph.security.core.dto.AuthDTO;
 import com.suph.security.core.dto.MemberAuthDTO;
+import com.suph.security.core.enums.CompareResultEnum;
 import com.suph.security.core.service.MemberAuthService;
+
+import kr.pe.hayarobys.nox.common.exception.InternalServerErrorException;
 
 @Service("memberAuthService")
 public class MemberAuthServiceImpl implements MemberAuthService{
@@ -92,6 +95,19 @@ public class MemberAuthServiceImpl implements MemberAuthService{
 		}
 		
 		return returnMap;
+	}
+
+	@Override
+	public CompareResultEnum didAHaveHigherAuthorityThanB(Integer memNoA, Integer memNoB){
+		Integer compareResult = memberAuthDAO.comparePermissions(memNoA, memNoB);
+		if(compareResult == null){
+			throw new InternalServerErrorException("두 계정의 권한 비교 실패 - " + memNoA + ", " + memNoB);
+		}
+		
+		CompareResultEnum returnValue = (compareResult.intValue() > 0) ? CompareResultEnum.A_GREATER_THAN_B :
+			(compareResult.intValue() == 0) ? CompareResultEnum.A_AND_B_IS_SAME : CompareResultEnum.A_RESS_THAN_B;
+		
+		return returnValue;
 	}
 }
 
