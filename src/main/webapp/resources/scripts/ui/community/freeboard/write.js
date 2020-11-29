@@ -91,7 +91,7 @@ jQuery(function() {
 			},
 			success: function(data, statusText, xhr){
 				console.log("응답값: ", data);
-				//location.href = CONTEXT_PATH + "/community/freeboard/" + data.data;
+				location.href = CONTEXT_PATH + "/community/freeboard";
 			},
 			error: function(xhr){
 				console.log("error", xhr);

@@ -25,7 +25,7 @@
 		<result column="MEM_NICKNM" property="nickname" />
 		
 		<result column="FILE_GRP_SQ_PK" property="fileGroupNo" />
-		<result column="OPEN_TYPE_PK" property="openType" />
+		<result column="PST_OP_TYPE_PK" property="openType" />
 	</resultMap>
 	
 	<resultMap type="CommentVO" id="CommentVO">
@@ -48,7 +48,7 @@
 			M.MEM_SQ_PK,
 			M.MEM_NICKNM,
 			FG.FILE_GRP_SQ_PK,
-			OT.OPEN_TYPE_PK,
+			OT.PST_OP_TYPE_PK,
 			C.CMT_SQ_PK,
 			C.CMT_CLS_FK,
 			C.CMT_CLS_DPTH,
@@ -68,7 +68,7 @@
 				CMT_SCRT_FL,
 				CMT_BODY,
 				FILE_GRP_FK,
-				OPEN_TYPE_FK
+				CMT_OP_TYPE_FK
 			FROM
 				CMT_TB
 			WHERE
@@ -80,7 +80,7 @@
 		LEFT JOIN CMT_GRP_TB AS CG ON (C.CMT_GRP_FK = CG.CMT_GRP_SQ_PK)
 		LEFT JOIN MEM_TB AS M ON (C.MEM_FK = M.MEM_SQ_PK)
 		LEFT JOIN FILE_GRP_TB AS FG ON (C.FILE_GRP_FK = FG.FILE_GRP_SQ_PK)
-		LEFT JOIN OPEN_TYPE_TB AS OT ON (C.OPEN_TYPE_FK = OT.OPEN_TYPE_PK)
+		LEFT JOIN PST_OP_TYPE_TB AS OT ON (C.CMT_OP_TYPE_FK = OT.PST_OP_TYPE_PK)
 	</select>
 	
 	<select id="selectCommentTotalRowsByCommentGroupNo" parameterType="java.lang.Integer" resultType="java.lang.Integer">
@@ -129,7 +129,7 @@
 		INSERT INTO CMT_TB(
 			CMT_GRP_FK,
 			MEM_FK,
-			OPEN_TYPE_FK,
+			CMT_OP_TYPE_FK,
 			CMT_SCRT_FL,
 			CMT_BODY
 		)VALUES(
@@ -149,7 +149,7 @@
 		INSERT INTO CMT_TB(
 			CMT_GRP_FK,
 			MEM_FK,
-			OPEN_TYPE_FK,
+			CMT_OP_TYPE_FK,
 			CMT_SCRT_FL,
 			CMT_BODY,
 			

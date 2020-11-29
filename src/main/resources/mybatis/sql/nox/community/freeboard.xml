@@ -8,13 +8,13 @@
 		<result column="MEM_NICKNM" property="memNickname"/>
 		<!-- <result column="MEM_ID" property="memId"/> -->
 		
-		<result column="FRBRD_GRP_SQ_PK" property="freeboardGroupNo"/>
-		<result column="OPEN_TYPE_FK" property="openType"/>
-		<result column="FRBRD_GRP_REG_DT" property="freeboardGroupRegDate"/>
+		<result column="PST_GRP_SQ_PK" property="freeboardGroupNo"/>
+		<result column="PST_OP_TYPE_FK" property="openType"/>
+		<result column="PST_GRP_REG_DT" property="freeboardGroupRegDate"/>
 		<result column="HITS" property="hits"/>
 		
-		<result column="FRBRD_TITLE" property="freeboardTitle"/>
-		<result column="FRBRD_REG_DT" property="freeboardLastRegDate"/>
+		<result column="PST_TITLE" property="freeboardTitle"/>
+		<result column="PST_REG_DT" property="freeboardLastRegDate"/>
 		
 		<result column="COMMENT_COUNT" property="commentCount"/>
 	</resultMap>
@@ -24,16 +24,16 @@
 		<result column="MEM_NICKNM" property="nickname"/>
 		<result column="MEM_ID" property="id"/>
 		
-		<result column="FRBRD_GRP_SQ_PK" property="freeboardGroupNo"/>
+		<result column="PST_GRP_SQ_PK" property="freeboardGroupNo"/>
 		<result column="FILE_GRP_FK" property="fileGroupNo"/>
 		<result column="CMT_GRP_FK" property="commentGroupNo"/>
-		<result column="OPEN_TYPE_FK" property="openType"/>
+		<result column="PST_OP_TYPE_FK" property="openType"/>
 		<result column="CMT_GRP_NEW_WRT_FL" property="allowComment"/>
 		
-		<result column="FRBRD_SQ_PK" property="freeboardNo"/>
-		<result column="FRBRD_REG_DT" property="freeboardRegDate"/>
-		<result column="FRBRD_TITLE" property="freeboardTitle"/>
-		<result column="FRBRD_BODY" property="freeboardBody"/>
+		<result column="PST_SQ_PK" property="freeboardNo"/>
+		<result column="PST_REG_DT" property="freeboardRegDate"/>
+		<result column="PST_TITLE" property="freeboardTitle"/>
+		<result column="PST_BODY" property="freeboardBody"/>
 	</resultMap>
 	
 	<!-- 모든 자유게시판 목록을 페이징 처리하여 조회합니다. -->
@@ -42,34 +42,34 @@
 		SELECT
 			M.MEM_SQ_PK,
 			M.MEM_NICKNM,
-			FRG.FRBRD_GRP_SQ_PK,
-			FRG.OPEN_TYPE_FK,
-			FRG.FRBRD_GRP_REG_DT,
+			FRG.PST_GRP_SQ_PK,
+			FRG.PST_OP_TYPE_FK,
+			FRG.PST_GRP_REG_DT,
 			FRG.HITS,
-			O_FR.FRBRD_TITLE,
-			O_FR.FRBRD_REG_DT,
+			O_FR.PST_TITLE,
+			O_FR.PST_REG_DT,
 			COUNT(CMT.CMT_SQ_PK) AS COMMENT_COUNT
 		FROM
-			FRBRD_GRP_TB AS FRG
+			PST_GRP_TB AS FRG
 			LEFT JOIN CMT_GRP_TB AS CMTGRP ON(FRG.CMT_GRP_FK = CMTGRP.CMT_GRP_SQ_PK)
 			LEFT JOIN CMT_TB AS CMT ON(CMTGRP.CMT_GRP_SQ_PK = CMT.CMT_GRP_FK)
 			LEFT JOIN MEM_TB AS M ON(FRG.MEM_FK = M.MEM_SQ_PK)
 			LEFT JOIN (
 				SELECT
-					FR.FRBRD_SQ_PK,
-					FR.FRBRD_GRP_FK,
-					FR.FRBRD_TITLE,
-					FR.FRBRD_REG_DT
+					FR.PST_SQ_PK,
+					FR.PST_GRP_FK,
+					FR.PST_TITLE,
+					FR.PST_REG_DT
 				FROM
-					FRBRD_TB AS FR
+					PST_TB AS FR
 					INNER JOIN (
-						SELECT MAX(FRBRD_SQ_PK) AS MAX_SEQ
-						FROM FRBRD_TB
-						GROUP BY FRBRD_GRP_FK
-					) AS M_FR ON(FR.FRBRD_SQ_PK = M_FR.MAX_SEQ)
-			) AS O_FR ON(FRG.FRBRD_GRP_SQ_PK = O_FR.FRBRD_GRP_FK)
-		WHERE FRG.OPEN_TYPE_FK <> 'CLOSE'
-		ORDER BY FRG.FRBRD_GRP_SQ_PK DESC
+						SELECT MAX(PST_SQ_PK) AS MAX_SEQ
+						FROM PST_TB
+						GROUP BY PST_GRP_FK
+					) AS M_FR ON(FR.PST_SQ_PK = M_FR.MAX_SEQ)
+			) AS O_FR ON(FRG.PST_GRP_SQ_PK = O_FR.PST_GRP_FK)
+		WHERE FRG.PST_OP_TYPE_FK <> 'CLOSE'
+		ORDER BY FRG.PST_GRP_SQ_PK DESC
 		LIMIT ${start}, ${pagesize}
 		]]>
 	</select>
@@ -77,17 +77,17 @@
 	<!-- 자유게시판 그룹의 총 개수를 조회 합니다. -->
 	<select id="getFreeboardGroupListTotalRows" resultType="java.lang.Integer">
 		<![CDATA[
-		SELECT COUNT(*) FROM FRBRD_GRP_TB
-		WHERE OPEN_TYPE_FK <> 'CLOSE'
+		SELECT COUNT(*) FROM PST_GRP_TB
+		WHERE PST_OP_TYPE_FK <> 'CLOSE'
 		]]>
 	</select>
 	
 	<!-- 자유 게시판 그룹을 등록하고 생성된 일련 번호를 조회합니다. -->
 	<insert id="insertFreeboardGroup" parameterType="FreeboardGroupVO">		
-		INSERT INTO FRBRD_GRP_TB(
+		INSERT INTO PST_GRP_TB(
 			MEM_FK,
 			CMT_GRP_FK,
-			OPEN_TYPE_FK
+			PST_OP_TYPE_FK
 		)VALUES(
 			#{memNo},
 			#{commentGroupNo},
@@ -100,12 +100,12 @@
 		
 	<!-- 자유게시판 상세 정보를 등록합니다. -->
 	<insert id="insertFreeboard" parameterType="FreeboardVO">
-		INSERT INTO FRBRD_TB(
-			FRBRD_GRP_FK,
-			FRBRD_REG_DT,
+		INSERT INTO PST_TB(
+			PST_GRP_FK,
+			PST_REG_DT,
 			FILE_GRP_FK,
-			FRBRD_TITLE,
-			FRBRD_BODY
+			PST_TITLE,
+			PST_BODY
 		)VALUES(
 			#{freeboardGroupNo},
 			CURRENT_TIMESTAMP(),
@@ -124,24 +124,24 @@
 				M.MEM_NICKNM,
 				M.MEM_ID,
 				
-				FG.FRBRD_GRP_SQ_PK,
+				FG.PST_GRP_SQ_PK,
 				FG.CMT_GRP_FK,
-				FG.OPEN_TYPE_FK,
+				FG.PST_OP_TYPE_FK,
 				CG.CMT_GRP_NEW_WRT_FL,
 				
-				F.FRBRD_SQ_PK,
-				F.FRBRD_REG_DT,
+				F.PST_SQ_PK,
+				F.PST_REG_DT,
 				F.FILE_GRP_FK,
-				F.FRBRD_TITLE,
-				F.FRBRD_BODY
+				F.PST_TITLE,
+				F.PST_BODY
 			FROM
-				FRBRD_GRP_TB AS FG
+				PST_GRP_TB AS FG
 				INNER JOIN MEM_TB AS M		ON(FG.MEM_FK = M.MEM_SQ_PK)
-				INNER JOIN FRBRD_TB AS F	ON(FG.FRBRD_GRP_SQ_PK = F.FRBRD_GRP_FK)
+				INNER JOIN PST_TB AS F	ON(FG.PST_GRP_SQ_PK = F.PST_GRP_FK)
 				INNER JOIN CMT_GRP_TB CG	ON(FG.CMT_GRP_FK = CG.CMT_GRP_SQ_PK)
 			WHERE
-				FG.FRBRD_GRP_SQ_PK = #{freeboardGroupNo}
-			ORDER BY F.FRBRD_SQ_PK DESC
+				FG.PST_GRP_SQ_PK = #{freeboardGroupNo}
+			ORDER BY F.PST_SQ_PK DESC
 		) AS T
 		LIMIT 1;
 	</select>
@@ -149,34 +149,34 @@
 	<!-- 특정 게시글 그룹의 작성자를 조회합니다. -->
 	<select id="selectMemNoFromFreeboardGroupByFreeboardGroupNo" parameterType="java.lang.Integer" resultType="java.lang.Integer">
 		SELECT MEM_FK
-		FROM FRBRD_GRP_TB
-		WHERE FRBRD_GRP_SQ_PK = #{freeboardGroupNo}
+		FROM PST_GRP_TB
+		WHERE PST_GRP_SQ_PK = #{freeboardGroupNo}
 	</select>
 	
 	<!-- 특정 일련 번호의 자유 게시판 그룹에 연결된 댓글 그룹 번호를 조회합니다. -->
 	<select id="selectCommentGroupNoFromFreeboardGroupByFreeboardGroupNo" parameterType="java.lang.Integer" resultType="java.lang.Integer">
 		SELECT CMT_GRP_FK
-		FROM FRBRD_GRP_TB
-		WHERE FRBRD_GRP_SQ_PK = #{freeboardGroupNo}
+		FROM PST_GRP_TB
+		WHERE PST_GRP_SQ_PK = #{freeboardGroupNo}
 	</select>
 	
 	<!-- 특정 자유게시판 그룹의 최소 조회 권한을 변경합니다. -->
 	<update id="updateAuthgroupOfFreeboardGroupByFreeboardGroupNo" parameterType="FreeboardGroupVO">
-		UPDATE FRBRD_GRP_TB
-		SET OPEN_TYPE_FK = #{openType}
-		WHERE FRBRD_GRP_SQ_PK = #{freeboardGroupNo}
+		UPDATE PST_GRP_TB
+		SET PST_OP_TYPE_FK = #{openType}
+		WHERE PST_GRP_SQ_PK = #{freeboardGroupNo}
 	</update>
 	
 	<!-- 특정 일련 번호의 자유 게시판 그룹을 제거합니다. -->
 	<delete id="deleteFreeboardGroupByFreeboardGroupNo" parameterType="java.lang.Integer">
-		DELETE FROM FRBRD_GRP_TB
-		WHERE FRBRD_GRP_SQ_PK = #{freeboardGroupNo}
+		DELETE FROM PST_GRP_TB
+		WHERE PST_GRP_SQ_PK = #{freeboardGroupNo}
 	</delete>
 	
 	<!-- 특정 게시글 그룹에 속한 모든 게시글을 제거합니다. -->
 	<delete id="deleteFreeboardByFreeboardGroupNo" parameterType="java.lang.Integer">
-		DELETE FROM FRBRD_TB
-		WHERE FRBRD_GRP_FK = #{freeboarGroupNo}
+		DELETE FROM PST_TB
+		WHERE PST_GRP_FK = #{freeboarGroupNo}
 	</delete>
 	
 	<!-- 자유게시판 그룹에 소속된 파일들의 일련 번호 목록을 조회합니다. -->
@@ -184,10 +184,10 @@
 		SELECT
 			FIG.FILE_GRP_SQ_PK
 		FROM
-			FRBRD_GRP_TB AS FRG
-			INNER JOIN FRBRD_TB AS FR		ON(FRG.FRBRD_GRP_SQ_PK = FR.FRBRD_GRP_FK)
+			PST_GRP_TB AS FRG
+			INNER JOIN PST_TB AS FR		ON(FRG.PST_GRP_SQ_PK = FR.PST_GRP_FK)
 			INNER JOIN FILE_GRP_TB AS FIG	ON(FR.FILE_GRP_FK = FIG.FILE_GRP_SQ_PK)
 		WHERE
-			FRG.FRBRD_GRP_SQ_PK = #{freeboardGroupNo}
+			FRG.PST_GRP_SQ_PK = #{freeboardGroupNo}
 	</select>
 </mapper>
